@@ -1,5 +1,3 @@
-// ガチの初期画面
-
 import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Loading from "./loading";
