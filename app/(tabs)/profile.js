@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
+import * as SQLite from 'expo-sqlite';
 
 const Profile = () => {
+
+  const [user, setItems] = useState([]);
+  const db = SQLite.openDatabase('inu.db');
 
   return (
     <LinearGradient
