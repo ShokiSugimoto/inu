@@ -16,7 +16,7 @@ const Sqlite = () => {
         'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, name TEXT, image TEXT, pass TEXT);',
         [],
         (_, result) => {
-          console.log('success!');
+          console.log('Create success!');
         },
         (_, error) => {
           console.log('Error!');

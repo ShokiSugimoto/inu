@@ -13,9 +13,9 @@ const Sqlite = () => {
     db.transaction((tx) => {
       tx.executeSql(
         'INSERT INTO user(user_name, name, image, pass) VALUES(?, ?, ?, ?);',
-        ['shkchi', '祥希', 'image', 'shkchi'],
+        ['manteklam', '文迪', 'profileImage_8', 'mtl'],
         (_, result) => {
-          console.log('success!');
+          console.log('Insert success!');
         },
         (_, error) => {
           console.log('Error during insertion:', error);
