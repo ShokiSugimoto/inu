@@ -8,7 +8,7 @@ const Index = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.navigate('sqlite_3');
+      navigation.navigate('select');
     }, 5000);
 
     return () => clearTimeout(timer);

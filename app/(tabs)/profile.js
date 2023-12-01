@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView } from "react-native-gesture-handler";
@@ -7,8 +7,37 @@ import * as SQLite from 'expo-sqlite';
 
 const Profile = () => {
 
-  const [user, setItems] = useState([]);
-  const db = SQLite.openDatabase('inu.db');
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    // SQLiteデータベースに接続
+    const db = SQLite.openDatabase('inu.db');
+
+    // ユーザーデータ取得のクエリ（例）
+    const query = 'SELECT id, user_name, name, image, pass FROM user WHERE id = ?';
+
+    // ユーザーIDに適切な値を設定
+    const userId = 1; // 仮の値
+
+    // クエリ実行
+    db.transaction(tx => {
+      tx.executeSql(
+        query,
+        [userId],
+        (_, { rows }) => {
+          // 取得したユーザーデータをstateに設定
+          setUserData(rows.item(0));
+        },
+        (tx, error) => {
+          console.error(error);
+        }
+      );
+    });
+  }, []); // 最初のレンダリング時のみ実行
+
+  const profileImagePath = userData.image + userData.id;
+  const profileImage = `../../img/profile/${profileImagePath}.webp`;
+  console.log(profileImage);
 
   return (
     <LinearGradient
@@ -18,7 +47,7 @@ const Profile = () => {
       <ScrollView>
         <View style={[styles.profileImageContainer]}>
           <Image
-            source={require('../../img/profile/profileImageDemo.webp')}
+            source={{ uri: profileImage }}
             style={[styles.profileImage]}
           />
           <Image
@@ -27,8 +56,8 @@ const Profile = () => {
           />
         </View>
         <View style={[styles.profileNameContainer]}>
-          <Text style={[styles.profileName]}>遠藤叶翔</Text>
-          <Text style={[styles.profileNameUser]}>@KanatoEndo</Text>
+          <Text style={[styles.profileName]}>{userData.name}</Text>
+          <Text style={[styles.profileNameUser]}>@{userData.user_name}</Text>
         </View>
         <View style={[styles.myList]}>
           <Text style={[styles.myListText]}>マイリスト</Text>
