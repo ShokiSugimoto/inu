@@ -8,7 +8,7 @@ const Index = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.navigate('select');
+      navigation.navigate('(tabs)');
     }, 5000);
 
     return () => clearTimeout(timer);

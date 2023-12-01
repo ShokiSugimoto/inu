@@ -28,6 +28,23 @@ const Sqlite = () => {
           console.log('Error during select:', error);
         }
       );
+      tx.executeSql(
+        'SELECT * FROM login;',
+        [],
+        (_, result) => {
+          console.log('Select successful!');
+          const items2 = result.rows._array;
+          setItems(items2);
+          console.log(`件数:${items2.length}件`);
+          for (let i = 0; i < items2.length; i++) {
+            const { id, flg } = items2[i];
+            console.log(`${id}:${flg}`);
+          }
+        },
+        (_, error) => {
+          console.log('Error during select:', error);
+        }
+      );
     });
   };
 

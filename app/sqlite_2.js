@@ -13,15 +13,25 @@ const Sqlite = () => {
     db.transaction((tx) => {
       tx.executeSql(
         'INSERT INTO user(user_name, name, image, pass) VALUES(?, ?, ?, ?);',
-        ['kanatoendo', '叶翔', 'profileImage_', 'ke'],
-        // 'kanatoendo', '叶翔', 'profileImage_', 'ke',
-        // 'shokisugimoto', '祥希', 'profileImage_', 'ss',
-        // 'hiroyukitakada', '寛之', 'profileImage_', 'ht',
-        // 'chenpochun', '柏均', 'profileImage_', 'cpc',
-        // 'ibukimatsuda', '尉吹', 'profileImage_', 'im',
-        // 'shomiyagawa', '翔', 'profileImage_', 'sm',
-        // 'tomoakimurayama', '智章', 'profileImage_', 'tm',
-        // 'manteklam', '文迪', 'profileImage_', 'mtl'
+        ['kanatoendo', '叶翔', 'profileImage_1', 'ke'],
+        // 'kanatoendo', '叶翔', 'profileImage_1', 'ke',
+        // 'shokisugimoto', '祥希', 'profileImage_2', 'ss',
+        // 'hiroyukitakada', '寛之', 'profileImage_3', 'ht',
+        // 'chenpochun', '柏均', 'profileImage_4', 'cpc',
+        // 'ibukimatsuda', '尉吹', 'profileImage_5', 'im',
+        // 'shomiyagawa', '翔', 'profileImage_6', 'sm',
+        // 'tomoakimurayama', '智章', 'profileImage_7', 'tm',
+        // 'manteklam', '文迪', 'profileImage_8', 'mtl'
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error during insertion:', error);
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO login(flg) VALUES(?);',
+        [1],
         (_, result) => {
           console.log('Insert success!');
         },

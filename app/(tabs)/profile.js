@@ -7,23 +7,33 @@ import * as SQLite from 'expo-sqlite';
 
 const Profile = () => {
 
+  const [items, setItems] = useState([]); // 初期値は空の配列や適切な初期値に設定する
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     // SQLiteデータベースに接続
     const db = SQLite.openDatabase('inu.db');
 
-    // ユーザーデータ取得のクエリ（例）
-    const query = 'SELECT id, user_name, name, image, pass FROM user WHERE id = ?';
-
-    // ユーザーIDに適切な値を設定
-    const userId = 1; // 仮の値
-
     // クエリ実行
     db.transaction(tx => {
       tx.executeSql(
-        query,
-        [userId],
+        'SELECT * FROM login WHERE flg = 1;',
+        [],
+        (_, result) => {
+          console.log('Select successful!');
+          const items = result.rows._array;
+          setItems(items);
+          for (let i = 0; i < items.length; i++) {
+            const { loginId } = items[i];
+          }
+        },
+        (_, error) => {
+          console.log('Error during select:', error);
+        }
+      );
+      tx.executeSql(
+        'SELECT id, user_name, name, image, pass FROM user WHERE id = ?',
+        [loginId],
         (_, { rows }) => {
           // 取得したユーザーデータをstateに設定
           setUserData(rows.item(0));
@@ -35,9 +45,9 @@ const Profile = () => {
     });
   }, []); // 最初のレンダリング時のみ実行
 
-  const profileImagePath = userData.image + userData.id;
-  const profileImage = `../../img/profile/${profileImagePath}.webp`;
-  console.log(profileImage);
+  if (!userData) {
+    return null; // またはローディングスピナーを表示するなど
+  }
 
   return (
     <LinearGradient
@@ -47,7 +57,7 @@ const Profile = () => {
       <ScrollView>
         <View style={[styles.profileImageContainer]}>
           <Image
-            source={{ uri: profileImage }}
+            source={require('../../img/profile/profileImage_1.webp')}
             style={[styles.profileImage]}
           />
           <Image

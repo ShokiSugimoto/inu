@@ -13,7 +13,8 @@ const Sqlite = () => {
 
     db.transaction((tx) => {
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, name TEXT, image TEXT, pass TEXT);',
+        // 'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, name TEXT, image TEXT, pass TEXT);',
+        // 'CREATE TABLE IF NOT EXISTS login (id INTEGER PRIMARY KEY AUTOINCREMENT, flg INTEGER);',
         [],
         (_, result) => {
           console.log('Create success!');
