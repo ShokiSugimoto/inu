@@ -39,7 +39,7 @@ const Profile = () => {
         }
       );
     });
-  }, []); 
+  }, []);
 
   if (!userData) {
     return null;

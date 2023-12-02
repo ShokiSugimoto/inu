@@ -99,6 +99,105 @@ const Sqlite = () => {
       /*
       tx.executeSql(
         'INSERT INTO login(flg) VALUES(?);',
+        [0],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO login(flg) VALUES(?);',
+        [0],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO login(flg) VALUES(?);',
+        [0],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO login(flg) VALUES(?);',
+        [0],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO login(flg) VALUES(?);',
+        [0],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO login(flg) VALUES(?);',
+        [0],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO login(flg) VALUES(?);',
+        [0],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      // マンテクを仮ログイン
+      tx.executeSql(
+        'INSERT INTO login(flg) VALUES(?);',
+        [1],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      */
+
+      /*
+      // contentsテーブルに挿入
+      tx.executeSql(
+        'INSERT INTO contents (user_id, thumbnail, title, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?);',
+        [1, 'thumbnail_1', '音と熱の世界', 1980, 75, 5],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+      */
+
+      // contentsSelectテーブルに挿入
+      /*
+      tx.executeSql(
+        'INSERT INTO contentsSelect(flg) VALUES(?);',
         [1],
         (_, result) => {
           console.log('Insert success!');
@@ -108,57 +207,7 @@ const Sqlite = () => {
         }
       );
       tx.executeSql(
-        'INSERT INTO login(flg) VALUES(?);',
-        [1],
-        (_, result) => {
-          console.log('Insert success!');
-        },
-        (_, error) => {
-          console.log('Error...');
-        }
-      );
-      tx.executeSql(
-        'INSERT INTO login(flg) VALUES(?);',
-        [0],
-        (_, result) => {
-          console.log('Insert success!');
-        },
-        (_, error) => {
-          console.log('Error...');
-        }
-      );
-      tx.executeSql(
-        'INSERT INTO login(flg) VALUES(?);',
-        [0],
-        (_, result) => {
-          console.log('Insert success!');
-        },
-        (_, error) => {
-          console.log('Error...');
-        }
-      );
-      tx.executeSql(
-        'INSERT INTO login(flg) VALUES(?);',
-        [0],
-        (_, result) => {
-          console.log('Insert success!');
-        },
-        (_, error) => {
-          console.log('Error...');
-        }
-      );
-      tx.executeSql(
-        'INSERT INTO login(flg) VALUES(?);',
-        [0],
-        (_, result) => {
-          console.log('Insert success!');
-        },
-        (_, error) => {
-          console.log('Error...');
-        }
-      );
-      tx.executeSql(
-        'INSERT INTO login(flg) VALUES(?);',
+        'INSERT INTO contentsSelect(flg) VALUES(?);',
         [0],
         (_, result) => {
           console.log('Insert success!');

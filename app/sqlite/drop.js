@@ -12,10 +12,10 @@ const Sqlite = () => {
   const handlePress = () => {
     db.transaction((tx) => {
 
-      // userテーブルをまるまる削除
-      /*
+      // 〇〇テーブルをまるまる削除
+      // /*
       tx.executeSql(
-        'DROP TABLE IF EXISTS user;',
+        'DROP TABLE IF EXISTS login;',
         [],
         (_, result) => {
           console.log('Drop success!');
@@ -31,7 +31,7 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      */
+      // */
     });
   };
 

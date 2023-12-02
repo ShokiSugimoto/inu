@@ -7,6 +7,7 @@ import * as SQLite from 'expo-sqlite';
 
 export default function Layout() {
 
+  /*
   const [items, setItems] = useState([]);
   const [userData, setUserData] = useState(null);
   useEffect(() => {
@@ -44,6 +45,7 @@ export default function Layout() {
   if (!userData) {
     return null;
   }
+  */
 
   const fadeIn = ({ current }) => ({
     cardStyle: {

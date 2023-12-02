@@ -1,4 +1,4 @@
-// テーブルデータ確認用
+// テーブルデータ確認用(LOGで確認)
 
 import React, { useState } from "react";
 import * as SQLite from 'expo-sqlite';
@@ -17,13 +17,13 @@ const Sqlite = () => {
         'SELECT * FROM user;',
         [],
         (_, result) => {
-          console.log('Select success!');
           const items = result.rows._array;
           setItems(items);
-          console.log(`件数:${items.length}件`);
+          console.log('\n');
+          console.log(`[user]:${items.length}件`);
           for (let i = 0; i < items.length; i++) {
             const { id, user_name, name, image, pass } = items[i];
-            console.log(`${id}:${user_name}:${name}:${image}:${pass}`);
+            console.log(`id:${id}, ユーザー名:@${user_name}, 名前:${name}, プロフィール画像パス:${image}, パスワード:${pass}`);
           }
         },
         (_, error) => {
@@ -36,12 +36,50 @@ const Sqlite = () => {
         'SELECT * FROM login;',
         [],
         (_, result) => {
-          console.log('Select success!');
           const items2 = result.rows._array;
           setItems(items2);
-          console.log(`件数:${items2.length}件`);
+          console.log('\n');
+          console.log(`[login(flg確認用)]:${items2.length}件`);
           for (let i = 0; i < items2.length; i++) {
             const { id, flg } = items2[i];
+            console.log(`id:${id}, flg:${flg}`);
+          }
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+
+      // contentsテーブルデータ確認用
+      tx.executeSql(
+        'SELECT * FROM contents;',
+        [],
+        (_, result) => {
+          const items3 = result.rows._array;
+          setItems(items3);
+          console.log('\n');
+          console.log(`[contents]:${items3.length}件`);
+          for (let i = 0; i < items3.length; i++) {
+            const { id, user_id, thumbnail, title, nft, count, ranking } = items3[i];
+            console.log(`id:${id}, user_id:${user_id}, thumbnail:${thumbnail}, title:${title}, nft:${nft}, count:${count} ranking:${ranking}`);
+          }
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+
+      // contentsSelectテーブルデータ確認用
+      tx.executeSql(
+        'SELECT * FROM contentsSelect;',
+        [],
+        (_, result) => {
+          const items4 = result.rows._array;
+          setItems(items4);
+          console.log('\n');
+          console.log(`[contentsSelect(flg確認用)]:${items4.length}件`);
+          for (let i = 0; i < items4.length; i++) {
+            const { id, flg } = items4[i];
             console.log(`${id}:${flg}`);
           }
         },

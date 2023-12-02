@@ -1,13 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import { Button } from "react-native-paper";
 import { AntDesign } from '@expo/vector-icons';
+import * as SQLite from 'expo-sqlite';
 
 const Contents = () => {
-  
+
+  const [items, setItems] = useState([]);
+  const [contentsData, setContentsData] = useState(null);
+  const [contentsUserName, setContentsUserName] = useState(null);
+  useEffect(() => {
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction(tx => {
+
+      // flg=1のデータを呼び出す。
+      tx.executeSql(
+        'SELECT * FROM contentsSelect WHERE flg = 1;',
+        [],
+        (_, result) => {
+          const items = result.rows._array;
+          setItems(items);
+          if (items.length > 0) {
+            const contentsId = items[0].id;
+            tx.executeSql(
+              'SELECT id, user_id, thumbnail, title, nft, count, ranking FROM contents WHERE id = ?',
+              [contentsId],
+              (_, { rows }) => {
+                const contentsData = rows.item(0);
+                setContentsData(rows.item(0));
+
+                // userテーブルからuser_nameを取得
+                tx.executeSql(
+                  'SELECT user_name FROM user WHERE id = ?',
+                  [contentsData.user_id],
+                  (_, { rows }) => {
+                    const userName = rows.item(0).user_name;
+                    setContentsUserName(userName);
+                  },
+                  (tx, error) => {
+                    console.error(error);
+                  }
+                );
+              },
+              (tx, error) => {
+                console.error(error);
+              }
+            );
+          }
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+    });
+  }, []);
+
+  if (!contentsData) {
+    return null;
+  }
+
   return(
     <LinearGradient
     colors={['#444444', '#222222', '#000000']}
@@ -25,14 +79,14 @@ const Contents = () => {
               <AntDesign name="caretright" size={28} color="#FFFFFF" />
             </View>
           </View>
-          <Text style={[styles.contentsTitle]}>"音と熱の世界"</Text>
+          <Text style={[styles.contentsTitle]}>"{contentsData.title}"</Text>
           <View style={[styles.contentsUserContainer]}>
             <View style={[styles.contentsUser]}>
               <Image
                 source={require('../image/profile/profileImage_1.webp')}
                 style={[styles.contentsUserImage]}
               />
-              <Text style={[styles.contentsUserName]}>@KanatoEndo</Text>
+              <Text style={[styles.contentsUserName]}>@{contentsUserName}</Text>
             </View>
             <Button
               mode="text"

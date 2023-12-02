@@ -34,6 +34,34 @@ const Sqlite = () => {
           console.log('Create success!');
         },
         (_, error) => {
+          console.log('Error...');
+        }
+      );
+      */
+
+      // contentsテーブル作成
+      /*
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS contents (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, thumbnail TEXT, title TEXT, nft INTEGER, count INTEGER, ranking INTEGER);',
+        [],
+        (_, result) => {
+          console.log('Create success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      */
+
+      // contentsSelectテーブル(選択したコンテンツにflg=1を付け詳細表示)
+      /*
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS contentsSelect (id INTEGER PRIMARY KEY AUTOINCREMENT, flg INTEGER);',
+        [],
+        (_, result) => {
+          console.log('Create success!');
+        },
+        (_, error) => {
           console.log('Error!');
         }
       );
