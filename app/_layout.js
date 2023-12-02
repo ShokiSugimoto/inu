@@ -1,10 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Stack, Link } from "expo-router";
 import { StyleSheet, View, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
+import * as SQLite from 'expo-sqlite';
 
 export default function Layout() {
+
+  const [items, setItems] = useState([]);
+  const [userData, setUserData] = useState(null);
+  useEffect(() => {
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction(tx => {
+
+      // flg=1のデータを呼び出す。
+      tx.executeSql(
+        'SELECT * FROM login WHERE flg = 1;',
+        [],
+        (_, result) => {
+          const items = result.rows._array;
+          setItems(items);
+          if (items.length > 0) {
+            const loginId = items[0].id;
+            tx.executeSql(
+              'SELECT id, user_name, name, image, pass FROM user WHERE id = ?',
+              [loginId],
+              (_, { rows }) => {
+                setUserData(rows.item(0));
+              },
+              (tx, error) => {
+                console.error(error);
+              }
+            );
+          }
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+    });
+  }, []); 
+
+  if (!userData) {
+    return null;
+  }
 
   const fadeIn = ({ current }) => ({
     cardStyle: {
@@ -63,7 +102,7 @@ export default function Layout() {
           headerShown: true,
           headerTitle: () => false,
           headerLeft: () => (
-            <Text style={{fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', marginLeft: 15}}>@KanatoEndo</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', marginLeft: 15}}>@{userData.user_name}</Text>
           ),
           headerRight: () => (
             <View style={[styles.headerRight]}>

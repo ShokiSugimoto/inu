@@ -8,13 +8,27 @@ import { Button } from "react-native-paper";
 const Sqlite = () => {
 
   const db = SQLite.openDatabase('inu.db');
-
   const handlePress = () => {
-
     db.transaction((tx) => {
+
+      // userテーブル作成
+      /*
       tx.executeSql(
-        // 'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, name TEXT, image TEXT, pass TEXT);',
-        // 'CREATE TABLE IF NOT EXISTS login (id INTEGER PRIMARY KEY AUTOINCREMENT, flg INTEGER);',
+        'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, name TEXT, image TEXT, pass TEXT);',
+        [],
+        (_, result) => {
+          console.log('Create success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      */
+
+      // loginテーブル(session等ではなく、flgが1か0かでログイン、ログアウト状態の判定)作成
+      /*
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS login (id INTEGER PRIMARY KEY AUTOINCREMENT, flg INTEGER);',
         [],
         (_, result) => {
           console.log('Create success!');
@@ -23,6 +37,7 @@ const Sqlite = () => {
           console.log('Error!');
         }
       );
+      */
     });
   };
 

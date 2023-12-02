@@ -7,46 +7,75 @@ import * as SQLite from 'expo-sqlite';
 
 const Profile = () => {
 
-  const [items, setItems] = useState([]); // 初期値は空の配列や適切な初期値に設定する
+  const [items, setItems] = useState([]);
   const [userData, setUserData] = useState(null);
-
   useEffect(() => {
-    // SQLiteデータベースに接続
     const db = SQLite.openDatabase('inu.db');
-
-    // クエリ実行
     db.transaction(tx => {
+
+      // flg=1のデータを呼び出す。
       tx.executeSql(
         'SELECT * FROM login WHERE flg = 1;',
         [],
         (_, result) => {
-          console.log('Select successful!');
           const items = result.rows._array;
           setItems(items);
-          for (let i = 0; i < items.length; i++) {
-            const { loginId } = items[i];
+          if (items.length > 0) {
+            const loginId = items[0].id;
+            tx.executeSql(
+              'SELECT id, user_name, name, image, pass FROM user WHERE id = ?',
+              [loginId],
+              (_, { rows }) => {
+                setUserData(rows.item(0));
+              },
+              (tx, error) => {
+                console.error(error);
+              }
+            );
           }
         },
         (_, error) => {
-          console.log('Error during select:', error);
-        }
-      );
-      tx.executeSql(
-        'SELECT id, user_name, name, image, pass FROM user WHERE id = ?',
-        [loginId],
-        (_, { rows }) => {
-          // 取得したユーザーデータをstateに設定
-          setUserData(rows.item(0));
-        },
-        (tx, error) => {
-          console.error(error);
+          console.log('Error...');
         }
       );
     });
-  }, []); // 最初のレンダリング時のみ実行
+  }, []); 
 
   if (!userData) {
-    return null; // またはローディングスピナーを表示するなど
+    return null;
+  }
+
+  let profileImageSource = '';
+  // loginIdに基づいてプロファイル画像のソースを選択
+  switch (userData.id) {
+    case 1:
+      profileImageSource = require('../../image/profile/profileImage_1.webp');
+      break;
+    case 2:
+      profileImageSource = require('../../image/profile/profileImage_2.webp');
+      break;
+    case 3:
+      profileImageSource = require('../../image/profile/profileImage_3.webp');
+      break;
+    case 4:
+      profileImageSource = require('../../image/profile/profileImage_4.webp');
+      break;
+    case 5:
+      profileImageSource = require('../../image/profile/profileImage_5.webp');
+      break;
+    case 6:
+      profileImageSource = require('../../image/profile/profileImage_6.webp');
+      break;
+    case 7:
+      profileImageSource = require('../../image/profile/profileImage_7.webp');
+      break;
+    case 8:
+      profileImageSource = require('../../image/profile/profileImage_8.webp');
+      break;
+    // 他のケースも同様に追加
+    default:
+      // デフォルトの画像ソースを設定
+      profileImageSource = require('../../image/profile/profileImage_1.webp');
   }
 
   return (
@@ -57,11 +86,11 @@ const Profile = () => {
       <ScrollView>
         <View style={[styles.profileImageContainer]}>
           <Image
-            source={require('../../img/profile/profileImage_1.webp')}
+            source={profileImageSource}
             style={[styles.profileImage]}
           />
           <Image
-            source={require('../../img/profile/profileImageBackground.webp')}
+            source={require('../../image/profile/profileImageBackground.webp')}
             style={[styles.profileImageBackground]}
           />
         </View>
@@ -74,73 +103,73 @@ const Profile = () => {
           <View style={[styles.myListContents]}>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.myListContentsContents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.myListContentsContentsImage]}
               />
             </Link>

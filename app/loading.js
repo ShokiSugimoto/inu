@@ -11,7 +11,6 @@ const Loading = () => {
   const imageAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-
     const firstAnimation_1 = Animated.timing(svgAnim_1_1, {
       toValue: 1,
       duration: 1000,
@@ -81,7 +80,7 @@ const Loading = () => {
         </Svg>
       </Animated.View>
       <Animated.Image
-        source={require('../img/loading/logoBackground.webp')}
+        source={require('../image/loading/logoBackground.webp')}
         style={[styles.logoBackround, imageStyle]}
       />
     </View>

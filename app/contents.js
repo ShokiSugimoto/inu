@@ -17,7 +17,7 @@ const Contents = () => {
         <View style={[styles.contents]}>
           <View style={[styles.contentsImage]}>
             <Image
-              source={require('../img/home/contentsDemo.webp')}
+              source={require('../image/home/contentsDemo.webp')}
               style={[styles.contentsImageContents]}
             />
             <View style={[styles.contentsImageBright]}></View>
@@ -29,7 +29,7 @@ const Contents = () => {
           <View style={[styles.contentsUserContainer]}>
             <View style={[styles.contentsUser]}>
               <Image
-                source={require('../img/profile/profileImageDemo.webp')}
+                source={require('../image/profile/profileImage_1.webp')}
                 style={[styles.contentsUserImage]}
               />
               <Text style={[styles.contentsUserName]}>@KanatoEndo</Text>
@@ -61,73 +61,73 @@ const Contents = () => {
           <View style={[styles.usersListContents]}>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image
-                source={require('../img/home/contentsDemo.webp')}
+                source={require('../image/home/contentsDemo.webp')}
                 style={[styles.usersListContentsContentsImage]}
               />
             </Link>

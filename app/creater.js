@@ -32,7 +32,7 @@ const Creater = () => {
           <Text style={[styles.nftContentsText]}>評価が高い順</Text>
           <View style={[styles.nftContentsContents, styles.nftContentsContents_1]}>
             <Image
-              source={require('../img/home/contentsDemo.webp')}
+              source={require('../image/home/contentsDemo.webp')}
               style={[styles.nftContentsContentsImage]}
             />
             <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>
@@ -44,7 +44,7 @@ const Creater = () => {
           </View>
           <View style={[styles.nftContentsContents]}>
             <Image
-              source={require('../img/home/contentsDemo.webp')}
+              source={require('../image/home/contentsDemo.webp')}
               style={[styles.nftContentsContentsImage]}
             />
             <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>
@@ -56,7 +56,7 @@ const Creater = () => {
           </View>
           <View style={[styles.nftContentsContents]}>
             <Image
-              source={require('../img/home/contentsDemo.webp')}
+              source={require('../image/home/contentsDemo.webp')}
               style={[styles.nftContentsContentsImage]}
             />
             <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>
@@ -68,7 +68,7 @@ const Creater = () => {
           </View>
           <View style={[styles.nftContentsContents]}>
             <Image
-              source={require('../img/home/contentsDemo.webp')}
+              source={require('../image/home/contentsDemo.webp')}
               style={[styles.nftContentsContentsImage]}
             />
             <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>
@@ -80,7 +80,7 @@ const Creater = () => {
           </View>
           <View style={[styles.nftContentsContents]}>
             <Image
-              source={require('../img/home/contentsDemo.webp')}
+              source={require('../image/home/contentsDemo.webp')}
               style={[styles.nftContentsContentsImage]}
             />
             <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>

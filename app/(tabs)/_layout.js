@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs } from "expo-router";
 import { StyleSheet, View, Text } from 'react-native';
 import { Svg, G, Path } from 'react-native-svg';
@@ -7,8 +7,47 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Link } from "expo-router";
 import { Octicons } from '@expo/vector-icons';
+import * as SQLite from 'expo-sqlite';
 
 export default function TabsLayout () {
+
+  const [items, setItems] = useState([]);
+  const [userData, setUserData] = useState(null);
+  useEffect(() => {
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction(tx => {
+
+      // flg=1のデータを呼び出す。
+      tx.executeSql(
+        'SELECT * FROM login WHERE flg = 1;',
+        [],
+        (_, result) => {
+          const items = result.rows._array;
+          setItems(items);
+          if (items.length > 0) {
+            const loginId = items[0].id;
+            tx.executeSql(
+              'SELECT id, user_name, name, image, pass FROM user WHERE id = ?',
+              [loginId],
+              (_, { rows }) => {
+                setUserData(rows.item(0));
+              },
+              (tx, error) => {
+                console.error(error);
+              }
+            );
+          }
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+    });
+  }, []); 
+
+  if (!userData) {
+    return null;
+  }
 
   return(
     <Tabs
@@ -52,7 +91,7 @@ export default function TabsLayout () {
           headerShown: true,
           headerTitle: () => false,
           headerLeft: () => (
-            <Text style={{fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', marginLeft: 25}}>@KanatoEndo</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', marginLeft: 25}}>@{userData.user_name}</Text>
           ),
           headerRight: () => (
             <View>

@@ -3,8 +3,8 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const HomeLoading = () => {
-  const navigation = useNavigation();
 
+  const navigation = useNavigation();
   useEffect(() => {
     const timer = setTimeout(() => {
       // 3秒後に'home'画面に遷移

@@ -28,8 +28,8 @@ const Home = () => {
         <View style={[styles.mainvisual]}>
           <Link href='/contents'>
             <Image
-              source={require('../../img/home/mainvisualDemo.webp')}
-              style={[styles.mainvisualImg]}
+              source={require('../../image/home/mainvisualDemo.webp')}
+              style={[styles.mainvisualImage]}
             />
           </Link>
           <Text style={[styles.mainvisualTitle]}>"音と熱の世界"</Text>
@@ -41,49 +41,49 @@ const Home = () => {
           <View style={[styles.contentsContents_1]}>
             <Link href='/contents' style={[styles.contentsContents_1Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_1ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_1Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_1ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_1Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_1ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_1Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_1ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_1Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_1ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_1Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_1ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_1Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_1ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_1Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_1ContentsImage]}
               />
             </Link>
@@ -96,25 +96,25 @@ const Home = () => {
           >
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
@@ -127,25 +127,25 @@ const Home = () => {
           >
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
@@ -158,25 +158,25 @@ const Home = () => {
           >
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../img/home/contentsDemo.webp')}
+                source={require('../../image/home/contentsDemo.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center'
   },
-  mainvisualImg: {
+  mainvisualImage: {
     width: 300,
     height: 400,
     borderRadius: 15

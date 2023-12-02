@@ -8,7 +8,6 @@ const Relaxation = () => {
 
   const [selectedTags, setSelectedTags] = useState([]);
   const [count, setCount] = useState(0);
-
   const handleTagPress = (tagNumber) => {
     if (selectedTags.includes(tagNumber)) {
       setSelectedTags(selectedTags.filter(tag => tag !== tagNumber));
@@ -31,9 +30,7 @@ const Relaxation = () => {
   const anim_8 = useRef(new Animated.Value(0)).current;
   const anim_9 = useRef(new Animated.Value(0)).current;
   const anim_10 = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
-
     Animated.timing(anim_1, {
       toValue: 1,
       duration: 500,
@@ -125,7 +122,6 @@ const Relaxation = () => {
   const anim_10Style = {
     opacity: anim_10
   };
-
   useEffect(() => {
     setCount(selectedTags.length);
   }, [selectedTags]);
@@ -215,7 +211,6 @@ const Relaxation = () => {
 }
 
 const styles = StyleSheet.create({
-
   container: {
     width: '100%',
     height: '100%',

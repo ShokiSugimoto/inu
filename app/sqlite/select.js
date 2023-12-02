@@ -1,4 +1,4 @@
-// テーブル削除用
+// テーブルデータ確認用
 
 import React, { useState } from "react";
 import * as SQLite from 'expo-sqlite';
@@ -6,16 +6,18 @@ import { View } from 'react-native';
 import { Button } from "react-native-paper";
 
 const Sqlite = () => {
-  const [user, setItems] = useState([]);
-  const db = SQLite.openDatabase('inu.db');
 
+  const db = SQLite.openDatabase('inu.db');
+  const [user, setItems] = useState([]);
   const handlePress = () => {
     db.transaction((tx) => {
+
+      // userテーブルデータ確認用
       tx.executeSql(
-        'DROP TABLE IF EXISTS user;',
+        'SELECT * FROM user;',
         [],
         (_, result) => {
-          console.log('Drop successful!');
+          console.log('Select success!');
           const items = result.rows._array;
           setItems(items);
           console.log(`件数:${items.length}件`);
@@ -25,7 +27,26 @@ const Sqlite = () => {
           }
         },
         (_, error) => {
-          console.log('Error during select:', error);
+          console.log('Error...');
+        }
+      );
+
+      // loginテーブルデータ確認用
+      tx.executeSql(
+        'SELECT * FROM login;',
+        [],
+        (_, result) => {
+          console.log('Select success!');
+          const items2 = result.rows._array;
+          setItems(items2);
+          console.log(`件数:${items2.length}件`);
+          for (let i = 0; i < items2.length; i++) {
+            const { id, flg } = items2[i];
+            console.log(`${id}:${flg}`);
+          }
+        },
+        (_, error) => {
+          console.log('Error...');
         }
       );
     });

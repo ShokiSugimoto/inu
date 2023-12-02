@@ -26,13 +26,13 @@ const Select = () => {
     <View style={styles.container}>
       <Link href='/relaxation' onPress={() => handleLinkPress('relaxation')}>
         <Image
-          source={require('../img/select/relaxationIcon.webp')}
+          source={require('../image/select/relaxationIcon.webp')}
           style={[styles.relaxationIcon, borderStyle.relaxation]}
         />
       </Link>
       <Link href='/relaxation' onPress={() => handleLinkPress('exciting')}>
         <Image
-          source={require('../img/select/excitingIcon.webp')}
+          source={require('../image/select/excitingIcon.webp')}
           style={[styles.excitingIcon, borderStyle.exciting]}
         />
       </Link>
