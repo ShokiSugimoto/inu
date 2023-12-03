@@ -10,7 +10,7 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       
-      navigation.navigate('select'); // select画面へ遷移(通常)
+      navigation.navigate('(tabs)'); // select画面へ遷移(通常)
 
       // sqliteファイル呼び出し用
       // navigation.navigate('sqlite/create'); // テーブル作成用ファイルへ遷移

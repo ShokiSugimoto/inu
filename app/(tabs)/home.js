@@ -8,6 +8,7 @@ import * as SQLite from 'expo-sqlite';
 const Home = () => {
 
   const [contentsData, setContentsData] = useState(null);
+  const [contents_2Data, setContents_2Data] = useState(null);
   const [userData, setUserData] = useState(null);
   const anim = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -17,35 +18,31 @@ const Home = () => {
       db.transaction(tx => {
 
         tx.executeSql(
-          'SELECT contents.id, contents.user_id, contents.thumbnail, contents.title, contents.nft, contents.count, contents.ranking, user.user_name ' +
-          'FROM contents ' +
-          'JOIN user ON contents.user_id = user.id ' +
-          'WHERE contents.user_id = 1;',
+
+          // ランダムな1つのコンテンツを取得するSQLクエリ
+          'SELECT * FROM contents ORDER BY RANDOM() LIMIT 1;',
           [],
           (_, result) => {
             const itemsData = result.rows._array;
-            // contentsDataに最初のデータのtitleをセット
             if (itemsData.length > 0) {
               setContentsData({ title: itemsData[0].title });
-            }
-          },
-          (_, error) => {
-            console.log('Error...');
-          }
-        );
-      });
+              setContents_2Data({ id: itemsData[0].id });
+              console.log(itemsData);
 
-      // ユーザーデータを取得
-      db.transaction(tx => {
-
-        tx.executeSql(
-          'SELECT * FROM user;',
-          [],
-          (_, result) => {
-            const userData = result.rows._array;
-            // userDataに最初のデータをセット
-            if (userData.length > 0) {
-              setUserData({ user_name: userData[0].user_name });
+              tx.executeSql(
+                'SELECT * FROM user WHERE id = ?;',
+                [itemsData[0].user_id],
+                (_, result) => {
+                  const userData = result.rows._array;
+                  if (userData.length > 0) {
+                    setUserData({ user_name: userData[0].user_name });
+                    console.log(userData);
+                  }
+                },
+                (_, error) => {
+                  console.log('Error...', error);
+                }
+              );
             }
           },
           (_, error) => {
@@ -103,6 +100,27 @@ const Home = () => {
     return null;
   }
 
+  let mainvisualImageSource = '';
+  // loginIdに基づいてプロファイル画像のソースを選択
+  switch (contents_2Data.id) {
+    case 1:
+      mainvisualImageSource = require('../../image/contents/thumbnail_1.webp');
+      break;
+    case 2:
+      mainvisualImageSource = require('../../image/contents/thumbnail_2.webp');
+      break;
+    case 3:
+      mainvisualImageSource = require('../../image/contents/thumbnail_3.webp');
+      break;
+    case 4:
+      mainvisualImageSource = require('../../image/contents/thumbnail_4.webp');
+      break;
+    // 他のケースも同様に追加
+    default:
+      // デフォルトの画像ソースを設定
+      mainvisualImageSource = require('../../image/contents/thumbnail_1.webp');
+  }
+
   return (
     <LinearGradient
       colors={['#444444', '#222222', '#000000']}
@@ -115,7 +133,7 @@ const Home = () => {
             onPress={() => handlePress()}
           >
             <Image
-              source={require('../../image/home/mainvisualDemo.webp')}
+              source={mainvisualImageSource}
               style={[styles.mainvisualImage]}
             />
           </Link>
