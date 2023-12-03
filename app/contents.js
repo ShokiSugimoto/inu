@@ -62,6 +62,36 @@ const Contents = () => {
     return null;
   }
 
+  let contentsImageSource = '';
+  // loginIdに基づいてプロファイル画像のソースを選択
+  switch (contentsData.id) {
+    case 1:
+      contentsImageSource = require('../image/contents/thumbnail_1.webp');
+      profileImageSource = require('../image/profile/profileImage_1.webp');
+      break;
+    case 2:
+      contentsImageSource = require('../image/contents/thumbnail_2.webp');
+      profileImageSource = require('../image/profile/profileImage_2.webp');
+      break;
+    case 3:
+      contentsImageSource = require('../image/contents/thumbnail_3.webp');
+      profileImageSource = require('../image/profile/profileImage_3.webp');
+      break;
+    case 4:
+      contentsImageSource = require('../image/contents/thumbnail_4.webp');
+      profileImageSource = require('../image/profile/profileImage_4.webp');
+      break;
+    // 他のケースも同様に追加
+    default:
+      // デフォルトの画像ソースを設定
+      contentsImageSource = require('../image/contents/thumbnail_1.webp');
+      profileImageSource = require('../image/profile/profileImage_1.webp');
+  }
+
+  const handlePress = () => {
+    
+  }
+
   return(
     <LinearGradient
     colors={['#444444', '#222222', '#000000']}
@@ -71,7 +101,7 @@ const Contents = () => {
         <View style={[styles.contents]}>
           <View style={[styles.contentsImage]}>
             <Image
-              source={require('../image/home/contentsDemo.webp')}
+              source={contentsImageSource}
               style={[styles.contentsImageContents]}
             />
             <View style={[styles.contentsImageBright]}></View>
@@ -83,7 +113,7 @@ const Contents = () => {
           <View style={[styles.contentsUserContainer]}>
             <View style={[styles.contentsUser]}>
               <Image
-                source={require('../image/profile/profileImage_1.webp')}
+                source={profileImageSource}
                 style={[styles.contentsUserImage]}
               />
               <Text style={[styles.contentsUserName]}>@{contentsUserName}</Text>
@@ -95,6 +125,7 @@ const Contents = () => {
               contentStyle={{paddingLeft: 10, paddingRight: 10}}
               labelStyle={{fontSize: 14, fontWeight: '400', lineHeight: 14}}
               style={[styles.contentsFollowButton]}
+              onPress={() => handlePress()}
             >
               フォロー
             </Button>
@@ -111,7 +142,7 @@ const Contents = () => {
           </Button>
         </View>
         <View style={[styles.usersList]}>
-          <Text style={[styles.usersListText]}>"@KanatoEndo"さんの他の投稿</Text>
+          <Text style={[styles.usersListText]}>"@{contentsUserName}"さんの他の投稿</Text>
           <View style={[styles.usersListContents]}>
             <Link href='/usersContents' style={[styles.usersListContentsContents]}>
               <Image

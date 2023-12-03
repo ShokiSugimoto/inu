@@ -53,10 +53,24 @@ const Sqlite = () => {
       );
       */
 
-      // contentsSelectテーブル(選択したコンテンツにflg=1を付け詳細表示)
+      // contentsSelectテーブル(選択したコンテンツにflg=1を付け詳細表示)作成
       /*
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS contentsSelect (id INTEGER PRIMARY KEY AUTOINCREMENT, flg INTEGER);',
+        [],
+        (_, result) => {
+          console.log('Create success!');
+        },
+        (_, error) => {
+          console.log('Error!');
+        }
+      );
+      */
+
+      // followテーブル作成
+      /*
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS follow (id INTEGER PRIMARY KEY AUTOINCREMENT, login_id INTEGER, contents_id INTEGER);',
         [],
         (_, result) => {
           console.log('Create success!');
