@@ -188,7 +188,7 @@ const Login = () => {
             const user = rows.item(0); // 获取第一个匹配的用户
             storeUserInfo(user); // 将用户信息存储到 AsyncStorage
             // 登录成功，导航到目标屏幕
-            navigation.navigate("select", { userInfo }); // 将 "TargetScreen" 替换为您的目标屏幕名称
+            navigation.navigate("index", { userInfo }); // 将 "TargetScreen" 替换为您的目标屏幕名称
           } else {
             // 登录失败
             setEmailError("Invalid email or password");
