@@ -1,5 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigator from './AppNavigator';
 
 export default function App() {
   return (
@@ -10,6 +13,14 @@ export default function App() {
   );
 }
 
+const App = () => {
+  return (
+    <NavigationContainer>
+      <AppNavigator />
+    </NavigationContainer>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -18,3 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+//app/index.js -> / resembles the main page
+//app/home.js -> / home resembles the home page
+//app/profile.js -> / profile resembles the home page
