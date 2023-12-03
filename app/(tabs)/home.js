@@ -6,16 +6,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as SQLite from 'expo-sqlite';
 
 const Home = () => {
+
   const [contentsData, setContentsData] = useState(null);
   const [userData, setUserData] = useState(null);
   const anim = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
     const fetchData = async () => {
       const db = SQLite.openDatabase('inu.db');
-
       // コンテンツデータを取得
       db.transaction(tx => {
+
         tx.executeSql(
           'SELECT contents.id, contents.user_id, contents.thumbnail, contents.title, contents.nft, contents.count, contents.ranking, user.user_name ' +
           'FROM contents ' +
@@ -24,14 +24,6 @@ const Home = () => {
           [],
           (_, result) => {
             const itemsData = result.rows._array;
-
-            // データのログ出力
-            console.log(`件数: ${itemsData.length} 件`);
-            for (let i = 0; i < itemsData.length; i++) {
-              const { id, user_id, thumbnail, title, nft, count, ranking, user_name } = itemsData[i];
-              console.log(`${id}:${user_id}:${thumbnail}:${title}:${nft}:${count}:${ranking}:${user_name}`);
-            }
-
             // contentsDataに最初のデータのtitleをセット
             if (itemsData.length > 0) {
               setContentsData({ title: itemsData[0].title });
@@ -45,19 +37,12 @@ const Home = () => {
 
       // ユーザーデータを取得
       db.transaction(tx => {
+
         tx.executeSql(
           'SELECT * FROM user;',
           [],
           (_, result) => {
             const userData = result.rows._array;
-
-            // ユーザーデータのログ出力
-            console.log(`件数: ${userData.length} 件`);
-            for (let i = 0; i < userData.length; i++) {
-              const { id, user_name } = userData[i];
-              console.log(`${id}:${user_name}`);
-            }
-
             // userDataに最初のデータをセット
             if (userData.length > 0) {
               setUserData({ user_name: userData[0].user_name });
@@ -89,12 +74,12 @@ const Home = () => {
   const handlePress = () => {
     const db = SQLite.openDatabase('inu.db');
     db.transaction((tx) => {
+
       // contentsSelectテーブルを更新
       tx.executeSql(
         'UPDATE contentsSelect SET flg = 0 WHERE flg = 1;',
         [],
         (_, updateResult) => {
-          console.log('Update success!');
         },
         (_, updateError) => {
           console.log('Error...');
@@ -106,7 +91,6 @@ const Home = () => {
         'UPDATE contentsSelect SET flg = 1 WHERE id = (SELECT id FROM contents WHERE title = ?);',
         [contentsData.title],
         (_, updateResult) => {
-          console.log('Update success!');
         },
         (_, updateError) => {
           console.log('Error...');

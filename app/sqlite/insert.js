@@ -180,11 +180,41 @@ const Sqlite = () => {
       );
       */
 
-      /*
       // contentsテーブルに挿入
+      /*
       tx.executeSql(
         'INSERT INTO contents (user_id, thumbnail, title, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?);',
-        [1, 'thumbnail_1', '音と熱の世界', 1980, 75, 5],
+        [1, 'thumbnail_1', '音と熱の世界', 375, 10, 8],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO contents (user_id, thumbnail, title, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?);',
+        [2, 'thumbnail_2', '色と光の詩', 750, 20, 7],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO contents (user_id, thumbnail, title, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?);',
+        [3, 'thumbnail_3', '私たちは鳥だ。', 1125, 30, 6],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+      tx.executeSql(
+        'INSERT INTO contents (user_id, thumbnail, title, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?);',
+        [4, 'thumbnail_4', 'なんだって叶うと錯覚するほどの。', 1500, 40, 5],
         (_, result) => {
           console.log('Insert success!');
         },
@@ -198,7 +228,7 @@ const Sqlite = () => {
       /*
       tx.executeSql(
         'INSERT INTO contentsSelect(flg) VALUES(?);',
-        [1],
+        [0],
         (_, result) => {
           console.log('Insert success!');
         },
