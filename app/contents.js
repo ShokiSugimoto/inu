@@ -8,31 +8,54 @@ import { AntDesign } from '@expo/vector-icons';
 import * as SQLite from 'expo-sqlite';
 
 const Contents = () => {
-
   const [items, setItems] = useState([]);
   const [contentsData, setContentsData] = useState(null);
   const [contentsUserName, setContentsUserName] = useState(null);
+  const [contentsId, setContentsId] = useState(null);
+  const [loginId, setLoginId] = useState(null);
+  // フォロー状態を管理する state
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [buttonStyle, setButtonStyle] = useState({
+    mode: "text",
+    textColor: '#FFFFFF',
+    buttonColor: "transparent",
+    contentStyle: { paddingLeft: 10, paddingRight: 10 },
+    labelStyle: { fontSize: 14, fontWeight: '400', lineHeight: 14 },
+  });
+
   useEffect(() => {
     const db = SQLite.openDatabase('inu.db');
     db.transaction(tx => {
-
-      // flg=1のデータを呼び出す。
       tx.executeSql(
-        'SELECT * FROM contentsSelect WHERE flg = 1;',
+        'SELECT id FROM login WHERE flg = 1;',
+        [],
+        (_, result) => {
+          const loginId = result.rows._array;
+          const loginId_2 = loginId[0].id;
+          setLoginId(loginId_2);
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+
+      tx.executeSql(
+        'SELECT id FROM contentsSelect WHERE flg = 1;',
         [],
         (_, result) => {
           const items = result.rows._array;
           setItems(items);
           if (items.length > 0) {
             const contentsId = items[0].id;
+            setContentsId(contentsId);
+
             tx.executeSql(
-              'SELECT id, user_id, thumbnail, title, nft, count, ranking FROM contents WHERE id = ?',
+              'SELECT id, user_id, thumbnail, title FROM contents WHERE id = ?',
               [contentsId],
               (_, { rows }) => {
                 const contentsData = rows.item(0);
                 setContentsData(rows.item(0));
 
-                // userテーブルからuser_nameを取得
                 tx.executeSql(
                   'SELECT user_name FROM user WHERE id = ?',
                   [contentsData.user_id],
@@ -42,6 +65,19 @@ const Contents = () => {
                   },
                   (tx, error) => {
                     console.error(error);
+                  }
+                );
+
+                // フォロー状態を確認して setIsFollowing を更新
+                tx.executeSql(
+                  'SELECT * FROM follow WHERE login_id = ? AND contents_id = ?;',
+                  [loginId, contentsId],
+                  (_, followResult) => {
+                    const isFollowing = followResult.rows.length > 0;
+                    setIsFollowing(isFollowing);
+                  },
+                  (_, error) => {
+                    console.log('Error...', error);
                   }
                 );
               },
@@ -56,7 +92,28 @@ const Contents = () => {
         }
       );
     });
-  }, []);
+  }, [loginId]); // loginId が変更されたときに再実行
+
+  useEffect(() => {
+    // フォロー状態に応じてボタンのスタイルを変更
+    if (isFollowing) {
+      setButtonStyle({
+        mode: "text",
+        textColor: '#000000',
+        buttonColor: "#FFFFFF",
+        contentStyle: { width: 90 },
+        labelStyle: { fontSize: 14, fontWeight: 'bold', lineHeight: 14 },
+      });
+    } else {
+      setButtonStyle({
+        mode: "text",
+        textColor: '#FFFFFF',
+        buttonColor: "transparent",
+        contentStyle: { width: 90 },
+        labelStyle: { fontSize: 14, fontWeight: '400', lineHeight: 14 },
+      });
+    }
+  }, [isFollowing]); // isFollowing が変更されたときに再実行
 
   if (!contentsData) {
     return null;
@@ -89,13 +146,49 @@ const Contents = () => {
   }
 
   const handlePress = () => {
-    
-  }
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM follow WHERE login_id = ? AND contents_id = ?;',
+        [loginId, contentsId],
+        (_, result) => {
+          if (result.rows.length > 0) {
+            tx.executeSql(
+              'DELETE FROM follow WHERE login_id = ? AND contents_id = ?;',
+              [loginId, contentsId],
+              (_, deleteResult) => {
+                console.log('Delete success!');
+                setIsFollowing(false); // フォロー解除時に状態更新
+              },
+              (_, deleteError) => {
+                console.log('Delete error: ', deleteError);
+              }
+            );
+          } else {
+            tx.executeSql(
+              'INSERT INTO follow(login_id, contents_id) VALUES(?, ?);',
+              [loginId, contentsId],
+              (_, insertResult) => {
+                console.log('Insert success!');
+                setIsFollowing(true); // フォロー時に状態更新
+              },
+              (_, insertError) => {
+                console.log('Insert error: ', insertError);
+              }
+            );
+          }
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+    });
+  };
 
-  return(
+  return (
     <LinearGradient
-    colors={['#444444', '#222222', '#000000']}
-    style={styles.container}
+      colors={['#444444', '#222222', '#000000']}
+      style={styles.container}
     >
       <ScrollView>
         <View style={[styles.contents]}>
@@ -119,23 +212,23 @@ const Contents = () => {
               <Text style={[styles.contentsUserName]}>@{contentsUserName}</Text>
             </View>
             <Button
-              mode="text"
-              textColor={'#FFFFFF'}
-              buttonColor="transparent"
-              contentStyle={{paddingLeft: 10, paddingRight: 10}}
-              labelStyle={{fontSize: 14, fontWeight: '400', lineHeight: 14}}
-              style={[styles.contentsFollowButton]}
-              onPress={() => handlePress()}
+              mode={buttonStyle.mode}
+              textColor={buttonStyle.textColor}
+              buttonColor={buttonStyle.buttonColor}
+              contentStyle={buttonStyle.contentStyle}
+              labelStyle={buttonStyle.labelStyle}
+              style={styles.contentsFollowButton}
+              onPress={handlePress}
             >
-              フォロー
+              {isFollowing ? "フォロー中" : "フォロー"}
             </Button>
           </View>
           <Button
             mode="text"
             textColor={'#FFFFFF'}
             buttonColor="transparent"
-            contentStyle={{width: 300, paddingLeft: 10, paddingRight: 10}}
-            labelStyle={{fontSize: 14, fontWeight: '400', lineHeight: 14}}
+            contentStyle={{ width: 300 }}
+            labelStyle={{ fontSize: 14, fontWeight: '400', lineHeight: 14 }}
             style={[styles.contentsMylistButton]}
           >
             この体験をマイリストに追加する
