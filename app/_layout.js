@@ -21,6 +21,10 @@ export default function Layout() {
     >
       <Stack.Screen name='index' options={{headerShown: false}} />
       <Stack.Screen name='loading' options={{headerShown: false}} />
+      <Stack.Screen name='loading_2' options={{headerShown: false}} />
+       <Stack.Screen name='login_toroku' options={{headerShown: false}} />
+       <Stack.Screen name='login' options={{headerShown: false}} />
+       <Stack.Screen name='toroku' options={{headerShown: false}} />
       <Stack.Screen
         name='select'
         options={{
