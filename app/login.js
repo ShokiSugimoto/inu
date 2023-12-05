@@ -210,7 +210,7 @@ const Login = () => {
             });
           } else {
             // 登录失败
-            setEmailError("メールアドレスもしくにに誤りがあります。");
+            setEmailError("メールアドレスもしくはパスワードエラー");
           }
         },
         (_, error) => {
