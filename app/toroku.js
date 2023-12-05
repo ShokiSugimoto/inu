@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Dimensions } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SQLite from 'expo-sqlite';
 import { Link } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
+
 
 // SQLiteデータベースの作成
 const db = SQLite.openDatabase("inu.db");
@@ -41,12 +43,13 @@ const Login = ({}) => {
   const [passwordError, setPasswordError] = useState("");
   const navigation = useNavigation();
 
+
   const handleGenderSelection = (selectedGender) => {
     setGender(selectedGender);
     setGenderError(""); // ユーザーが選択した場合、エラーをクリアする
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Reset error messages
     setFirstNameError("");
     setLastNameError("");
@@ -84,22 +87,45 @@ const Login = ({}) => {
     if (!firstName || !lastName || !furigana || !gender || !email || !password) {
       return;
     }
+    try {
 
-    db.transaction((tx) => {
-      tx.executeSql(
-        `INSERT INTO user (firstName, lastName, furigana, gender, email, password) 
-        VALUES (?, ?, ?, ?, ?, ?);`,
-        [firstName, lastName, furigana, gender, email, password],
-        (_, { rows }) => {
-          console.log("ユーザーが正常に挿入されました:", rows);
-          // 必要に応じて追加のロジックやナビゲーションをここに追加
-          navigation.navigate("index");
-        },
-        (_, error) => {
-          console.error("ユーザーの挿入中にエラーが発生しました:", error);
-        }
-      );
-    });
+      db.transaction((tx) => {
+        tx.executeSql(
+          `INSERT INTO user (firstName, lastName, furigana, gender, email, password) 
+          VALUES (?, ?, ?, ?, ?, ?);`,
+          [firstName, lastName, furigana, gender, email, password],
+          (_, { rows }) => {
+            console.log("ユーザーが正常に挿入されました:", rows);
+            // 必要に応じて追加のロジックやナビゲーションをここに追加
+          },
+          (_, error) => {
+            console.error("ユーザーの挿入中にエラーが発生しました:", error);
+          }
+        );
+      });
+
+      const user = {
+        firstName,
+        lastName,
+        furigana,
+        gender,
+        email,
+      };
+  
+      // 保存用户信息到AsyncStorage
+      await AsyncStorage.setItem('userInfo', JSON.stringify(user));
+  
+      // 将用户导航到下一个屏幕
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'loading_2' }],
+      });
+    }catch (error) {
+      console.error("登录时出错:", error);
+    }
+    
+
+  
 
     // Handle login logic here
     console.log("Logging in with:", firstName, lastName, furigana, gender, email, password);
