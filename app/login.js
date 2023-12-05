@@ -188,7 +188,11 @@ const Login = () => {
             const user = rows.item(0); // 获取第一个匹配的用户
             storeUserInfo(user); // 将用户信息存储到 AsyncStorage
             // 登录成功，导航到目标屏幕
-            navigation.navigate("index", { userInfo }); // 将 "TargetScreen" 替换为您的目标屏幕名称
+            // navigation.navigate("loading_2", { userInfo }); // 将 "TargetScreen" 替换为您的目标屏幕名称
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'loading_2', params: { userInfo } }],
+            });
           } else {
             // 登录失败
             setEmailError("Invalid email or password");
@@ -250,7 +254,7 @@ const Login = () => {
 
       {/* 登录按钮 */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>登录</Text>
+        <Text style={styles.buttonText}>ログイン</Text>
       </TouchableOpacity>
     </View>
   );
@@ -304,4 +308,3 @@ const styles = StyleSheet.create({
 });
 
 export default Login;
-
