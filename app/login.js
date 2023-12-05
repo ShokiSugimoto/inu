@@ -166,11 +166,26 @@ const Login = () => {
 
     // 验证
     if (!email) {
-      setEmailError("Please enter your email");
+      setEmailError("メールアドレスをご入力ください");
     }
 
     if (!password) {
-      setPasswordError("Please enter your password");
+      setPasswordError("パスワードをご入力ください");
+    }
+
+    if (email.trim() === "") {
+      setEmailError("メールアドレスをご入力ください");
+    }
+    
+    if (password.trim() === "") {
+      setPasswordError("パスワードをご入力ください");
+    }
+
+    if (
+      email.trim() === "" ||
+      password.trim() === ""
+    ) {
+      return;
     }
 
     // 如果邮箱或密码为空，则停止
@@ -195,11 +210,11 @@ const Login = () => {
             });
           } else {
             // 登录失败
-            setEmailError("Invalid email or password");
+            setEmailError("メールアドレスもしくにに誤りがあります。");
           }
         },
         (_, error) => {
-          console.error('获取数据时发生错误:', error);
+          console.error('エラー:', error);
         }
       );
     });
@@ -215,7 +230,7 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>登录页面</Text>
+      <Text style={styles.title}>ログイン画面</Text>
 
       {/* Email 输入 */}
       <View style={styles.inputContainer}>
