@@ -12,7 +12,12 @@ const LogoutButton = () => {
       await AsyncStorage.removeItem("userInfo");
 
       // 將應用程序導航至登入頁面（或其他未授權的頁面）
-      navigation.navigate("index");
+      // navigation.navigate("loading_2");
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'loading_2' }],
+      });
     } catch (error) {
       console.error("登出時發生錯誤:", error);
       // 根據需要處理錯誤
