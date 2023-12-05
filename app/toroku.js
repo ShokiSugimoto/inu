@@ -6,11 +6,8 @@ import * as SQLite from 'expo-sqlite';
 import { Link } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
 
-
 // SQLiteデータベースの作成
 const db = SQLite.openDatabase("inu.db");
-
-
 
 // ユーザーテーブルの作成
 db.transaction((tx) => {
@@ -60,27 +57,62 @@ const Login = ({}) => {
 
     // Validation
     if (!firstName) {
-      setFirstNameError("Please enter your first name");
+      setFirstNameError("姓をご入力ください");
     }
 
     if (!lastName) {
-      setLastNameError("Please enter your last name");
+      setLastNameError("お名前をご入力ください");
     }
 
     if (!furigana) {
-      setFuriganaError("Please enter your furigana");
+      setFuriganaError("フリガナをご入力ください");
     }
 
     if (!gender) {
-      setGenderError("Please select your gender");
+      setGenderError("性別をお選びください");
     }
 
     if (!email) {
-      setEmailError("Please enter your email");
+      setEmailError("メールアドレスをご入力ください");
     }
 
     if (!password) {
-      setPasswordError("Please enter your password");
+      setPasswordError("パスワードをご入力ください");
+    }
+
+    if (firstName.trim() === "") {
+      setFirstNameError("姓をご入力ください");
+    }
+    
+    if (lastName.trim() === "") {
+      setLastNameError("お名前をご入力ください");
+    }
+    
+    if (furigana.trim() === "") {
+      setFuriganaError("フリガナをご入力ください");
+    }
+    
+    if (!gender) {
+      setGenderError("性別をお選びください");
+    }
+    
+    if (email.trim() === "") {
+      setEmailError("メールアドレスをご入力ください");
+    }
+    
+    if (password.trim() === "") {
+      setPasswordError("パスワードをご入力ください");
+    }
+
+    if (
+      firstName.trim() === "" ||
+      lastName.trim() === "" ||
+      furigana.trim() === "" ||
+      !gender ||
+      email.trim() === "" ||
+      password.trim() === ""
+    ) {
+      return;
     }
 
     // If any field is empty, stop here
@@ -88,39 +120,56 @@ const Login = ({}) => {
       return;
     }
     try {
-
+      // Check if the email already exists in the database
       db.transaction((tx) => {
         tx.executeSql(
-          `INSERT INTO user (firstName, lastName, furigana, gender, email, password) 
-          VALUES (?, ?, ?, ?, ?, ?);`,
-          [firstName, lastName, furigana, gender, email, password],
+          `SELECT * FROM user WHERE email = ?;`,
+          [email],
           (_, { rows }) => {
-            console.log("ユーザーが正常に挿入されました:", rows);
-            // 必要に応じて追加のロジックやナビゲーションをここに追加
+            if (rows.length > 0) {
+              // Email already exists, set an error message
+              setEmailError("登録済みのメールアドレス");
+            } else {
+              // Email doesn't exist, proceed with the registration
+              db.transaction((tx) => {
+                tx.executeSql(
+                  `INSERT INTO user (firstName, lastName, furigana, gender, email, password) 
+                  VALUES (?, ?, ?, ?, ?, ?);`,
+                  [firstName, lastName, furigana, gender, email, password],
+                  (_, { rows }) => {
+                    console.log("ユーザーが正常に挿入されました:", rows);
+                    // 必要に応じて追加のロジックやナビゲーションをここに追加
+                  },
+                  (_, error) => {
+                    console.error("ユーザーの挿入中にエラーが発生しました:", error);
+                  }
+                );
+              });
+  
+              const user = {
+                firstName,
+                lastName,
+                furigana,
+                gender,
+                email,
+              };
+          
+              // 保存用户信息到AsyncStorage
+              AsyncStorage.setItem('userInfo', JSON.stringify(user)).then(() => {
+                // 将用户导航到下一个屏幕
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'loading_2' }],
+                });
+              });
+            }
           },
           (_, error) => {
-            console.error("ユーザーの挿入中にエラーが発生しました:", error);
+            console.error("Error checking email existence:", error);
           }
         );
       });
-
-      const user = {
-        firstName,
-        lastName,
-        furigana,
-        gender,
-        email,
-      };
-  
-      // 保存用户信息到AsyncStorage
-      await AsyncStorage.setItem('userInfo', JSON.stringify(user));
-  
-      // 将用户导航到下一个屏幕
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'loading_2' }],
-      });
-    }catch (error) {
+    } catch (error) {
       console.error("登录时出错:", error);
     }
     
