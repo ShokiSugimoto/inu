@@ -1,8 +1,30 @@
 import React, { useState } from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Dimensions } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import * as SQLite from 'expo-sqlite';
+import { Link } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 
-const Login = () => {
+// SQLiteデータベースの作成
+const db = SQLite.openDatabase("inu.db");
+
+
+
+// ユーザーテーブルの作成
+db.transaction((tx) => {
+  tx.executeSql(
+    `CREATE TABLE IF NOT EXISTS user 
+    (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+     firstName TEXT, 
+     lastName TEXT, 
+     furigana TEXT, 
+     gender TEXT, 
+     email TEXT, 
+     password TEXT);`
+  );
+});
+
+const Login = ({}) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [furigana, setFurigana] = useState("");
@@ -17,6 +39,12 @@ const Login = () => {
   const [genderError, setGenderError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const navigation = useNavigation();
+
+  const handleGenderSelection = (selectedGender) => {
+    setGender(selectedGender);
+    setGenderError(""); // ユーザーが選択した場合、エラーをクリアする
+  };
 
   const handleLogin = () => {
     // Reset error messages
@@ -57,15 +85,25 @@ const Login = () => {
       return;
     }
 
+    db.transaction((tx) => {
+      tx.executeSql(
+        `INSERT INTO user (firstName, lastName, furigana, gender, email, password) 
+        VALUES (?, ?, ?, ?, ?, ?);`,
+        [firstName, lastName, furigana, gender, email, password],
+        (_, { rows }) => {
+          console.log("ユーザーが正常に挿入されました:", rows);
+          // 必要に応じて追加のロジックやナビゲーションをここに追加
+          navigation.navigate("index");
+        },
+        (_, error) => {
+          console.error("ユーザーの挿入中にエラーが発生しました:", error);
+        }
+      );
+    });
+
     // Handle login logic here
     console.log("Logging in with:", firstName, lastName, furigana, gender, email, password);
   };
-
-  const handleGenderSelection = (selectedGender) => {
-    setGender(selectedGender);
-    setGenderError(""); // Clear gender error when a selection is made
-  };
-
 
   return (
     <View style={styles.container}>
@@ -170,9 +208,12 @@ const Login = () => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>登録</Text>
       </TouchableOpacity>
+      <Link href={"/UserDataScreen"} style={styles.nextButton}><Text>確認</Text></Link>
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -235,6 +276,9 @@ const styles = StyleSheet.create({
     textAlign: "left",
     alignSelf: "flex-start",
   },
+  nextButton:{
+    marginTop: 10,
+  }
 });
 
 export default Login;
