@@ -1,10 +1,82 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
+import * as SQLite from 'expo-sqlite';
 
 const Creater = () => {
+
+  const [loginId, setLoginId] = useState(null);
+  const [contentsData, setContentsData] = useState(null);
+  const [totalPlayCount, setTotalPlayCount] = useState(0);
+  const [totalNFTAmount, setTotalNFTAmount] = useState(null);
+  const db = SQLite.openDatabase('inu.db');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const loginResult = await new Promise((resolve, reject) => {
+          db.transaction(tx => {
+            tx.executeSql(
+              'SELECT id FROM login WHERE flg = 1;',
+              [],
+              (_, result) => resolve(result),
+              (_, error) => reject(error)
+            );
+          });
+        });
+
+        if (loginResult.rows.length > 0) {
+          const loginId = loginResult.rows._array[0].id;
+          setLoginId(loginId);
+
+          const contentsResult = await new Promise((resolve, reject) => {
+            db.transaction(tx => {
+              tx.executeSql(
+                'SELECT id, user_id, thumbnail, title, nft, count, ranking FROM contents WHERE user_id = ?',
+                [loginId],
+                (_, result) => resolve(result),
+                (_, error) => reject(error)
+              );
+            });
+          });
+
+          if (contentsResult.rows.length > 0) {
+            const contentsDataArray = contentsResult.rows._array; // 結果を配列に変換
+            setContentsData(contentsDataArray);
+            // 各コンテンツの再生回数の合計を計算
+            const totalPlayCount = contentsDataArray.reduce((total, content) => total + content.count, 0);
+            setTotalPlayCount(totalPlayCount);
+            const totalNFTAmount = contentsDataArray.reduce((total, content) => total + content.nft, 0);
+            setTotalNFTAmount(totalNFTAmount);
+          } else {
+            console.log('No matching data found for user_id:', loginId);
+          }
+        } else {
+          console.log('No matching data found for user_id:', loginId);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // 空の依存関係配列を指定して初回のみ実行
+
+  const getContentsImageSource = (contentId) => {
+    switch (contentId) {
+      case 1:
+        return require('../image/contents/thumbnail_1.webp');
+      case 2:
+        return require('../image/contents/thumbnail_2.webp');
+      case 3:
+        return require('../image/contents/thumbnail_3.webp');
+      case 4:
+        return require('../image/contents/thumbnail_4.webp');
+      default:
+        return require('../image/contents/thumbnail_1.webp');
+    }
+  };
 
   return (
     <LinearGradient
@@ -14,7 +86,7 @@ const Creater = () => {
       <ScrollView>
         <View style={[styles.nftContainer]}>
           <View style={[styles.nftBackground]}>
-            <Text style={[styles.nftBackgroundText_1]}>¥3,980</Text>
+          <Text style={[styles.nftBackgroundText_1]}>¥{totalNFTAmount}</Text>
             <Text style={[styles.nftBackgroundText_2]}>+¥480</Text>
           </View>
         </View>
@@ -24,72 +96,26 @@ const Creater = () => {
             <Text style={[styles.nftTextTextText_2]}>+25</Text>
           </View>
           <View style={[styles.nftTextText, styles.nftTextText_2]}>
-            <Text style={[styles.nftTextTextText_1]}>総再生回数　150</Text>
+            <Text style={[styles.nftTextTextText_1]}>総再生回数　{totalPlayCount}</Text>
             <Text style={[styles.nftTextTextText_2]}>+50</Text>
           </View>
         </View>
         <View style={[styles.nftContents]}>
           <Text style={[styles.nftContentsText]}>評価が高い順</Text>
-          <View style={[styles.nftContentsContents, styles.nftContentsContents_1]}>
+        {contentsData && contentsData.map(content => (
+          <View key={content.id} style={[styles.nftContentsContents, styles.nftContentsContents_1]}>
             <Image
-              source={require('../image/home/contentsDemo.webp')}
+              source={getContentsImageSource(content.id)} // 画像の取得方法を変更
               style={[styles.nftContentsContentsImage]}
             />
-            <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>
+            <Text style={[styles.nftContentsContentsTitle]}>"{content.title}"</Text>
             <View style={[styles.nftContentsContentsText]}>
-              <Text style={[styles.nftContentsContentsTextText]}>NFT額　　　　  ¥1,980</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>再生回数　　　　75回</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>ジャンル別人気　5位</Text>
+              <Text style={[styles.nftContentsContentsTextText]}>NFT額　　　　  ¥{content.nft}</Text>
+              <Text style={[styles.nftContentsContentsTextText]}>再生回数　　　　{content.count}回</Text>
+              <Text style={[styles.nftContentsContentsTextText]}>ジャンル別人気　{content.ranking}位</Text>
             </View>
           </View>
-          <View style={[styles.nftContentsContents]}>
-            <Image
-              source={require('../image/home/contentsDemo.webp')}
-              style={[styles.nftContentsContentsImage]}
-            />
-            <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>
-            <View style={[styles.nftContentsContentsText]}>
-              <Text style={[styles.nftContentsContentsTextText]}>NFT額　　　　  ¥1,980</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>再生回数　　　　75回</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>ジャンル別人気　5位</Text>
-            </View>
-          </View>
-          <View style={[styles.nftContentsContents]}>
-            <Image
-              source={require('../image/home/contentsDemo.webp')}
-              style={[styles.nftContentsContentsImage]}
-            />
-            <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>
-            <View style={[styles.nftContentsContentsText]}>
-              <Text style={[styles.nftContentsContentsTextText]}>NFT額　　　　  ¥1,980</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>再生回数　　　　75回</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>ジャンル別人気　5位</Text>
-            </View>
-          </View>
-          <View style={[styles.nftContentsContents]}>
-            <Image
-              source={require('../image/home/contentsDemo.webp')}
-              style={[styles.nftContentsContentsImage]}
-            />
-            <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>
-            <View style={[styles.nftContentsContentsText]}>
-              <Text style={[styles.nftContentsContentsTextText]}>NFT額　　　　  ¥1,980</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>再生回数　　　　75回</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>ジャンル別人気　5位</Text>
-            </View>
-          </View>
-          <View style={[styles.nftContentsContents]}>
-            <Image
-              source={require('../image/home/contentsDemo.webp')}
-              style={[styles.nftContentsContentsImage]}
-            />
-            <Text style={[styles.nftContentsContentsTitle]}>"音と熱の世界"</Text>
-            <View style={[styles.nftContentsContentsText]}>
-              <Text style={[styles.nftContentsContentsTextText]}>NFT額　　　　  ¥1,980</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>再生回数　　　　75回</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>ジャンル別人気　5位</Text>
-            </View>
-          </View>
+        ))}
         </View>
       </ScrollView>
     </LinearGradient>

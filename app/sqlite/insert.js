@@ -12,7 +12,7 @@ const Sqlite = () => {
     db.transaction((tx) => {
 
       // g04メンバー8人のアカウントデータ一括挿入
-      /*
+      // /*
       tx.executeSql(
         'INSERT INTO user(user_name, name, image, pass) VALUES(?, ?, ?, ?);',
         ['kanatoendo', '叶翔', 'profileImage_1', 'ke'],
@@ -93,10 +93,21 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      */
+      // */
 
       // loginテーブルにg04メンバー8人用のデータがいるため一括挿入
-      /*
+      // /*
+      tx.executeSql(
+        'INSERT INTO login(flg) VALUES(?);',
+        [0],
+        (_, result) => {
+          console.log('Insert success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      // 祥希でログイン
       tx.executeSql(
         'INSERT INTO login(flg) VALUES(?);',
         [0],
@@ -167,21 +178,10 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      // マンテクを仮ログイン
-      tx.executeSql(
-        'INSERT INTO login(flg) VALUES(?);',
-        [1],
-        (_, result) => {
-          console.log('Insert success!');
-        },
-        (_, error) => {
-          console.log('Error...');
-        }
-      );
-      */
+      // */
 
       // contentsテーブルに挿入
-      /*
+      // /*
       tx.executeSql(
         'INSERT INTO contents (user_id, thumbnail, title, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?);',
         [1, 'thumbnail_1', '音と熱の世界', 375, 10, 8],
@@ -222,10 +222,10 @@ const Sqlite = () => {
           console.log('Error...', error);
         }
       );
-      */
+      // */
 
       // contentsSelectテーブルに挿入
-      /*
+      // /*
       tx.executeSql(
         'INSERT INTO contentsSelect(flg) VALUES(?);',
         [0],
@@ -246,7 +246,7 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      */
+      // */
     });
   };
 

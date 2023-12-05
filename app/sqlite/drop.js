@@ -8,30 +8,22 @@ import { Button } from "react-native-paper";
 const Sqlite = () => {
 
   const db = SQLite.openDatabase('inu.db');
-  const [user, setItems] = useState([]);
   const handlePress = () => {
     db.transaction((tx) => {
 
       // 〇〇テーブルをまるまる削除
-      // /*
+      /*
       tx.executeSql(
-        'DROP TABLE IF EXISTS contents;',
+        'DROP TABLE IF EXISTS mylist;',
         [],
         (_, result) => {
           console.log('Drop success!');
-          const items = result.rows._array;
-          setItems(items);
-          console.log(`件数:${items.length}件`);
-          for (let i = 0; i < items.length; i++) {
-            const { id, user_name, name, image, pass } = items[i];
-            console.log(`${id}:${user_name}:${name}:${image}:${pass}`);
-          }
         },
         (_, error) => {
           console.log('Error...');
         }
       );
-      // */
+      */
     });
   };
 

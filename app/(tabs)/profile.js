@@ -9,41 +9,108 @@ const Profile = () => {
 
   const [items, setItems] = useState([]);
   const [userData, setUserData] = useState(null);
-  useEffect(() => {
-    const db = SQLite.openDatabase('inu.db');
-    db.transaction(tx => {
+  const [loginId, setLoginId] = useState(null);
+  const [contentsId, setContentsId] = useState(null);
+  const [mylistImageSources, setMylistImageSources] = useState([]);
+  const [scrollY, setScrollY] = useState(0);
 
-      // flg=1のデータを呼び出す。
-      tx.executeSql(
-        'SELECT * FROM login WHERE flg = 1;',
-        [],
-        (_, result) => {
-          const items = result.rows._array;
-          setItems(items);
-          if (items.length > 0) {
-            const loginId = items[0].id;
+  const fetchData = async () => {
+    const db = SQLite.openDatabase('inu.db');
+    try {
+      const result = await new Promise((resolve, reject) => {
+        db.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM login WHERE flg = 1;',
+            [],
+            (_, result) => {
+              resolve(result);
+            },
+            (_, error) => {
+              reject(error);
+            }
+          );
+        });
+      });
+
+      const items = result.rows._array;
+      setItems(items);
+
+      if (items.length > 0) {
+        const loginId = items[0].id;
+        setLoginId(loginId);
+
+        const userDataResult = await new Promise((resolve, reject) => {
+          db.transaction(tx => {
             tx.executeSql(
               'SELECT id, user_name, name, image, pass FROM user WHERE id = ?',
               [loginId],
-              (_, { rows }) => {
-                setUserData(rows.item(0));
+              (_, result) => {
+                resolve(result);
               },
-              (tx, error) => {
-                console.error(error);
+              (_, error) => {
+                reject(error);
               }
             );
+          });
+        });
+
+        const userData = userDataResult.rows.item(0);
+        setUserData(userData);
+
+        const mylistResult = await new Promise((resolve, reject) => {
+          db.transaction(tx => {
+            tx.executeSql(
+              'SELECT * FROM mylist WHERE login_id = ?;',
+              [loginId],
+              (_, result) => {
+                resolve(result);
+              },
+              (_, error) => {
+                reject(error);
+              }
+            );
+          });
+        });
+
+        const mylistItems = mylistResult.rows._array;
+        const mylistSources = mylistItems.map(item => {
+          let source = require('../../image/contents/thumbnail_1.webp');
+          switch (item.contents_id) {
+            case 1:
+              source = require('../../image/contents/thumbnail_1.webp');
+              break;
+            case 2:
+              source = require('../../image/contents/thumbnail_2.webp');
+              break;
+            case 3:
+              source = require('../../image/contents/thumbnail_3.webp');
+              break;
+            case 4:
+              source = require('../../image/contents/thumbnail_4.webp');
+              break;
+            default:
+              source = require('../../image/contents/thumbnail_1.webp');
           }
-        },
-        (_, error) => {
-          console.log('Error...');
-        }
-      );
-    });
+          return source;
+        });
+
+        setMylistImageSources(mylistSources);
+      }
+    } catch (error) {
+      console.error('Fetch data error:', error);
+      // エラーの適切な処理を行う（例: ユーザーにエラーメッセージを表示する）
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   if (!userData) {
     return null;
   }
+
+  console.log(loginId);
 
   let profileImageSource = '';
   // loginIdに基づいてプロファイル画像のソースを選択
@@ -78,12 +145,25 @@ const Profile = () => {
       profileImageSource = require('../../image/profile/profileImage_1.webp');
   }
 
+  const handleScroll = async (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    // ここで必要なスクロール位置や条件を確認して、リフレッシュのトリガーを設定
+
+    // 例: スクロールが最上部に達したらリフレッシュ
+    if (offsetY <= -75) {
+      await fetchData();
+    }
+  };
+
   return (
     <LinearGradient
     colors={['#444444', '#222222', '#000000']}
     style={styles.container}
     >
-      <ScrollView>
+      <ScrollView
+        onScroll={handleScroll}
+        scrollEventThrottle={16} // イベントをどれくらいの頻度で発生させるかを設定
+      >
         <View style={[styles.profileImageContainer]}>
           <Image
             source={profileImageSource}
@@ -99,81 +179,22 @@ const Profile = () => {
           <Text style={[styles.profileNameUser]}>@{userData.user_name}</Text>
         </View>
         <View style={[styles.myList]}>
-          <Text style={[styles.myListText]}>マイリスト</Text>
-          <View style={[styles.myListContents]}>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/contents' style={[styles.myListContentsContents]}>
-              <Image
-                source={require('../../image/home/contentsDemo.webp')}
-                style={[styles.myListContentsContentsImage]}
-              />
-            </Link>
-          </View>
+          <LinearGradient
+            colors={['#444444', '#222222', '#000000']}
+            style={styles.mylistContainer}
+          >
+            <Text style={[styles.myListText]}>マイリスト</Text>
+            <View style={[styles.myListContents]}>
+              {mylistImageSources.map((source, index) => (
+                <Link key={index} href='/contents' style={[styles.myListContentsContents]}>
+                  <Image
+                    source={source}
+                    style={[styles.myListContentsContentsImage]}
+                  />
+                </Link>
+              ))}
+            </View>
+          </LinearGradient>
         </View>
       </ScrollView>
     </LinearGradient>
@@ -231,11 +252,17 @@ const styles = StyleSheet.create({
   },
   myList: {
     width: '100%',
+    height: 375,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    backgroundColor: '#000000',
     marginTop: 30,
     paddingBottom: 30
+  },
+  mylistContainer: {
+    width: '100%',
+    height: '100%',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   myListText: {
     marginTop: 15,

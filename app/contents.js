@@ -19,7 +19,16 @@ const Contents = () => {
     mode: "text",
     textColor: '#FFFFFF',
     buttonColor: "transparent",
-    contentStyle: { paddingLeft: 10, paddingRight: 10 },
+    contentStyle: { width: 90 },
+    labelStyle: { fontSize: 14, fontWeight: '400', lineHeight: 14 },
+  });
+  // マイリスト状態を管理する state
+  const [isMylisting, setIsMylisting] = useState(false);
+  const [buttonStyle2, setButtonStyle2] = useState({
+    mode: "text",
+    textColor: '#FFFFFF',
+    buttonColor: "transparent",
+    // contentStyle: { paddingLeft: 10, paddingRight: 10 },
     labelStyle: { fontSize: 14, fontWeight: '400', lineHeight: 14 },
   });
 
@@ -80,6 +89,19 @@ const Contents = () => {
                     console.log('Error...', error);
                   }
                 );
+
+                // マイリスト状態を確認して setIsMylisting を更新
+                tx.executeSql(
+                  'SELECT * FROM mylist WHERE login_id = ? AND contents_id = ?;',
+                  [loginId, contentsId],
+                  (_, mylistResult) => {
+                    const isMylisting = mylistResult.rows.length > 0;
+                    setIsMylisting(isMylisting);
+                  },
+                  (_, error) => {
+                    console.log('Error...', error);
+                  }
+                );                
               },
               (tx, error) => {
                 console.error(error);
@@ -114,6 +136,27 @@ const Contents = () => {
       });
     }
   }, [isFollowing]); // isFollowing が変更されたときに再実行
+
+  useEffect(() => {
+    // フォロー状態に応じてボタンのスタイルを変更
+    if (isMylisting) {
+      setButtonStyle2({
+        mode: "text",
+        textColor: '#000000',
+        buttonColor: "#FFFFFF",
+        // contentStyle: { width: 90 },
+        labelStyle: { fontSize: 14, fontWeight: 'bold', lineHeight: 14 },
+      });
+    } else {
+      setButtonStyle2({
+        mode: "text",
+        textColor: '#FFFFFF',
+        buttonColor: "transparent",
+        // contentStyle: { width: 90 },
+        labelStyle: { fontSize: 14, fontWeight: '400', lineHeight: 14 },
+      });
+    }
+  }, [isMylisting]); // isMylisting が変更されたときに再実行
 
   if (!contentsData) {
     return null;
@@ -185,6 +228,67 @@ const Contents = () => {
     });
   };
 
+  const handlePress2 = () => {
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM mylist WHERE login_id = ? AND contents_id = ?;',
+        [loginId, contentsId],
+        (_, result) => {
+          if (result.rows.length > 0) {
+            tx.executeSql(
+              'DELETE FROM mylist WHERE login_id = ? AND contents_id = ?;',
+              [loginId, contentsId],
+              (_, deleteResult) => {
+                console.log('Delete success!');
+                setIsMylisting(false); // マイリストから削除時に状態更新
+              },
+              (_, deleteError) => {
+                console.log('Delete error: ', deleteError);
+              }
+            );
+          } else {
+            tx.executeSql(
+              'INSERT INTO mylist(login_id, contents_id) VALUES(?, ?);',
+              [loginId, contentsId],
+              (_, insertResult) => {
+                console.log('Insert success!');
+                setIsMylisting(true); // マイリストに追加時に状態更新
+              },
+              (_, insertError) => {
+                console.log('Insert error: ', insertError);
+              }
+            );
+          }
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+    });
+  };
+
+  let usersContentsImageSource = '';
+  // loginIdに基づいてプロファイル画像のソースを選択
+  switch (contentsData.id) {
+    case 1:
+      usersContentsImageSource = require('../image/contents/thumbnail_1.webp');
+      break;
+    case 2:
+      usersContentsImageSource = require('../image/contents/thumbnail_2.webp');
+      break;
+    case 3:
+      usersContentsImageSource = require('../image/contents/thumbnail_3.webp');
+      break;
+    case 4:
+      usersContentsImageSource = require('../image/contents/thumbnail_4.webp');
+      break;
+    // 他のケースも同様に追加
+    default:
+      // デフォルトの画像ソースを設定
+      usersContentsImageSource = require('../image/contents/thumbnail_1.webp');
+  }
+
   return (
     <LinearGradient
       colors={['#444444', '#222222', '#000000']}
@@ -224,92 +328,32 @@ const Contents = () => {
             </Button>
           </View>
           <Button
-            mode="text"
-            textColor={'#FFFFFF'}
-            buttonColor="transparent"
-            contentStyle={{ width: 300 }}
-            labelStyle={{ fontSize: 14, fontWeight: '400', lineHeight: 14 }}
-            style={[styles.contentsMylistButton]}
+              mode={buttonStyle2.mode}
+              textColor={buttonStyle2.textColor}
+              buttonColor={buttonStyle2.buttonColor}
+              contentStyle={buttonStyle2.contentStyle}
+              labelStyle={buttonStyle2.labelStyle}
+              style={styles.contentsFollowButton}
+            onPress={handlePress2}
           >
-            この体験をマイリストに追加する
+              {isMylisting ? "この体験をマイリストから削除する" : "この体験をマイリストに追加する"}
           </Button>
         </View>
         <View style={[styles.usersList]}>
-          <Text style={[styles.usersListText]}>"@{contentsUserName}"さんの他の投稿</Text>
-          <View style={[styles.usersListContents]}>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-            <Link href='/usersContents' style={[styles.usersListContentsContents]}>
-              <Image
-                source={require('../image/home/contentsDemo.webp')}
-                style={[styles.usersListContentsContentsImage]}
-              />
-            </Link>
-          </View>
+          <LinearGradient
+            colors={['#444444', '#222222', '#000000']}
+            style={styles.usersListContainer}
+          >
+            <Text style={[styles.usersListText]}>"@{contentsUserName}"さんの他の投稿</Text>
+            <View style={[styles.usersListContents]}>
+              <Link href='/usersContents' style={[styles.usersListContentsContents]}>
+                <Image
+                  source={usersContentsImageSource}
+                  style={[styles.usersListContentsContentsImage]}
+                />
+              </Link>
+            </View>
+          </LinearGradient>
         </View>
       </ScrollView>
     </LinearGradient>
@@ -410,11 +454,17 @@ const styles = StyleSheet.create({
   },
   usersList: {
     width: '100%',
+    height: 325,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    backgroundColor: '#000000',
     marginTop: 45,
     paddingBottom: 30
+  },
+  usersListContainer: {
+    width: '100%',
+    height: '100%',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15
   },
   usersListText: {
     marginTop: 15,

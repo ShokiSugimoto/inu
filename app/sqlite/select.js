@@ -106,6 +106,25 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
+
+      // followテーブルデータ確認用
+      tx.executeSql(
+        'SELECT * FROM mylist;',
+        [],
+        (_, result) => {
+          const items6 = result.rows._array;
+          setItems(items6);
+          console.log('\n');
+          console.log(`[mylist]:${items6.length}件`);
+          for (let i = 0; i < items6.length; i++) {
+            const { id, login_id, contents_id } = items6[i];
+            console.log(`ID:${id}, ログインユーザーID:${login_id}, 投稿者ID:${contents_id}`);
+          }
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );      
     });
   };
 
