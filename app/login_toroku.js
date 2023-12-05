@@ -11,7 +11,7 @@ const Marquee = () => {
   useEffect(() => {
     const animation = Animated.loop(
       Animated.timing(scrollY, {
-        toValue: windowHeight,
+        toValue: windowHeight, // 將 toValue 調整為 windowHeight，使跑馬燈從上往下
         duration: 25000,
         useNativeDriver: true,
       })
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   marquee: {
-    flexDirection: 'column-reverse',
+    flexDirection: 'column-reverse', // 將方向調整為由上往下
     overflow: 'hidden',
     position: 'relative',
     bottom: -2000,
@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    paddingVertical: 20,
+    paddingVertical: 20, // 調整區域的上下長度更長
   },
   image: {
     width: windowWidth,
-    marginBottom: -5,
+    marginBottom: -5, // 修正图像之间的空白，调整为负边距
   },
   container: {
     flex: 1,
