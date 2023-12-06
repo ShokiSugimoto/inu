@@ -27,7 +27,6 @@ const Home = () => {
             if (itemsData.length > 0) {
               setContentsData({ title: itemsData[0].title });
               setContents_2Data({ id: itemsData[0].id });
-              console.log(itemsData);
 
               tx.executeSql(
                 'SELECT * FROM user WHERE id = ?;',
@@ -36,7 +35,6 @@ const Home = () => {
                   const userData = result.rows._array;
                   if (userData.length > 0) {
                     setUserData({ user_name: userData[0].user_name });
-                    console.log(userData);
                   }
                 },
                 (_, error) => {

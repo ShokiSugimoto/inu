@@ -11,6 +11,7 @@ const Creater = () => {
   const [contentsData, setContentsData] = useState(null);
   const [totalPlayCount, setTotalPlayCount] = useState(0);
   const [totalNFTAmount, setTotalNFTAmount] = useState(null);
+  const [followerCount, setFollowerCount] = useState(0);
   const db = SQLite.openDatabase('inu.db');
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +45,6 @@ const Creater = () => {
           if (contentsResult.rows.length > 0) {
             const contentsDataArray = contentsResult.rows._array; // 結果を配列に変換
             setContentsData(contentsDataArray);
-            // 各コンテンツの再生回数の合計を計算
             const totalPlayCount = contentsDataArray.reduce((total, content) => total + content.count, 0);
             setTotalPlayCount(totalPlayCount);
             const totalNFTAmount = contentsDataArray.reduce((total, content) => total + content.nft, 0);
@@ -55,13 +55,30 @@ const Creater = () => {
         } else {
           console.log('No matching data found for user_id:', loginId);
         }
+
+        const followResult = await new Promise((resolve, reject) => {
+          db.transaction(tx => {
+            tx.executeSql(
+              'SELECT COUNT(*) AS followerCount FROM follow WHERE contents_id = ?;',
+              [loginId],
+              (_, result) => resolve(result),
+              (_, error) => reject(error)
+            );
+          });
+        });
+  
+        if (followResult.rows.length > 0) {
+          const followerCount = followResult.rows._array[0].followerCount;
+          // フォロワーの数を更新
+          setFollowerCount(followerCount);
+        }
       } catch (error) {
         console.error('Error:', error);
       }
     };
 
     fetchData();
-  }, []); // 空の依存関係配列を指定して初回のみ実行
+  }, [loginId]);
 
   const getContentsImageSource = (contentId) => {
     switch (contentId) {
@@ -78,6 +95,8 @@ const Creater = () => {
     }
   };
 
+  console.log(followerCount);
+
   return (
     <LinearGradient
     colors={['#444444', '#222222', '#000000']}
@@ -92,7 +111,7 @@ const Creater = () => {
         </View>
         <View style={[styles.nftText]}>
           <View style={[styles.nftTextText]}>
-            <Text style={[styles.nftTextTextText_1]}>フォロワー　50</Text>
+            <Text style={[styles.nftTextTextText_1]}>フォロワー　{followerCount}</Text>
             <Text style={[styles.nftTextTextText_2]}>+25</Text>
           </View>
           <View style={[styles.nftTextText, styles.nftTextText_2]}>

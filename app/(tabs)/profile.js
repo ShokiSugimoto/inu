@@ -110,8 +110,6 @@ const Profile = () => {
     return null;
   }
 
-  console.log(loginId);
-
   let profileImageSource = '';
   // loginIdに基づいてプロファイル画像のソースを選択
   switch (userData.id) {
