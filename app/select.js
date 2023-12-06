@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { Link } from "expo-router";
+import * as SQLite from 'expo-sqlite';
 
 const Select = () => {
+
   const [borderStyle, setBorderStyle] = useState({
     relaxation: {
       borderWidth: 0.25,
@@ -12,7 +14,22 @@ const Select = () => {
     },
   });
 
-  const handleLinkPress = (type) => {
+    // リンクが押された時の処理
+    const handleLinkPress = (type) => {
+    // データベース更新
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction((tx) => {
+      tx.executeSql(
+        `UPDATE genre SET ${type === 'relaxation' ? 're' : 'ex'} = 1, ${type === 'relaxation' ? 'ex' : 're'} = 0;`,
+        [],
+        (_, result) => {
+          console.log('Update success');
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+    });
     setBorderStyle((prevStyles) => ({
       ...prevStyles,
       [type]: {

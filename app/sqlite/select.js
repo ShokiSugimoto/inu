@@ -60,12 +60,50 @@ const Sqlite = () => {
           console.log('\n');
           console.log(`[contents]:${items3.length}件`);
           for (let i = 0; i < items3.length; i++) {
-            const { id, user_id, thumbnail, title, nft, count, ranking } = items3[i];
-            console.log(`ID:${id}, 投稿者ID:${user_id}, サムネイル画像パス:${thumbnail}, タイトル:${title}, NFT額:${nft}, 再生数:${count} 順位:${ranking}`);
+            const { id, user_id, thumbnail, genre, tag_1, tag_2, tag_3, tag_4, tag_5, title, nft, count, ranking } = items3[i];
+            console.log(`ID:${id}, 投稿者ID:${user_id}, サムネイル画像パス:${thumbnail}, タイトル:${title}, ジャンル:${genre}, タグ1:${tag_1}, タグ2:${tag_2}, タグ3:${tag_3}, タグ4:${tag_4}, タグ5:${tag_5}, NFT額:${nft}, 再生数:${count} 順位:${ranking}`);
           }
         },
         (_, error) => {
           console.log('Error...');
+        }
+      );
+
+      // genreテーブルデータ確認用
+      tx.executeSql(
+        'SELECT * FROM genre;',
+        [],
+        (_, result) => {
+          const items7 = result.rows._array;
+          setItems(items7);
+          console.log('\n');
+          console.log(`[genre]:${items7.length}件`);
+          for (let i = 0; i < items7.length; i++) {
+            const { id, re, ex } = items7[i];
+            console.log(`ID:${id}, re:${re}, ex:${ex}`);
+          }
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+
+      // tagテーブルデータ確認用
+      tx.executeSql(
+        'SELECT * FROM tag;',
+        [],
+        (_, result) => {
+          const items8 = result.rows._array;
+          setItems(items8);
+          console.log('\n');
+          console.log(`[tag]:${items8.length}件`);
+          for (let i = 0; i < items8.length; i++) {
+            const { id, tag_1, tag_2, tag_3, tag_4, tag_5 } = items8[i];
+            console.log(`ID:${id}, tag_1:${tag_1}, tag_2:${tag_2}, tag_3:${tag_3}, tag_4:${tag_4}, tag_5:${tag_5}`);
+          }
+        },
+        (_, error) => {
+          console.log('Error...', error);
         }
       );
 
@@ -77,7 +115,7 @@ const Sqlite = () => {
           const items4 = result.rows._array;
           setItems(items4);
           console.log('\n');
-          console.log(`[contentsSelect(flg確認用)]:${items4.length}件`);
+          console.log(`[contentsSelect]:${items4.length}件`);
           for (let i = 0; i < items4.length; i++) {
             const { id, flg } = items4[i];
             console.log(`ID:${id}, flg:${flg}`);

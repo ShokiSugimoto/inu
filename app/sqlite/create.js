@@ -12,7 +12,7 @@ const Sqlite = () => {
     db.transaction((tx) => {
 
       // userテーブル作成
-      // /*
+      /*
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, name TEXT, image TEXT, pass TEXT);',
         [],
@@ -23,10 +23,10 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      // */
+      */
 
       // loginテーブル(session等ではなく、flgが1か0かでログイン、ログアウト状態の判定)作成
-      // /*
+      /*
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS login (id INTEGER PRIMARY KEY AUTOINCREMENT, flg INTEGER);',
         [],
@@ -37,12 +37,12 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      // */
+      */
 
       // contentsテーブル作成
-      // /*
+      /*
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS contents (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, thumbnail TEXT, title TEXT, nft INTEGER, count INTEGER, ranking INTEGER);',
+        'CREATE TABLE IF NOT EXISTS contents (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, thumbnail TEXT, title TEXT, genre TEXT, tag_1 TEXT, tag_2 TEXT, tag_3 TEXT, tag_4 TEXT, tag_5 TEXT, nft INTEGER, count INTEGER, ranking INTEGER);',
         [],
         (_, result) => {
           console.log('Create success!');
@@ -51,10 +51,36 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      // */
+      */
+
+      // genreテーブル作成
+      /*
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS genre (id INTEGER PRIMARY KEY AUTOINCREMENT, re INTEGER, ex INTEGER);',
+        [],
+        (_, result) => {
+          console.log('Create success!');
+        },
+        (_, error) => {
+          console.log('Error!');
+        }
+      );
+      */
+
+      // tagテーブル作成
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS tag (id INTEGER PRIMARY KEY AUTOINCREMENT, tag_1 INTEGER, tag_2 INTEGER, tag_3 INTEGER, tag_4 INTEGER, tag_5 INTEGER);',
+        [],
+        (_, result) => {
+          console.log('Create success!');
+        },
+        (_, error) => {
+          console.log('Error!');
+        }
+      );
 
       // contentsSelectテーブル(選択したコンテンツにflg=1を付け詳細表示)作成
-      // /*
+      /*
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS contentsSelect (id INTEGER PRIMARY KEY AUTOINCREMENT, flg INTEGER);',
         [],
@@ -65,10 +91,10 @@ const Sqlite = () => {
           console.log('Error!');
         }
       );
-      // */
+      */
 
       // followテーブル作成
-      // /*
+      /*
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS follow (id INTEGER PRIMARY KEY AUTOINCREMENT, login_id INTEGER, contents_id INTEGER);',
         [],
@@ -79,10 +105,10 @@ const Sqlite = () => {
           console.log('Error!');
         }
       );
-      // */
+      */
 
       // mylistテーブル作成
-      // /*
+      /*
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS mylist (id INTEGER PRIMARY KEY AUTOINCREMENT, login_id INTEGER, contents_id INTEGER);',
         [],
@@ -93,7 +119,7 @@ const Sqlite = () => {
           console.log('Error!');
         }
       );
-      // */
+      */
     });
   };
 

@@ -14,7 +14,7 @@ const Sqlite = () => {
       // 〇〇テーブルをまるまる削除
       /*
       tx.executeSql(
-        'DROP TABLE IF EXISTS mylist;',
+        'DROP TABLE IF EXISTS tag;',
         [],
         (_, result) => {
           console.log('Drop success!');
