@@ -95,8 +95,6 @@ const Creater = () => {
     }
   };
 
-  console.log(followerCount);
-
   return (
     <LinearGradient
     colors={['#444444', '#222222', '#000000']}
