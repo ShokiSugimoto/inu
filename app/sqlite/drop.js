@@ -12,7 +12,7 @@ const Sqlite = () => {
     db.transaction((tx) => {
 
       // 〇〇テーブルをまるまる削除
-      /*
+      // /*
       tx.executeSql(
         'DROP TABLE IF EXISTS tag;',
         [],
@@ -23,7 +23,7 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      */
+      // */
     });
   };
 

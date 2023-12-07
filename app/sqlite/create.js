@@ -42,7 +42,7 @@ const Sqlite = () => {
       // contentsテーブル作成
       /*
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS contents (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, thumbnail TEXT, title TEXT, genre TEXT, tag_1 TEXT, tag_2 TEXT, tag_3 TEXT, tag_4 TEXT, tag_5 TEXT, nft INTEGER, count INTEGER, ranking INTEGER);',
+        'CREATE TABLE IF NOT EXISTS contents (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, thumbnail TEXT, title TEXT, genre TEXT, tag_1 INTEGER, tag_2 INTEGER, tag_3 INTEGER, tag_4 INTEGER, tag_5 INTEGER, tag_6 INTEGER, tag_7 INTEGER, tag_8 INTEGER, tag_9 INTEGER, tag_10 INTEGER, nft INTEGER, count INTEGER, ranking INTEGER);',
         [],
         (_, result) => {
           console.log('Create success!');
@@ -68,8 +68,9 @@ const Sqlite = () => {
       */
 
       // tagテーブル作成
+      // /*
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS tag (id INTEGER PRIMARY KEY AUTOINCREMENT, tag_1 INTEGER, tag_2 INTEGER, tag_3 INTEGER, tag_4 INTEGER, tag_5 INTEGER);',
+        'CREATE TABLE IF NOT EXISTS tag (id INTEGER PRIMARY KEY AUTOINCREMENT, tag_1 INTEGER, tag_2 INTEGER, tag_3 INTEGER, tag_4 INTEGER, tag_5 INTEGER, tag_6 INTEGER, tag_7 INTEGER, tag_8 INTEGER, tag_9 INTEGER, tag_10 INTEGER);',
         [],
         (_, result) => {
           console.log('Create success!');
@@ -78,6 +79,7 @@ const Sqlite = () => {
           console.log('Error!');
         }
       );
+      // */
 
       // contentsSelectテーブル(選択したコンテンツにflg=1を付け詳細表示)作成
       /*

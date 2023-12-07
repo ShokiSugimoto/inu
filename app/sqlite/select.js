@@ -60,8 +60,8 @@ const Sqlite = () => {
           console.log('\n');
           console.log(`[contents]:${items3.length}件`);
           for (let i = 0; i < items3.length; i++) {
-            const { id, user_id, thumbnail, genre, tag_1, tag_2, tag_3, tag_4, tag_5, title, nft, count, ranking } = items3[i];
-            console.log(`ID:${id}, 投稿者ID:${user_id}, サムネイル画像パス:${thumbnail}, タイトル:${title}, ジャンル:${genre}, タグ1:${tag_1}, タグ2:${tag_2}, タグ3:${tag_3}, タグ4:${tag_4}, タグ5:${tag_5}, NFT額:${nft}, 再生数:${count} 順位:${ranking}`);
+            const { id, user_id, thumbnail, genre, tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10, title, nft, count, ranking } = items3[i];
+            console.log(`ID:${id}, 投稿者ID:${user_id}, サムネイル画像パス:${thumbnail}, タイトル:${title}, ジャンル:${genre}, タグ1:${tag_1}, タグ2:${tag_2}, タグ3:${tag_3}, タグ4:${tag_4}, タグ5:${tag_5}, タグ6:${tag_6}, タグ7:${tag_7}, タグ8:${tag_8}, タグ9:${tag_9}, タグ10:${tag_10}, NFT額:${nft}, 再生数:${count} 順位:${ranking}`);
           }
         },
         (_, error) => {
@@ -80,7 +80,7 @@ const Sqlite = () => {
           console.log(`[genre]:${items7.length}件`);
           for (let i = 0; i < items7.length; i++) {
             const { id, re, ex } = items7[i];
-            console.log(`ID:${id}, re:${re}, ex:${ex}`);
+            console.log(`ID:${id}, リラクゼーション:${re}, エキサイティング:${ex}`);
           }
         },
         (_, error) => {
@@ -98,8 +98,8 @@ const Sqlite = () => {
           console.log('\n');
           console.log(`[tag]:${items8.length}件`);
           for (let i = 0; i < items8.length; i++) {
-            const { id, tag_1, tag_2, tag_3, tag_4, tag_5 } = items8[i];
-            console.log(`ID:${id}, tag_1:${tag_1}, tag_2:${tag_2}, tag_3:${tag_3}, tag_4:${tag_4}, tag_5:${tag_5}`);
+            const { id, tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10 } = items8[i];
+            console.log(`ID:${id}, タグ1:${tag_1}, タグ2:${tag_2}, タグ3:${tag_3}, タグ4:${tag_4}, タグ5:${tag_5}, タグ6:${tag_6}, タグ7:${tag_7}, タグ8:${tag_8}, タグ9:${tag_9}, タグ10:${tag_10}`);
           }
         },
         (_, error) => {

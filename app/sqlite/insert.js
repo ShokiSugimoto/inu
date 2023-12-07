@@ -183,8 +183,8 @@ const Sqlite = () => {
       // contentsテーブルに挿入
       /*
       tx.executeSql(
-        'INSERT INTO contents (user_id, thumbnail, title, genre, tag_1, tag_2, tag_3, tag_4, tag_5, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-        [1, 'thumbnail_1', '音と熱の世界', 're', 'review_1', 'review_3', 'review_5', 'review_7', 'review_9', 375, 10, 8],
+        'INSERT INTO contents (user_id, thumbnail, title, genre, tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+        [1, 'thumbnail_1', '音と熱の世界', 're', 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 375, 10, 8],
         (_, result) => {
           console.log('Insert success!');
         },
@@ -193,8 +193,8 @@ const Sqlite = () => {
         }
       );
       tx.executeSql(
-        'INSERT INTO contents (user_id, thumbnail, title, genre, tag_1, tag_2, tag_3, tag_4, tag_5, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-        [2, 'thumbnail_2', '色と光の詩', 'ex', 'review_2', 'review_4', 'review_6', 'review_8', 'review_10', 750, 20, 7],
+        'INSERT INTO contents (user_id, thumbnail, title, genre, tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+        [2, 'thumbnail_2', '色と光の詩', 'ex', 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 750, 20, 7],
         (_, result) => {
           console.log('Insert success!');
         },
@@ -203,8 +203,8 @@ const Sqlite = () => {
         }
       );
       tx.executeSql(
-        'INSERT INTO contents (user_id, thumbnail, title, genre, tag_1, tag_2, tag_3, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-        [3, 'thumbnail_3', '私たちは鳥だ。', 're', 'review_1', 'review_3', 'review_5' , 1125, 30, 6],
+        'INSERT INTO contents (user_id, thumbnail, title, genre, tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+        [3, 'thumbnail_3', '私たちは鳥だ。', 're', 1, 0, 1, 0, 1, 0, , 0, 0, 0, 1125, 30, 6],
         (_, result) => {
           console.log('Insert success!');
         },
@@ -213,8 +213,8 @@ const Sqlite = () => {
         }
       );
       tx.executeSql(
-        'INSERT INTO contents (user_id, thumbnail, title, genre, tag_1, tag_2, tag_3, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-        [4, 'thumbnail_4', 'なんだって叶うと錯覚するほどの。', 'ex', 'review_2', 'review_4', 'review_6', 1500, 40, 5],
+        'INSERT INTO contents (user_id, thumbnail, title, genre, tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10, nft, count, ranking) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+        [4, 'thumbnail_4', 'なんだって叶うと錯覚するほどの。', 'ex', 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1500, 40, 5],
         (_, result) => {
           console.log('Insert success!');
         },
@@ -225,7 +225,7 @@ const Sqlite = () => {
       */
 
       // genreテーブルに挿入
-      // /*
+      /*
       tx.executeSql(
         'INSERT INTO genre(re, ex) VALUES(?, ?);',
         [1, 0],
@@ -236,13 +236,13 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      // */
+      */
 
       // tagテーブルに挿入
       /*
       tx.executeSql(
-        'INSERT INTO tag(tag_1, tag_2, tag_3, tag_4, tag_5) VALUES(?, ?, ?, ?, ?);',
-        [1, 1, 1, 1, 1],
+        'INSERT INTO tag(tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         (_, result) => {
           console.log('Insert success!');
         },

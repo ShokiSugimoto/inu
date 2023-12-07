@@ -19,6 +19,18 @@ const Select = () => {
     // データベース更新
     const db = SQLite.openDatabase('inu.db');
     db.transaction((tx) => {
+
+      tx.executeSql(
+        `UPDATE tag SET tag_1 = null, tag_2 = null, tag_3 = null, tag_4 = null, tag_5 = null, tag_6 = null, tag_7 = null, tag_8 = null, tag_9 = null, tag_10 = null;`,
+        [],
+        (_, result) => {
+          console.log('Update success');
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+
       tx.executeSql(
         `UPDATE genre SET ${type === 'relaxation' ? 're' : 'ex'} = 1, ${type === 'relaxation' ? 'ex' : 're'} = 0;`,
         [],

@@ -3,23 +3,49 @@ import { StyleSheet, View, Text, TextInput, Animated, TouchableWithoutFeedback }
 import { Button } from 'react-native-paper';
 import { Link } from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
+import * as SQLite from 'expo-sqlite';
 
 const Relaxation = () => {
 
   const [selectedTags, setSelectedTags] = useState([]);
   const [count, setCount] = useState(0);
   const handleTagPress = (tagNumber) => {
-    if (selectedTags.includes(tagNumber)) {
-      setSelectedTags(selectedTags.filter(tag => tag !== tagNumber));
-      setCount(count - 1);
-    } else {
-      if (count < 5) {
-        setSelectedTags([...selectedTags, tagNumber]);
-        setCount(count + 1);
+    const tagColumnName = `tag_${tagNumber}`;
+    db.transaction((tx) => {
+      if (selectedTags.includes(tagNumber)) {
+        // タグが選択されている場合、削除
+        tx.executeSql(
+          `UPDATE tag SET ${tagColumnName} = NULL WHERE id = 1`, // 1 は仮の値です。実際のデータベースのIDに合わせてください。
+          [],
+          (_, result) => {
+            console.log(`Tag ${tagColumnName} deleted successfully.`);
+          },
+          (_, error) => {
+            console.log('Error deleting tag:', error);
+          }
+        );
+        setSelectedTags(selectedTags.filter(tag => tag !== tagNumber));
+        setCount(count - 1);
+      } else {
+        // タグが選択されていない場合、挿入
+        if (count < 5) {
+          tx.executeSql(
+            `UPDATE tag SET ${tagColumnName} = 1 WHERE id = 1`, // 1 は仮の値です。実際のデータベースのIDに合わせてください。
+            [],
+            (_, result) => {
+              console.log(`Tag ${tagColumnName} inserted successfully.`);
+            },
+            (_, error) => {
+              console.log('Error inserting tag:', error);
+            }
+          );
+          setSelectedTags([...selectedTags, tagNumber]);
+          setCount(count + 1);
+        }
       }
-    }
+    });
   };
-
+  
   const anim_1 = useRef(new Animated.Value(0)).current;
   const anim_2 = useRef(new Animated.Value(0)).current;
   const anim_3 = useRef(new Animated.Value(0)).current;
@@ -126,6 +152,19 @@ const Relaxation = () => {
     setCount(selectedTags.length);
   }, [selectedTags]);
 
+  const db = SQLite.openDatabase('inu.db');
+  db.transaction((tx) => {
+    tx.executeSql(
+      `SELECT * FROM tag`,
+      [],
+      (_, result) => {
+      },
+      (_, error) => {
+        console.log('Error...', error);
+      }
+    );
+  });
+
   return (
     <View style={[styles.container]}>
       <View style={[styles.searchContents]}>
@@ -142,52 +181,52 @@ const Relaxation = () => {
       </View>
       <TouchableWithoutFeedback onPress={() => handleTagPress(1)}>
         <Animated.View style={[styles.tag, styles.tag_1, anim_1Style, selectedTags.includes(1) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#歴史的な場所</Text>
+          <Text style={styles.tagText}>#review_1</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(2)}>
         <Animated.View style={[styles.tag, styles.tag_2, anim_2Style, selectedTags.includes(2) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#瞑想</Text>
+          <Text style={styles.tagText}>#review_2</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(3)}>
         <Animated.View style={[styles.tag, styles.tag_3, anim_3Style, selectedTags.includes(3) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#冒険とアウトドア</Text>
+          <Text style={styles.tagText}>#review_3</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(4)}>
         <Animated.View style={[styles.tag, styles.tag_4, anim_4Style, selectedTags.includes(4) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#文化と芸術</Text>
+          <Text style={styles.tagText}>#review_4</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(5)}>
         <Animated.View style={[styles.tag, styles.tag_5, anim_5Style, selectedTags.includes(5) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#自然の奇跡</Text>
+          <Text style={styles.tagText}>#review_5</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(6)}>
         <Animated.View style={[styles.tag, styles.tag_6, anim_6Style, selectedTags.includes(6) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#スピリチュアル</Text>
+          <Text style={styles.tagText}>#review_6</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(7)}>
         <Animated.View style={[styles.tag, styles.tag_7, anim_7Style, selectedTags.includes(7) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#動物</Text>
+          <Text style={styles.tagText}>#review_7</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(8)}>
         <Animated.View style={[styles.tag, styles.tag_8, anim_8Style, selectedTags.includes(8) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#フェスティバル</Text>
+          <Text style={styles.tagText}>#review_8</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(9)}>
         <Animated.View style={[styles.tag, styles.tag_9, anim_9Style, selectedTags.includes(9) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#ロマンティック</Text>
+          <Text style={styles.tagText}>#review_9</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(10)}>
         <Animated.View style={[styles.tag, styles.tag_10, anim_10Style, selectedTags.includes(10) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#自然を満喫</Text>
+          <Text style={styles.tagText}>#review_10</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <View style={[styles.textContents]}>
