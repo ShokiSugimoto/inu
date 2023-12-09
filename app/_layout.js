@@ -67,6 +67,13 @@ export default function Layout() {
           gestureEnabled: false
         }}
       />
+      <Stack.Screen name='start/signUpOrLogin'
+        options={{
+          animation: fadeIn,
+          headerShown: false,
+          gestureEnabled: false
+        }}
+       />
       <Stack.Screen name='relaxation' options={{headerShown: false}} />
       <Stack.Screen
         name='homeLoading'
@@ -114,6 +121,7 @@ export default function Layout() {
           )
         }}
       />
+      <Stack.Screen name='sqlite/bpm' options={{headerShown: false}} />
     </Stack>
   );
 }

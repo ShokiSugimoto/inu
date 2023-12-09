@@ -13,6 +13,8 @@ const Profile = () => {
   const [contentsId, setContentsId] = useState(null);
   const [mylistImageSources, setMylistImageSources] = useState([]);
   const [scrollY, setScrollY] = useState(0);
+  const [loginId2, setLoginId2] = useState(null);
+  const [mylistContentsIds, setMylistContentsIds] = useState(null);
 
   const fetchData = async () => {
     const db = SQLite.openDatabase('inu.db');
@@ -93,13 +95,45 @@ const Profile = () => {
           }
           return source;
         });
-
-        setMylistImageSources(mylistSources);
       }
     } catch (error) {
       console.error('Fetch data error:', error);
       // エラーの適切な処理を行う（例: ユーザーにエラーメッセージを表示する）
     }
+
+    db.transaction(tx => {
+      
+      tx.executeSql(
+        'SELECT id FROM login WHERE flg = ?;',
+        [1],
+        (_, result) => {
+          const loginId2 = result.rows._array;
+          if(loginId2.length > 0) {
+            setLoginId2(loginId2[0].id);
+
+            tx.executeSql(
+              'SELECT * FROM mylist WHERE login_id = ?;',
+              [loginId2[0].id],
+              (_, mylistResult) => {
+                const mylistContents = mylistResult.rows._array;
+                if(mylistContents.length > 0) {
+                  // followContents から contents_id を取得して新しい配列を作成
+                  const mylistContentsIds = mylistContents.map(item => item.contents_id);
+                  // setFollowContentsId に新しい配列をセット
+                  setMylistContentsIds(mylistContentsIds);
+                }
+              },
+              (_, error) => {
+                console.log('Error...', error);
+              }
+            );
+          }
+        },
+        (_, error) => {
+          console.log('Error...', error);
+        }
+      );
+    });
   };
 
   useEffect(() => {
@@ -153,6 +187,33 @@ const Profile = () => {
     }
   };
 
+  const handlePress = (mylistContentsIds) => {
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction((tx) => {
+      // contentsSelectテーブルを更新
+      tx.executeSql(
+        'UPDATE contentsSelect SET flg = 0 WHERE flg = 1;',
+        [],
+        (_, updateResult) => {
+        },
+        (_, updateError) => {
+          console.log('Error...');
+        }
+      );
+  
+      // 選択されたコンテンツを更新
+      tx.executeSql(
+        'UPDATE contentsSelect SET flg = 1 WHERE id = ?;',
+        [mylistContentsIds],
+        (_, updateResult) => {
+        },
+        (_, updateError) => {
+          console.log('Error...');
+        }
+      );
+    });
+  }
+
   return (
     <LinearGradient
     colors={['#444444', '#222222', '#000000']}
@@ -184,7 +245,12 @@ const Profile = () => {
             <Text style={[styles.myListText]}>マイリスト</Text>
             <View style={[styles.myListContents]}>
               {mylistImageSources.map((source, index) => (
-                <Link key={index} href='/contents' style={[styles.myListContentsContents]}>
+                <Link
+                  key={index}
+                  href='/contents'
+                  style={[styles.myListContentsContents]}
+                  onPress={() => handlePress(mylistContentsIds[index])}
+                >
                   <Image
                     source={source}
                     style={[styles.myListContentsContentsImage]}
