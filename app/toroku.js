@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, Dimensions } from "react-native";
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SQLite from 'expo-sqlite';
-import { Link } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
+import * as ImagePicker from 'expo-image-picker';  // Import ImagePicker
 
 // SQLiteデータベースの作成
 const db = SQLite.openDatabase("inu.db");
@@ -14,149 +14,120 @@ db.transaction((tx) => {
   tx.executeSql(
     `CREATE TABLE IF NOT EXISTS user 
     (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-     firstName TEXT, 
-     lastName TEXT, 
-     furigana TEXT, 
-     gender TEXT, 
-     email TEXT, 
-     password TEXT);`
+      user_name TEXT, 
+      name TEXT, 
+      image TEXT, 
+      pass TEXT);`
   );
 });
 
 const Login = ({}) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [furigana, setFurigana] = useState("");
-  const [gender, setGender] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user_name, setuser_name] = useState("");
+  const [name, setname] = useState("");
+  const [pass, setpass] = useState("");
+  const [image, setimage] = useState(null);  // Change type to ImagePickerResponse
   const [showPassword, setShowPassword] = useState("");
 
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-  const [furiganaError, setFuriganaError] = useState("");
-  const [genderError, setGenderError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [user_nameError, setuser_nameError] = useState("");
+  const [nameError, setnameError] = useState("");
+  const [passError, setpassError] = useState("");
+  const [imageError, setimageError] = useState("");
   const navigation = useNavigation();
 
-
-  const handleGenderSelection = (selectedGender) => {
-    setGender(selectedGender);
-    setGenderError(""); // ユーザーが選択した場合、エラーをクリアする
+  // Handle image pick
+  const handleImagePick = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      if (!result.canceled) {
+        // Use assets array to access selected assets
+        const pickedImage = result.assets[0];
+        
+        if (pickedImage) {
+          // If the user selects an image, set the image state
+          setimage(pickedImage);
+        }
+      }
+    } catch (error) {
+      console.error("Error picking image:", error);
+    }
   };
 
   const handleLogin = async () => {
     // Reset error messages
-    setFirstNameError("");
-    setLastNameError("");
-    setFuriganaError("");
-    setGenderError("");
-    setEmailError("");
-    setPasswordError("");
+    setnameError("");
+    setpassError("");
+    setimageError("");
+    setuser_nameError("");
 
     // Validation
-    if (!firstName) {
-      setFirstNameError("姓をご入力ください");
+    if (!user_name) {
+      setuser_nameError("ユーザーIDをご入力ください");
     }
 
-    if (!lastName) {
-      setLastNameError("お名前をご入力ください");
+    if (!name) {
+      setnameError("お名前をご入力ください");
     }
 
-    if (!furigana) {
-      setFuriganaError("フリガナをご入力ください");
+    if (!pass) {
+      setpassError("パスワードをご入力ください");
     }
 
-    if (!gender) {
-      setGenderError("性別をお選びください");
-    }
-
-    if (!email) {
-      setEmailError("メールアドレスをご入力ください");
-    }
-
-    if (!password) {
-      setPasswordError("パスワードをご入力ください");
-    }
-
-    if (firstName.trim() === "") {
-      setFirstNameError("姓をご入力ください");
-    }
-    
-    if (lastName.trim() === "") {
-      setLastNameError("お名前をご入力ください");
-    }
-    
-    if (furigana.trim() === "") {
-      setFuriganaError("フリガナをご入力ください");
-    }
-    
-    if (!gender) {
-      setGenderError("性別をお選びください");
-    }
-    
-    if (email.trim() === "") {
-      setEmailError("メールアドレスをご入力ください");
-    }
-    
-    if (password.trim() === "") {
-      setPasswordError("パスワードをご入力ください");
+    if (!image?.uri) {
+      setimageError("選択された画像が無効です");
     }
 
     if (
-      firstName.trim() === "" ||
-      lastName.trim() === "" ||
-      furigana.trim() === "" ||
-      !gender ||
-      email.trim() === "" ||
-      password.trim() === ""
+      user_name.trim() === "" ||
+      name.trim() === "" ||
+      pass.trim() === "" ||
+      !image?.uri
     ) {
       return;
     }
 
-    // If any field is empty, stop here
-    if (!firstName || !lastName || !furigana || !gender || !email || !password) {
-      return;
-    }
     try {
-      // Check if the email already exists in the database
+      // Check if the user_name already exists in the database
       db.transaction((tx) => {
         tx.executeSql(
-          `SELECT * FROM user WHERE email = ?;`,
-          [email],
+          `SELECT * FROM user WHERE user_name = ?;`,
+          [user_name],
           (_, { rows }) => {
             if (rows.length > 0) {
-              // Email already exists, set an error message
-              setEmailError("登録済みのメールアドレス");
+              // user_name already exists, set an error message
+              setuser_nameError("登録済みのID");
             } else {
-              // Email doesn't exist, proceed with the registration
+              // user_name doesn't exist, proceed with the registration
               db.transaction((tx) => {
                 tx.executeSql(
-                  `INSERT INTO user (firstName, lastName, furigana, gender, email, password) 
-                  VALUES (?, ?, ?, ?, ?, ?);`,
-                  [firstName, lastName, furigana, gender, email, password],
+                  `INSERT INTO user (user_name, name, pass, image) 
+                  VALUES (?, ?, ?, ?);`,
+                  [user_name, name, pass, image.uri],
                   (_, { rows }) => {
                     console.log("ユーザーが正常に挿入されました:", rows);
-                    // 必要に応じて追加のロジックやナビゲーションをここに追加
+                    // Optional: Add additional logic or navigation here
                   },
                   (_, error) => {
                     console.error("ユーザーの挿入中にエラーが発生しました:", error);
                   }
                 );
               });
-  
+
               const user = {
-                firstName,
-                lastName,
-                furigana,
-                gender,
-                email,
+                user_name,
+                name,
+                pass,
+                image: image.uri,
               };
           
-              // 保存用户信息到AsyncStorage
+              // Save user information to AsyncStorage
               AsyncStorage.setItem('userInfo', JSON.stringify(user)).then(() => {
-                // 将用户导航到下一个屏幕
+                // Navigate the user to the next screen
                 navigation.reset({
                   index: 0,
                   routes: [{ name: 'loading_2' }],
@@ -165,109 +136,57 @@ const Login = ({}) => {
             }
           },
           (_, error) => {
-            console.error("Error checking email existence:", error);
+            console.error("Error checking user_name existence:", error);
           }
         );
       });
     } catch (error) {
-      console.error("登录时出错:", error);
+      console.error("Error during registration:", error);
     }
-    
-
-  
-
-    // Handle login logic here
-    console.log("Logging in with:", firstName, lastName, furigana, gender, email, password);
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>登録画面</Text>
 
-      {/* First Name Input */}
+      {/* user_name Input */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="姓"
-          value={firstName}
+          placeholder="ID"
+          value={user_name}
           onChangeText={(text) => {
-            setFirstName(text);
-            setFirstNameError(""); // Clear error when user types
+            setuser_name(text);
+            setuser_nameError(""); // Clear error when user types
           }}
         />
       </View>
-      {firstNameError ? <Text style={styles.errorText}>{firstNameError}</Text> : null}
+      {user_nameError ? <Text style={styles.errorText}>{user_nameError}</Text> : null}
 
-      {/* Last Name Input */}
+      {/* Name Input */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="名"
-          value={lastName}
+          placeholder="お名前"
+          value={name}
           onChangeText={(text) => {
-            setLastName(text);
-            setLastNameError(""); // Clear error when user types
+            setname(text);
+            setnameError(""); // Clear error when user types
           }}
         />
       </View>
-      {lastNameError ? <Text style={styles.errorText}>{lastNameError}</Text> : null}
-
-      {/* Furigana Input */}
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="姓と名のフリガナ"
-          value={furigana}
-          onChangeText={(text) => {
-            setFurigana(text);
-            setFuriganaError(""); // Clear error when user types
-          }}
-        />
-      </View>
-      {furiganaError ? <Text style={styles.errorText}>{furiganaError}</Text> : null}
-
-      {/* Gender Selection */}
-      <View style={styles.inputContainer}>
-        <Text>性別：</Text>
-        <TouchableOpacity
-          style={[styles.radio, gender === "male" && styles.selectedRadio]}
-          onPress={() => handleGenderSelection("male")}
-        >
-          <Text>男</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.radio, gender === "female" && styles.selectedRadio]}
-          onPress={() => handleGenderSelection("female")}
-        >
-          <Text>女</Text>
-        </TouchableOpacity>
-      </View>
-      {genderError ? <Text style={styles.errorText}>{genderError}</Text> : null}
-
-      {/* Email Input */}
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            setEmailError(""); // Clear error when user types
-          }}
-        />
-      </View>
-      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+      {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
 
       {/* Password Input */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Password"
-          value={password}
+          placeholder="パスワード"
+          value={pass}
           secureTextEntry={!showPassword}
           onChangeText={(text) => {
-            setPassword(text);
-            setPasswordError(""); // Clear error when user types
+            setpass(text);
+            setpassError(""); // Clear error when user types
           }}
         />
         <TouchableOpacity
@@ -277,18 +196,32 @@ const Login = ({}) => {
           <Feather name={showPassword ? "eye" : "eye-off"} size={24} color="black" />
         </TouchableOpacity>
       </View>
-      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+      {passError ? <Text style={styles.errorText}>{passError}</Text> : null}
+
+      {/* Image Input */}
+      <TouchableOpacity style={styles.inputContainer} onPress={handleImagePick}>
+        {image ? (
+          <Image source={{ uri: image.uri }} style={{ width: 100, height: 100 }} />
+        ) : (
+          <Text style={styles.uploadText}>写真をアップロード</Text>
+        )}
+      </TouchableOpacity>
+      {imageError ? <Text style={styles.errorText}>{imageError}</Text> : null}
 
       {/* Login Button */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>登録</Text>
       </TouchableOpacity>
-      <Link href={"/UserDataScreen"} style={styles.nextButton}><Text>確認</Text></Link>
+      <TouchableOpacity
+        style={styles.linkContainer}
+        onPress={() => navigation.navigate('UserDataScreen')}
+      >
+        <Text style={styles.linkText}>user list</Text>
+      </TouchableOpacity>
     </View>
+    
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -314,24 +247,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
-  radioContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  radio: {
-    marginLeft: 10,
-    borderWidth: 1,
-    borderColor: "black",
-    padding: 5,
-    borderRadius: 5,
-  },
-  selectedRadio: {
-    backgroundColor: "lightgray",
-  },
   showPasswordButton: {
-    marginLeft: -30,
-  },
+    position: 'absolute',
+    right: 10,
+    top: "20%",
+  },  
   button: {
     backgroundColor: "#000",
     padding: 15,
@@ -351,9 +271,18 @@ const styles = StyleSheet.create({
     textAlign: "left",
     alignSelf: "flex-start",
   },
-  nextButton:{
+  uploadText: {
+    fontSize: 16,
+    color: "blue",
+  },
+  linkContainer: {
     marginTop: 10,
-  }
+  },
+  linkText: {
+    color: 'blue',
+    fontSize: 16,
+    textAlign: 'center',
+  },
 });
 
 export default Login;
