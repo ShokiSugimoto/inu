@@ -73,6 +73,18 @@ export default function Layout() {
           headerShown: false,
           gestureEnabled: false
         }}
+      />
+      <Stack.Screen name='start/signUp'
+        options={{
+          animation: fadeIn,
+          headerShown: false
+        }}
+       />
+      <Stack.Screen name='start/login'
+        options={{
+          animation: fadeIn,
+          headerShown: false
+        }}
        />
       <Stack.Screen name='relaxation' options={{headerShown: false}} />
       <Stack.Screen

@@ -14,7 +14,7 @@ const Index = () => {
       
       // navigation.navigate('select'); // select画面へ遷移(通常)
 
-      // navigation.navigate('start/signUpOrLogin');
+      navigation.navigate('start/signUpOrLogin');
 
       // sqliteファイル呼び出し用
       // navigation.navigate('sqlite/create'); // テーブル作成用ファイルへ遷移
@@ -23,7 +23,7 @@ const Index = () => {
       // navigation.navigate('sqlite/update'); // ログインアカウント変更の仮画面
       // navigation.navigate('sqlite/delete'); // テーブル内データ削除用ファイルへ遷移
       // navigation.navigate('sqlite/drop'); // テーブル削除用ファイルへ遷移
-      navigation.navigate('sqlite/bpm');
+      // navigation.navigate('sqlite/bpm');
     }, 5000);
 
     return () => clearTimeout(timer);

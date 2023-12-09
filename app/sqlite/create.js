@@ -122,20 +122,6 @@ const Sqlite = () => {
         }
       );
       */
-
-      // bpmテーブル作成
-      /*
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS bpm (id INTEGER PRIMARY KEY AUTOINCREMENT, bpm INTEGER);',
-        [],
-        (_, result) => {
-          console.log('Create success!');
-        },
-        (_, error) => {
-          console.log('Error!');
-        }
-      );
-      */
     });
   };
 

@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { Video } from 'expo-av';
-import * as SQLite from 'expo-sqlite';
 
 const Bpm = () => {
 
   const { width, height } = Dimensions.get('window');
-  console.log(width, height);
 
   const videoUri = require('../../movie/test.mp4');
   const [videoRef, setVideoRef] = useState(null);
@@ -14,10 +12,13 @@ const Bpm = () => {
   const [intervalId, setIntervalId] = useState(null);
   const [start, setStart] = useState(0); // startをuseStateで管理
   const [videoStyle, setVideoStyle] = useState(styles.video);
+  const [bpmDemo, setBpmDemo] = useState(0);
+  const [bpmDemo2, setBpmDemo2] = useState(60);
 
   const startTimer = () => {
     const id = setInterval(() => {
       setCounter((prevCounter) => prevCounter + 1);
+      setBpmDemo((prevBpmDemo) => prevBpmDemo + bpmDemo2);
     }, 5000);
     setIntervalId(id);
   };
@@ -32,8 +33,6 @@ const Bpm = () => {
       startTimer();
     }
   };
-
-  let bpmDemo = 70;
 
   const handlePlayPause = async () => {
     if (start === 0) {
@@ -79,7 +78,7 @@ const Bpm = () => {
     }
   };
 
-  console.log(start);
+  console.log(bpmDemo);
 
   return (
     <View style={styles.container}>

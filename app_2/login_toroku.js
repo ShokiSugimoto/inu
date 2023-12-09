@@ -1,42 +1,31 @@
-// Expo RouterからLinkをインポート
 import { Link } from 'expo-router';
-// ReactおよびReact Nativeから必要な要素をインポート
 import React, { useEffect, useRef } from 'react';
 import { View, Image, Animated, StyleSheet, Dimensions, Text, Linking } from 'react-native';
 
-// デバイスのウィンドウの高さと幅を取得
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-// マーキーのコンポーネントを定義
 const Marquee = () => {
-  // アニメーション用の変数を初期化
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  // コンポーネントがマウントされたときに実行されるuseEffect
   useEffect(() => {
-    // アニメーションの定義
     const animation = Animated.loop(
       Animated.timing(scrollY, {
-        toValue: windowHeight,
-        duration: 1000,
+        toValue: windowHeight, // 將 toValue 調整為 windowHeight，使跑馬燈從上往下
+        duration: 25000,
         useNativeDriver: true,
       })
     );
 
-    // アニメーションを開始
     animation.start();
 
-    // コンポーネントがアンマウントされたときにアニメーションを停止
     return () => {
       animation.stop();
     };
   }, [scrollY]);
 
-  // JSXを返す
   return (
     <View style={styles.marqueeContainer}>
-      {/* マーキーのアニメーション対象となるView */}
       <Animated.View
         style={[
           styles.marquee,
@@ -45,10 +34,15 @@ const Marquee = () => {
           },
         ]}
       >
-        {/* マーキーに表示される画像 */}
-        {/* <Image style={styles.image} source={require('../../image/start/startDemo.webp')} /> */}
+        <Image style={styles.image} source={require('../img/home/mainvisualDemo.webp')} />
+        <Image style={styles.image} source={require('../img/home/mainvisualDemo.webp')} />
+        <Image style={styles.image} source={require('../img/home/mainvisualDemo.webp')} />
+        <Image style={styles.image} source={require('../img/home/mainvisualDemo.webp')} />
+        <Image style={styles.image} source={require('../img/home/mainvisualDemo.webp')} />
+        <Image style={styles.image} source={require('../img/home/mainvisualDemo.webp')} />
+        <Image style={styles.image} source={require('../img/home/mainvisualDemo.webp')} />
+        <Image style={styles.image} source={require('../img/home/mainvisualDemo.webp')} />
       </Animated.View>
-      {/* ログインコンポーネントを含むView */}
       <View style={styles.loginContainer}>
         <Login />
       </View>
@@ -56,37 +50,32 @@ const Marquee = () => {
   );
 };
 
-// ログインコンポーネントを定義
 const Login = () => {
-  // JSXを返す
   return (
     <View style={styles.container}>
-      {/* 会員登録へのリンク */}
       <View style={styles.bottomButtonContainer}>
         <Link href="/toroku" style={styles.buttonText}>
           <Text style={styles.buttonText}>
-            会員登録
-          </Text>
+              会員登録
+            </Text>
         </Link>
-        {/* ログインへのリンク */}
         <Link href="/login" style={styles.buttonText}>
           <Text style={styles.buttonText}>
-            ログイン
-          </Text>
+              ログイン
+            </Text>
         </Link>
       </View>
     </View>
   );
 };
 
-// スタイルを定義
 const styles = StyleSheet.create({
   marqueeContainer: {
     flex: 1,
     position: 'relative',
   },
   marquee: {
-    flexDirection: 'column-reverse',
+    flexDirection: 'column-reverse', // 將方向調整為由上往下
     overflow: 'hidden',
     position: 'relative',
     bottom: -2000,
@@ -95,11 +84,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    paddingVertical: 20,
+    paddingVertical: 20, // 調整區域的上下長度更長
   },
   image: {
     width: windowWidth,
-    marginBottom: -5,
+    marginBottom: -5, // 修正图像之间的空白，调整为负边距
   },
   container: {
     flex: 1,
@@ -129,5 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// Marqueeコンポーネントをエクスポート
 export default Marquee;
