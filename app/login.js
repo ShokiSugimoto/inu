@@ -140,13 +140,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const db = SQLite.openDatabase('inu.db');
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user_name, setuser_name] = useState("");
+  const [pass, setpass] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
 
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [user_nameError, setuser_nameError] = useState("");
+  const [passError, setpassError] = useState("");
 
   const navigation = useNavigation(); // 获取导航对象
 
@@ -154,50 +154,50 @@ const Login = () => {
     // 在这里执行数据库初始化等操作
     db.transaction((tx) => {
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, firstName TEXT, lastName TEXT, furigana TEXT, gender TEXT, email TEXT, password TEXT);'
+        'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT,  user_name TEXT, name TEXT, image TEXT, pass TEXT);'
       );
     });
   }, []);
 
   const handleLogin = () => {
     // 重置错误消息
-    setEmailError("");
-    setPasswordError("");
+    setuser_nameError("");
+    setpassError("");
 
     // 验证
-    if (!email) {
-      setEmailError("メールアドレスをご入力ください");
+    if (!user_name) {
+      setuser_nameError("メールアドレスをご入力ください");
     }
 
-    if (!password) {
-      setPasswordError("パスワードをご入力ください");
+    if (!pass) {
+      setpassError("パスワードをご入力ください");
     }
 
-    if (email.trim() === "") {
-      setEmailError("メールアドレスをご入力ください");
+    if (user_name.trim() === "") {
+      setuser_nameError("メールアドレスをご入力ください");
     }
     
-    if (password.trim() === "") {
-      setPasswordError("パスワードをご入力ください");
+    if (pass.trim() === "") {
+      setpassError("パスワードをご入力ください");
     }
 
     if (
-      email.trim() === "" ||
-      password.trim() === ""
+      user_name.trim() === "" ||
+      pass.trim() === ""
     ) {
       return;
     }
 
     // 如果邮箱或密码为空，则停止
-    if (!email || !password) {
+    if (!user_name || !pass) {
       return;
     }
 
     // 检查登录凭据
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM user WHERE email = ? AND password = ?',
-        [email, password],
+        'SELECT * FROM user WHERE user_name = ? AND pass = ?',
+        [user_name, pass],
         (_, { rows }) => {
           if (rows.length > 0) {
             const user = rows.item(0); // 获取第一个匹配的用户
@@ -210,7 +210,7 @@ const Login = () => {
             });
           } else {
             // 登录失败
-            setEmailError("メールアドレスもしくはパスワードエラー");
+            setuser_nameError("メールアドレスもしくはパスワードエラー");
           }
         },
         (_, error) => {
@@ -232,30 +232,30 @@ const Login = () => {
     <View style={styles.container}>
       <Text style={styles.title}>ログイン画面</Text>
 
-      {/* Email 输入 */}
+      {/* user_name 输入 */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Email"
-          value={email}
+          placeholder="ユーザーID"
+          value={user_name}
           onChangeText={(text) => {
-            setEmail(text);
-            setEmailError(""); // 用户输入时清除错误
+            setuser_name(text);
+            setuser_nameError(""); // 用户输入时清除错误
           }}
         />
       </View>
-      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+      {user_nameError ? <Text style={styles.errorText}>{user_nameError}</Text> : null}
 
       {/* 密码输入 */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Password"
-          value={password}
+          placeholder="パスポート"
+          value={pass}
           secureTextEntry={!showPassword}
           onChangeText={(text) => {
-            setPassword(text);
-            setPasswordError(""); // 用户输入时清除错误
+            setpass(text);
+            setpassError(""); // 用户输入时清除错误
           }}
         />
         <TouchableOpacity
@@ -265,7 +265,7 @@ const Login = () => {
           <Feather name={showPassword ? "eye" : "eye-off"} size={24} color="black" />
         </TouchableOpacity>
       </View>
-      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+      {passError ? <Text style={styles.errorText}>{passError}</Text> : null}
 
       {/* 登录按钮 */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
@@ -320,6 +320,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     alignSelf: "flex-start",
   },
+  errorText_1: {
+    color: "red",
+    marginLeft: 60,
+    textAlign: "left",
+    alignSelf: "flex-start",
+  }
 });
 
 export default Login;
