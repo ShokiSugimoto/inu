@@ -12,9 +12,9 @@ const Sqlite = () => {
     db.transaction((tx) => {
 
       // 〇〇テーブルをまるまる削除
-      // /*
+      /*
       tx.executeSql(
-        'DROP TABLE IF EXISTS bpm;',
+        'DROP TABLE IF EXISTS ○○;',
         [],
         (_, result) => {
           console.log('Drop success!');
@@ -23,7 +23,7 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      // */
+      */
     });
   };
 

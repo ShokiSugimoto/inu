@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import * as SQLite from 'expo-sqlite';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Profile = () => {
 
@@ -95,6 +96,7 @@ const Profile = () => {
           }
           return source;
         });
+        setMylistImageSources(mylistSources);
       }
     } catch (error) {
       console.error('Fetch data error:', error);
@@ -214,6 +216,33 @@ const Profile = () => {
     });
   }
 
+  const logOut = async () => {
+    const db = SQLite.openDatabase('inu.db');
+    try {
+      const result = await new Promise((resolve, reject) => {
+        // AsyncStorage を使用して保存されているユーザー情報を削除
+        AsyncStorage.removeItem("userInfo");
+        db.transaction(tx => {
+          tx.executeSql(
+            'UPDATE login SET flg = 0 WHERE flg = 1;',
+            [],
+            (_, updateResult) => {
+              resolve(updateResult);
+              console.log('Update success!');
+            },
+            (_, updateError) => {
+              reject(updateError);
+              console.log('Error...', error);
+            }
+          );
+        });
+      });
+      console.log('Log out success!');
+    } catch (error) {
+      console.error('Error...', error);
+    }
+  };
+
   return (
     <LinearGradient
     colors={['#444444', '#222222', '#000000']}
@@ -260,6 +289,17 @@ const Profile = () => {
             </View>
           </LinearGradient>
         </View>
+        <Link
+          href='logOut'
+          onPress={logOut}
+          style={[styles.logOut]}
+        >
+          <Text
+            style={[styles.logOutText]}
+          >
+            LogOut
+          </Text>
+        </Link>
       </ScrollView>
     </LinearGradient>
   );
@@ -270,7 +310,8 @@ export default Profile;
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    position: 'relative'
   },
   profileImageContainer: {
     width: '100%',
@@ -355,5 +396,14 @@ const styles = StyleSheet.create({
     width: 117.5,
     height: 88.125,
     borderRadius: 5,
+  },
+  logOut: {
+    position: 'absolute',
+    top: 25,
+    left: 25
+  },
+  logOutText: {
+    fontSize: 14,
+    color: 'white',
   }
 });

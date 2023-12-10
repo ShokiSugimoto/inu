@@ -30,6 +30,7 @@ export default function TabsLayout () {
               'SELECT id, user_name, name, image, pass FROM user WHERE id = ?',
               [loginId],
               (_, { rows }) => {
+                console.log(rows.item(0));
                 setUserData(rows.item(0));
               },
               (tx, error) => {
@@ -45,9 +46,9 @@ export default function TabsLayout () {
     });
   }, []); 
 
-  if (!userData) {
-    return null;
-  }
+  // if (!userData) {
+  //   return null;
+  // }
 
   return(
     <Tabs

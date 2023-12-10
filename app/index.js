@@ -2,19 +2,34 @@
 
 // 各行できるだけ詳細にコメントアウトで解説してください。
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loading from "./loading";
 
 const Index = () => {
-
   const navigation = useNavigation();
+
   useEffect(() => {
     const timer = setTimeout(() => {
+      const checkLoginStatus = async () => {
+        try {
+          const userInfoString = await AsyncStorage.getItem("userInfo");
+          console.log("userInfoString:", userInfoString);
       
-      // navigation.navigate('select'); // select画面へ遷移(通常)
+          if (userInfoString) {
+            navigation.navigate("select");
+          } else {
+            navigation.navigate("start/signUpOrLogin");
+          }
+        } catch (error) {
+          console.error("Error in checkLoginStatus:", error);
+        }
+      };
 
-      navigation.navigate('start/signUpOrLogin');
+      checkLoginStatus();
+
+      // navigation.navigate('select'); // select画面へ遷移(通常)
 
       // sqliteファイル呼び出し用
       // navigation.navigate('sqlite/create'); // テーブル作成用ファイルへ遷移
@@ -29,10 +44,8 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, [navigation]);
 
-  // index.js呼び出すのと同時にloading.jsを呼び出して表示
-  return (
-    <Loading />
-  );
+  return <Loading />;
 };
 
 export default Index;
+

@@ -68,7 +68,27 @@ const Login = () => {
         (_, { rows }) => {
           if (rows.length > 0) {
             const user = rows.item(0); // 最初のユーザー情報を取得
+            console.log(user_name);
             storeUserInfo(user); // ユーザー情報をAsyncStorageに保存
+            tx.executeSql(
+              'UPDATE login SET flg = 0 WHERE flg = 1;',
+              [],
+              (_, updateResult) => {
+                tx.executeSql(
+                  'UPDATE login SET flg = 1 WHERE id IN (SELECT user.id FROM user WHERE user_name = ?);',
+                  [user_name],
+                  (_, updateResult) => {
+                    console.log('Update success!');
+                  },
+                  (_, updateError) => {
+                    console.log('Error...');
+                  }
+                );
+              },
+              (_, updateError) => {
+                console.log('Error...');
+              }
+            );
             // ログイン成功時、指定の画面にナビゲーション
             navigation.reset({
               index: 0,

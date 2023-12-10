@@ -41,9 +41,9 @@ export default function Layout() {
     });
   }, []); 
 
-  if (!userData) {
-    return null;
-  }
+  // if (!userData) {
+  //   return null;
+  // }
 
   const fadeIn = ({ current }) => ({
     cardStyle: {
@@ -59,14 +59,6 @@ export default function Layout() {
     >
       <Stack.Screen name='index' options={{headerShown: false}} />
       <Stack.Screen name='loading' options={{headerShown: false}} />
-      <Stack.Screen
-        name='select'
-        options={{
-          animation: fadeIn,
-          headerShown: false,
-          gestureEnabled: false
-        }}
-      />
       <Stack.Screen name='start/signUpOrLogin'
         options={{
           animation: fadeIn,
@@ -86,6 +78,15 @@ export default function Layout() {
           headerShown: false
         }}
        />
+      <Stack.Screen name='loading_2' options={{headerShown: false}} />
+      <Stack.Screen
+        name='select'
+        options={{
+          animation: fadeIn,
+          headerShown: false,
+          gestureEnabled: false
+        }}
+      />
       <Stack.Screen name='relaxation' options={{headerShown: false}} />
       <Stack.Screen
         name='homeLoading'
@@ -125,12 +126,35 @@ export default function Layout() {
           ),
           headerRight: () => (
             <View style={[styles.headerRight]}>
-              <Feather name="plus-square" size={27.5} color="#FFFFFF" style={[styles.upload]} />
+              <Link href='/upload'>
+                <Feather name="plus-square" size={27.5} color="#FFFFFF" style={[styles.upload]} />
+              </Link>
               <Link href='/profile'>
                 <Octicons name="three-bars" size={27.5} color="#FFFFFF" />
               </Link>
             </View>
           )
+        }}
+      />
+      <Stack.Screen
+        name='upload'
+        options={{
+          headerShown: true,
+          headerTitle: () => (
+            <Text style={{fontSize: 17.5, fontWeight: 'bold', color: '#000000'}}>体験を投稿</Text>
+          ),
+          headerStyle: {
+            backgroundColor: '#FFFFFF'
+          },
+          headerBackTitleVisible: false
+        }}
+      />
+      <Stack.Screen
+        name='logOut'
+        options={{
+          animation: fadeIn,
+          headerShown: false,
+          gestureEnabled: false
         }}
       />
       <Stack.Screen name='sqlite/bpm' options={{headerShown: false}} />
