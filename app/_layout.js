@@ -147,6 +147,14 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
+        name='uploadCheck'
+        options={{
+          animation: fadeIn,
+          headerShown: false,
+          gestureEnabled: false
+        }}
+      />
+      <Stack.Screen
         name='logOut'
         options={{
           animation: fadeIn,

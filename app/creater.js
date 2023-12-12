@@ -5,8 +5,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 
-const Creater = () => {
+const Creater = ({ route }) => {
 
+  const [refresh, setRefresh] = useState(false);
   const [loginId, setLoginId] = useState(null);
   const [contentsData, setContentsData] = useState(null);
   const [totalPlayCount, setTotalPlayCount] = useState(0);
@@ -75,10 +76,12 @@ const Creater = () => {
       } catch (error) {
         console.error('Error:', error);
       }
+      // ここで再描画をトリガー
+      setRefresh(prevRefresh => !prevRefresh);
     };
 
     fetchData();
-  }, [loginId]);
+  }, [loginId, route, refresh]);
 
   const getContentsImageSource = (contentId) => {
     switch (contentId) {

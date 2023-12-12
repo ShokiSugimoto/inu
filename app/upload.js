@@ -19,12 +19,23 @@ const Upload = () => {
   const [loginId, setLoginId] = useState(null);
   const [title, setTitle] = useState('');
   const [genre, setGenre] = useState('');
-  const [tag, setTag] = useState('');
+  const [tag_1, setTag_1] = useState(0);
+  const [tag_2, setTag_2] = useState(0);
+  const [tag_3, setTag_3] = useState(0);
+  const [tag_4, setTag_4] = useState(0);
+  const [tag_5, setTag_5] = useState(0);
+  const [tag_6, setTag_6] = useState(0);
+  const [tag_7, setTag_7] = useState(0);
+  const [tag_8, setTag_8] = useState(0);
+  const [tag_9, setTag_9] = useState(0);
+  const [tag_10, setTag_10] = useState(0);
+  const [selectedTags, setSelectedTags] = useState([false, false, false, false, false, false, false, false, false, false]);
   const [genreModalVisible, setGenreModalVisible] = useState(false);
   const [tagModalVisible, setTagModalVisible] = useState(false);
-  const [selectedTags, setSelectedTags] = useState([]);
   const [firstAsset,setFirstAsset] = useState(false);
   const [assetId,setAssetId] = useState(false);
+  // アップロードが完了したかどうかを管理する状態変数
+  const [uploadComplete, setUploadComplete] = useState(false);
 
   // コンポーネントがマウントされたときの処理
   useEffect(() => {
@@ -104,15 +115,52 @@ const Upload = () => {
 
   console.log(assetId);
 
+  // タグが選択されたときの処理
+  const handleTagSelection = (index) => {
+    // 選択されたタグの数をカウント
+    const selectedCount = selectedTags.filter((isSelected) => isSelected).length;
+  
+    // 選択されたタグの数が5未満の場合のみ状態をトグル
+    if (selectedCount < 5 || selectedTags[index]) {
+      const updatedSelectedTags = [...selectedTags];
+      updatedSelectedTags[index] = !updatedSelectedTags[index];
+      setSelectedTags(updatedSelectedTags);
+  
+      // 各tag_xの状態も更新（選択されている場合は1、そうでない場合は0）
+      setTag_1(updatedSelectedTags[0] ? 1 : 0);
+      setTag_2(updatedSelectedTags[1] ? 1 : 0);
+      setTag_3(updatedSelectedTags[2] ? 1 : 0);
+      setTag_4(updatedSelectedTags[3] ? 1 : 0);
+      setTag_5(updatedSelectedTags[4] ? 1 : 0);
+      setTag_6(updatedSelectedTags[5] ? 1 : 0);
+      setTag_7(updatedSelectedTags[6] ? 1 : 0);
+      setTag_8(updatedSelectedTags[7] ? 1 : 0);
+      setTag_9(updatedSelectedTags[8] ? 1 : 0);
+      setTag_10(updatedSelectedTags[9] ? 1 : 0);
+    }
+  };
+
   // アップロードボタンが押されたときの処理
   const handleUpload = () => {
     console.log('assetId:', assetId);
     console.log('title:', title);
     console.log('genre:', genre);
-    console.log('tag:', tag);
+    console.log('tag_1:', tag_1);
+    console.log('tag_2:', tag_2);
+    console.log('tag_3:', tag_3);
+    console.log('tag_4:', tag_4);
+    console.log('tag_5:', tag_5);
+    console.log('tag_6:', tag_6);
+    console.log('tag_7:', tag_7);
+    console.log('tag_8:', tag_8);
+    console.log('tag_9:', tag_9);
+    console.log('tag_10:', tag_10);
+
+    // タグの選択状態を確認して、選択されているものだけを取得
+    const selectedTagsArray = tags.filter((_, index) => selectedTags[index]);
 
     // 必要な情報が入力されていない場合はアラートを表示して処理を中断
-    if (!assetId || !title || !genre || !tag) {
+    if (!assetId || !title || !genre || tag_1 === null || tag_2 === null || tag_3 === null || tag_4 === null || tag_5 === null || tag_6 === null || tag_7 === null || tag_8 === null || tag_9 === null || tag_10 === null) {
       alert('動画、タイトル、ジャンル、タグを選択してください。');
       return;
     } else {
@@ -122,38 +170,48 @@ const Upload = () => {
 
         tx.executeSql(
           'INSERT INTO contents (user_id, thumbnail, movie, title, genre, tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10, nft, count, ranking) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-          [loginId, null, assetId, title, genreValue, tagsValues.tag_1, tagsValues.tag_2, tagsValues.tag_3, tagsValues.tag_4, tagsValues.tag_5, tagsValues.tag_6, tagsValues.tag_7, tagsValues.tag_8, tagsValues.tag_9, tagsValues.tag_10, null, null, null],
+          [
+            loginId,
+            null,
+            assetId,
+            title,
+            genreValue,
+            tag_1,
+            tag_2,
+            tag_3,
+            tag_4,
+            tag_5,
+            tag_6,
+            tag_7,
+            tag_8,
+            tag_9,
+            tag_10,
+            0,
+            0,
+            null
+          ],
           (_, { insertId }) => {
-            console.log('Insert seccess!', insertId);
-            // アップロード成功後、状態をリセット
-            setTitle('');
-            setGenre('');
-            setTag('');
+            console.log('Insert success!', insertId);
           },
           (_, error) => {
             console.error('Error...', error);
           }
         );
       });
+      // アップロードが完了したら状態を更新
+      setUploadComplete(true);
     }
   };
+
+  const uploadCheck = () => {
+    navigation.navigate('uploadCheck');
+  }
 
   const genres = ['Relaxation', 'Exciting'];
   const tags = ['読書', '音楽', '散歩', '瞑想', 'ヨガ', 'アート', '温泉', '映画', '友達', '趣味'];
 
   return (
     <View style={[styles.container]}>
-      {videoUri && (
-        <View>
-          {/* 選択された動画の表示 */}
-          <Video
-            source={{ uri: videoUri }}
-            style={[styles.videoPreview]}
-            controls={true} // ビデオコントロールを表示
-            resizeMode="cover" // アスペクト比を維持したまま画面いっぱいに表示
-          />
-        </View>
-      )}
       <View style={[styles.videoPreview]}></View>
       <TextInput
         style={styles.titleInput}
@@ -192,9 +250,10 @@ const Upload = () => {
       <View style={styles.tagInputContainer}>
         <TouchableOpacity onPress={() => setTagModalVisible(true)}>
           <Text style={styles.picker}>
-            {selectedTags.length > 0
-              ? `選択されたタグ: ${selectedTags.map((tag) => `#${tag}`).join(', ')}`
-              : '#タグを選択'}
+            {selectedTags
+            .map((isSelected, index) => (isSelected ? `#${tags[index]}` : null))
+            .filter((tag) => tag !== null)
+            .join(', ') || '#タグを選択'}
           </Text>
         </TouchableOpacity>
         <Modal
@@ -205,13 +264,11 @@ const Upload = () => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              {tags.map((item) => (
+              {tags.map((item, index) => (
                 <TouchableOpacity
                   key={item}
-                  style={[
-                    styles.modalText,
-                    selectedTags.includes(item) && styles.selectedTag,
-                  ]}
+                  style={[styles.modalText, { backgroundColor: selectedTags[index] ? 'lightblue' : 'white' }]}
+                  onPress={() => handleTagSelection(index)}
                 >
                   <Text>{item}</Text>
                 </TouchableOpacity>
@@ -221,11 +278,11 @@ const Upload = () => {
           </View>
         </Modal>
       </View>
-      <Button title="アップロード！" onPress={handleUpload} />
+      <Button title="アップロード！" onPress={handleUpload} disabled={uploadComplete} />
       <Button
         title="審査へ進む"
-        onPress={() => navigation.navigate('VideoCheck')}
-        disabled={!videoUri || !genre || !title}
+        onPress={uploadCheck}
+        disabled={ !uploadComplete }
       />
     </View>
   );
@@ -268,9 +325,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, .5)',
     borderRadius: 5,
     backgroundColor: 'rgba(255, 255, 255, .25)'
-  },
-  selectedTag: {
-    backgroundColor: 'rgba(0, 0, 255, 0.5)', // 選択されたタグの背景色
   },
   picker: {
   },
