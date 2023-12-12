@@ -26,7 +26,7 @@ export default function Layout() {
               'SELECT id, user_name, name, image, pass FROM user WHERE id = ?',
               [loginId],
               (_, { rows }) => {
-                setUserData(rows.item(0));
+                setUserData(rows.item(0).user_name);
               },
               (tx, error) => {
                 console.error(error);
@@ -122,15 +122,12 @@ export default function Layout() {
           headerShown: true,
           headerTitle: () => false,
           headerLeft: () => (
-            <Text style={{fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', marginLeft: 15}}>@{userData.user_name}</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', marginLeft: 15}}>@{userData}</Text>
           ),
           headerRight: () => (
             <View style={[styles.headerRight]}>
               <Link href='/upload'>
                 <Feather name="plus-square" size={27.5} color="#FFFFFF" style={[styles.upload]} />
-              </Link>
-              <Link href='/profile'>
-                <Octicons name="three-bars" size={27.5} color="#FFFFFF" />
               </Link>
             </View>
           )

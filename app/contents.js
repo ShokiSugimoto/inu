@@ -346,7 +346,10 @@ const Contents = () => {
           >
             <Text style={[styles.usersListText]}>"@{contentsUserName}"さんの他の投稿</Text>
             <View style={[styles.usersListContents]}>
-              <Link href='/usersContents' style={[styles.usersListContentsContents]}>
+              <Link
+                href='/usersContents'
+                style={[styles.usersListContentsContents]}
+              >
                 <Image
                   source={usersContentsImageSource}
                   style={[styles.usersListContentsContentsImage]}

@@ -181,52 +181,52 @@ const Relaxation = () => {
       </View>
       <TouchableWithoutFeedback onPress={() => handleTagPress(1)}>
         <Animated.View style={[styles.tag, styles.tag_1, anim_1Style, selectedTags.includes(1) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_1</Text>
+          <Text style={styles.tagText}>#読書</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(2)}>
         <Animated.View style={[styles.tag, styles.tag_2, anim_2Style, selectedTags.includes(2) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_2</Text>
+          <Text style={styles.tagText}>#音楽</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(3)}>
         <Animated.View style={[styles.tag, styles.tag_3, anim_3Style, selectedTags.includes(3) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_3</Text>
+          <Text style={styles.tagText}>#散歩</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(4)}>
         <Animated.View style={[styles.tag, styles.tag_4, anim_4Style, selectedTags.includes(4) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_4</Text>
+          <Text style={styles.tagText}>#瞑想</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(5)}>
         <Animated.View style={[styles.tag, styles.tag_5, anim_5Style, selectedTags.includes(5) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_5</Text>
+          <Text style={styles.tagText}>#ヨガ</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(6)}>
         <Animated.View style={[styles.tag, styles.tag_6, anim_6Style, selectedTags.includes(6) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_6</Text>
+          <Text style={styles.tagText}>#アート</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(7)}>
         <Animated.View style={[styles.tag, styles.tag_7, anim_7Style, selectedTags.includes(7) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_7</Text>
+          <Text style={styles.tagText}>#温泉</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(8)}>
         <Animated.View style={[styles.tag, styles.tag_8, anim_8Style, selectedTags.includes(8) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_8</Text>
+          <Text style={styles.tagText}>#映画</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(9)}>
         <Animated.View style={[styles.tag, styles.tag_9, anim_9Style, selectedTags.includes(9) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_9</Text>
+          <Text style={styles.tagText}>#友達</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(10)}>
         <Animated.View style={[styles.tag, styles.tag_10, anim_10Style, selectedTags.includes(10) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#review_10</Text>
+          <Text style={styles.tagText}>#趣味</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <View style={[styles.textContents]}>

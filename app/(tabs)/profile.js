@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, Animated } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
@@ -16,6 +16,25 @@ const Profile = () => {
   const [scrollY, setScrollY] = useState(0);
   const [loginId2, setLoginId2] = useState(null);
   const [mylistContentsIds, setMylistContentsIds] = useState(null);
+  const [drawerMenuOpacity] = useState(new Animated.Value(0));
+  const [drawerMenuTransform] = useState(new Animated.Value(250));
+
+  const toggleDrawerMenu = () => {
+    const isOpen = drawerMenuOpacity._value === 0; // drawerMenuが表示されているかどうかを判定
+
+    Animated.parallel([
+      Animated.timing(drawerMenuOpacity, {
+        toValue: isOpen ? 1 : 0,
+        duration: 0,
+        useNativeDriver: false,
+      }),
+      Animated.timing(drawerMenuTransform, {
+        toValue: isOpen ? 0 : 250,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
 
   const fetchData = async () => {
     const db = SQLite.openDatabase('inu.db');
@@ -248,6 +267,56 @@ const Profile = () => {
     colors={['#444444', '#222222', '#000000']}
     style={styles.container}
     >
+      <TouchableOpacity onPress={toggleDrawerMenu} style={styles.drawerButton} />
+      <Animated.View
+        style={[
+          styles.drawerMenuBg,
+          {
+            opacity: drawerMenuOpacity,
+            zIndex: drawerMenuOpacity.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-1, 2],
+            }),
+          },
+        ]}
+      >
+        <Animated.View
+          style={[
+            styles.drawerMenuContents,
+            {
+              transform: [
+                {
+                  translateY: drawerMenuTransform,
+                },
+              ],
+            },
+          ]}
+        >
+          <LinearGradient
+            colors={['#444444', '#222222', '#000000']}
+            style={styles.drawerMenuContentsBg}
+            >
+            <Text style={[styles.drawerMenuLi_1]}>
+              <Link
+                href='/creater'
+                style={{marginRight: 30}}
+                onPress={toggleDrawerMenu}
+              >
+                クリエイターページへ
+              </Link>
+            </Text>
+            <Text style={[styles.drawerMenuLi_2]}>
+              <Link
+                href='logOut'
+                onPress={logOut}
+                style={[styles.logOut]}
+              >
+                ログアウト
+              </Link>
+            </Text>
+          </LinearGradient>
+        </Animated.View>
+      </Animated.View>
       <ScrollView
         onScroll={handleScroll}
         scrollEventThrottle={16} // イベントをどれくらいの頻度で発生させるかを設定
@@ -289,17 +358,6 @@ const Profile = () => {
             </View>
           </LinearGradient>
         </View>
-        <Link
-          href='logOut'
-          onPress={logOut}
-          style={[styles.logOut]}
-        >
-          <Text
-            style={[styles.logOutText]}
-          >
-            LogOut
-          </Text>
-        </Link>
       </ScrollView>
     </LinearGradient>
   );
@@ -312,6 +370,57 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative'
+  },
+  drawerButton: {
+    width: 85,
+    height: 27.5,
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 3
+  },
+  drawerMenuBg: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(000, 000, 000, .75)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 2
+  },
+  drawerMenuContents: {
+    width: '100%',
+    height: 250,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    zIndex: 3
+  },
+  drawerMenuContentsBg: {
+    width: '100%',
+    height: '100%',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15
+  },
+  drawerMenuLi_1: {
+    marginTop: 30,
+    marginLeft: 15,
+    fontSize: 21,
+    fontWeight: 'bold',
+    color: '#FFFFFF'
+  },
+  drawerMenuLi_2: {
+    marginTop: 15,
+    marginLeft: 15,
+    fontSize: 21,
+    fontWeight: 'bold',
+    color: '#FFFFFF'
   },
   profileImageContainer: {
     width: '100%',
@@ -396,14 +505,5 @@ const styles = StyleSheet.create({
     width: 117.5,
     height: 88.125,
     borderRadius: 5,
-  },
-  logOut: {
-    position: 'absolute',
-    top: 25,
-    left: 25
-  },
-  logOutText: {
-    fontSize: 14,
-    color: 'white',
   }
 });

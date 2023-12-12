@@ -95,10 +95,12 @@ export default function TabsLayout () {
             <Text style={{fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', marginLeft: 25}}>@{userData.user_name}</Text>
           ),
           headerRight: () => (
-            <View>
-              <Link href='/creater' style={{marginRight: 30}}>
-                <Octicons name="three-bars" size={27.5} color="#FFFFFF" />
-              </Link>
+            <View style={{marginRight: 30}}>
+              <Octicons
+                name="three-bars"
+                size={27.5}
+                color="#FFFFFF"
+              />
             </View>
           ),
           tabBarIcon: () => (

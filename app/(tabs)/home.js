@@ -296,27 +296,27 @@ const Home = () => {
   const selectContentsTags = selectedTags.map(tag => {
   switch (tag) {
     case 'tag_1':
-      return 'review_1';
+      return '読書';
     case 'tag_2':
-      return 'review_2';
+      return '音楽';
     case 'tag_3':
-      return 'review_3';
+      return '散歩';
     case 'tag_4':
-      return 'review_4';
+      return '瞑想';
     case 'tag_5':
-      return 'review_5';
+      return 'ヨガ';
     case 'tag_6':
-      return 'review_6';
+      return 'アート';
     case 'tag_7':
-      return 'review_7';
+      return '温泉';
     case 'tag_8':
-      return 'review_8';
+      return '映画';
     case 'tag_9':
-      return 'review_9';
+      return '友達';
     case 'tag_10':
-      return 'review_10';
+      return '趣味';
     default:
-      return 'review_1';
+      return '';
     }
   });
 
