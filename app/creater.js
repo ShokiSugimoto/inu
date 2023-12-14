@@ -13,6 +13,7 @@ const Creater = ({ route }) => {
   const [totalPlayCount, setTotalPlayCount] = useState(0);
   const [totalNFTAmount, setTotalNFTAmount] = useState(null);
   const [followerCount, setFollowerCount] = useState(0);
+  
   const db = SQLite.openDatabase('inu.db');
   useEffect(() => {
     const fetchData = async () => {
@@ -98,6 +99,16 @@ const Creater = ({ route }) => {
     }
   };
 
+  const nftImageSource = (totalNFTAmount) => {
+    if (totalNFTAmount <= 500) {
+      return require('../image/profile/silverCard.webp');
+    } else if (totalNFTAmount <= 1000) {
+      return require('../image/profile/goldCard.webp');
+    } else {
+      return require('../image/profile/platinumCard.webp');
+    }
+  };
+
   return (
     <LinearGradient
     colors={['#444444', '#222222', '#000000']}
@@ -106,7 +117,11 @@ const Creater = ({ route }) => {
       <ScrollView>
         <View style={[styles.nftContainer]}>
           <View style={[styles.nftBackground]}>
-          <Text style={[styles.nftBackgroundText_1]}>¥{totalNFTAmount}</Text>
+            <Image
+              source={nftImageSource(totalNFTAmount)} // 画像の取得方法を変更
+              style={[styles.nftBackgroundImage]}
+            />
+            <Text style={[styles.nftBackgroundText_1]}>¥{totalNFTAmount}</Text>
             <Text style={[styles.nftBackgroundText_2]}>+¥480</Text>
           </View>
         </View>
@@ -157,25 +172,33 @@ const styles = StyleSheet.create({
   },
   nftBackground: {
     width: 300,
-    height: 168.75,
+    height: 187.5,
     borderRadius: 15,
-    backgroundColor: 'rgba(255, 255, 255, .25)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
     position: 'relative'
   },
+  nftBackgroundImage: {
+    width: 300,
+    height: 187.5,
+    borderRadius: 15,
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
   nftBackgroundText_1: {
-    fontSize: 28,
-    color: '#FFFFFF'
+    fontSize: 21,
+    color: '#444444',
+    position: 'absolute',
+    bottom: 12.5,
+    left: 22,
+    zIndex: 2
   },
   nftBackgroundText_2: {
     fontSize: 14,
     color: '#FF0000',
     position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transform: [{ translateX: 30 }, { translateY: -15 }]
+    bottom: 12.5,
+    left: 22,
+    transform: [{ translateX: 45 }, { translateY: -25 }]
   },
   nftText: {
     width: '100%',

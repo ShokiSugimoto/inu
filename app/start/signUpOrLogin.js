@@ -26,7 +26,7 @@ const signUpOrLogin = () => {
 
   const translateY = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -1150], // heightの分だけ上に動かす
+    outputRange: [0, -875], // heightの分だけ上に動かす
   });
 
   return (
@@ -164,34 +164,42 @@ const signUpOrLogin = () => {
           <Path d="m170.2,142.53c-.54,0-.97-.43-.97-.97s.43-.98.97-.98.98.44.98.98-.44.97-.98.97Zm0-1.65c-.37,0-.68.3-.68.68s.3.69.68.69.69-.31.69-.69-.31-.68-.69-.68Z"/>
         </G>
       </Svg>
-      <View style={styles.contents}>
-        <Image
-          source={require('../../image/start/contentsBgImage.webp')}
-          style={[styles.contentsBgImage]}
-        />
-          <Button
-            textColor='#FFFFFF'
-            buttonColor="transparent"
-            contentStyle={{height: 'auto'}}
-            labelStyle={{fontSize: 32, fontWeight: 'bold', lineHeight: 35}}
-            style={[styles.contentsButton_1]}
-          >
-           <Link href='start/signUp'>
-            SignUp
-          </Link>
-        </Button>
+      <Image
+        source={require('../../image/start/button.webp')}
+        style={[styles.contentsButtonBg_1]}
+      />
+      <Link
+        href='start/signUp'
+        style={[styles.contentsButton_1]}
+      >
         <Button
-          textColor='#FFFFFF'
+          textColor='#222222'
           buttonColor="transparent"
-          contentStyle={{height: 'auto'}}
-          labelStyle={{fontSize: 32, fontWeight: 'bold', lineHeight: 35}}
-          style={[styles.contentsButton_2]}
+          contentStyle={{width: 250}}
+          labelStyle={{fontSize: 21, fontWeight: 'bold', color: '#000000', lineHeight: 42}}
+          style={[{ borderRadius: 250 }]}
         >
-          <Link href='start/login'>
-            LogIn
-          </Link>
+          Sign Up
         </Button>
-      </View>
+      </Link>
+      <Image
+        source={require('../../image/start/button.webp')}
+        style={[styles.contentsButtonBg_2]}
+      />
+      <Link
+        href='start/login'
+        style={[styles.contentsButton_2]}
+      >
+        <Button
+          textColor='#222222'
+          buttonColor="transparent"
+          contentStyle={{width: 250}}
+          labelStyle={{fontSize: 21, fontWeight: 'bold', color: '#000000', lineHeight: 42}}
+          style={[{ borderRadius: 250 }]}
+        >
+          Log In
+        </Button>
+      </Link>
     </View>
   );
 };
@@ -210,7 +218,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    zIndex: -1
+    zIndex: -2
   },
   containerBgImage: {
     width: '100%',
@@ -219,24 +227,34 @@ const styles = StyleSheet.create({
   containerText: {
     transform: [{ translateX: 25 }, { translateY: -100 }]
   },
-  contents: {
-    width: '100%',
-    height: 300,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 0,
-    left: 0
-  },
-  contentsBgImage: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0
-  },
   contentsButton_1: {
-    transform: [{ translateX: 0 }, { translateY: -14 }]
+    position: 'absolute',
+    bottom: 225,
+    left: '50%',
+    transform: [{ translateX: -125 }, { translateY: 0 }]
+  },
+  contentsButtonBg_1: {
+    width: 250,
+    height: 63,
+    position: 'absolute',
+    bottom: 225,
+    left: '50%',
+    transform: [{ translateX: -125 }, { translateY: 0 }],
+    zIndex: -1
+  },
+  contentsButton_2: {
+    position: 'absolute',
+    bottom: 150,
+    left: '50%',
+    transform: [{ translateX: -125 }, { translateY: 0 }]
+  },
+  contentsButtonBg_2: {
+    width: 250,
+    height: 63,
+    position: 'absolute',
+    bottom: 150,
+    left: '50%',
+    transform: [{ translateX: -125 }, { translateY: 0 }],
+    zIndex: -1
   }
 });

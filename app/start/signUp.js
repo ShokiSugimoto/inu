@@ -140,7 +140,7 @@ const SignUp = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>SignUp</Text>
+      <Text style={styles.title}>Sign Up</Text>
 
       {/* user_name入力 */}
       <View style={styles.inputContainer}>
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     paddingLeft: 56,
     paddingRight: 56,
     backgroundColor: "#000000",
-    borderRadius: 10,
+    borderRadius: 250,
     alignItems: "center",
     marginTop: 28,
   },

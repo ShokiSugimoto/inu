@@ -41,9 +41,9 @@ export default function Layout() {
     });
   }, []); 
 
-  // if (!userData) {
-  //   return null;
-  // }
+  if (!userData) {
+    setUserData('shokisugimoto');
+  }
 
   const fadeIn = ({ current }) => ({
     cardStyle: {

@@ -115,6 +115,12 @@ const Upload = () => {
 
   console.log(assetId);
 
+  const assetIdImageSourse = (assetId) => {
+    if (assetId == '5364F513-8C1A-49DF-A712-F250DF5C780D/L0/001') {
+      return require('../image/contents/thumbnail_1.webp');
+    }
+  };
+
   // タグが選択されたときの処理
   const handleTagSelection = (index) => {
     // 選択されたタグの数をカウント
@@ -212,7 +218,12 @@ const Upload = () => {
 
   return (
     <View style={[styles.container]}>
-      <View style={[styles.videoPreview]}></View>
+      <View style={[styles.videoPreview]}>
+        <Image
+          source={assetIdImageSourse(assetId)}
+          style={{ width: '100%', height: '100%' }}
+        />
+      </View>
       <TextInput
         style={styles.titleInput}
         placeholder="タイトルを入力"
@@ -278,11 +289,17 @@ const Upload = () => {
           </View>
         </Modal>
       </View>
-      <Button title="アップロード！" onPress={handleUpload} disabled={uploadComplete} />
+      <Button
+        title="アップロード！"
+        onPress={handleUpload}
+        disabled={uploadComplete}
+        style={{marginTop: 25}}
+      />
       <Button
         title="審査へ進む"
         onPress={uploadCheck}
         disabled={ !uploadComplete }
+        style={{marginTop: 5}}
       />
     </View>
   );
@@ -298,33 +315,35 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   videoPreview: {
-    width: 160,
-    height: 90,
-    backgroundColor: 'rgba(000, 000, 000, .25)'
+    width: 350,
+    height: 195
   },
   titleInput: {
-    width: 300,
-    height: 32,
+    width: 350,
+    height: 42,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, .5)',
     borderRadius: 5,
-    backgroundColor: 'rgba(255, 255, 255, .25)'
+    backgroundColor: 'rgba(255, 255, 255, .25)',
+    marginTop: 25
   },
   genreInputContainer: {
-    width: 300,
-    height: 32,
+    width: 350,
+    height: 42,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, .5)',
     borderRadius: 5,
-    backgroundColor: 'rgba(255, 255, 255, .25)'
+    backgroundColor: 'rgba(255, 255, 255, .25)',
+    marginTop: 5
   },
   tagInputContainer: {
-    width: 300,
+    width: 350,
     height: 70,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, .5)',
     borderRadius: 5,
-    backgroundColor: 'rgba(255, 255, 255, .25)'
+    backgroundColor: 'rgba(255, 255, 255, .25)',
+    marginTop: 5
   },
   picker: {
   },
@@ -341,6 +360,8 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   modalText: {
+    marginTop: 2.5,
+    marginBottom: 2.5,
     textAlign: 'center'
   }
 });
