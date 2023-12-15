@@ -9,6 +9,9 @@ import { Link } from "expo-router";
 import { Octicons } from '@expo/vector-icons';
 import * as SQLite from 'expo-sqlite';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
+
 export default function TabsLayout () {
 
   const [items, setItems] = useState([]);

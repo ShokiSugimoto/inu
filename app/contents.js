@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import { Button } from "react-native-paper";
 import { AntDesign } from '@expo/vector-icons';
 import * as SQLite from 'expo-sqlite';
+import { useNavigation } from '@react-navigation/native';
 
 const Contents = () => {
+
   const [items, setItems] = useState([]);
   const [contentsData, setContentsData] = useState(null);
   const [contentsUserName, setContentsUserName] = useState(null);
@@ -158,6 +160,11 @@ const Contents = () => {
     }
   }, [isMylisting]); // isMylisting が変更されたときに再実行
 
+  const navigation = useNavigation();
+  const handleOpenOtherApp = () => {
+    navigation.navigate('contentsLoading');
+  };
+
   if (!contentsData) {
     return null;
   }
@@ -303,7 +310,9 @@ const Contents = () => {
             />
             <View style={[styles.contentsImageBright]}></View>
             <View style={[styles.contentsImageButton]}>
-              <AntDesign name="caretright" size={28} color="#FFFFFF" />
+              <TouchableOpacity onPress={handleOpenOtherApp}>
+                <AntDesign name="caretright" size={28} color="#FFFFFF" />
+              </TouchableOpacity>
             </View>
           </View>
           <Text style={[styles.contentsTitle]}>"{contentsData.title}"</Text>

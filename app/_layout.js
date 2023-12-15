@@ -5,6 +5,9 @@ import { Feather } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import * as SQLite from 'expo-sqlite';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
+
 export default function Layout() {
 
   const [items, setItems] = useState([]);
@@ -114,6 +117,14 @@ export default function Layout() {
         name='usersContents'
         options={{
           headerShown: false
+        }}
+      />
+      <Stack.Screen
+        name='contentsLoading'
+        options={{
+          animation: fadeIn,
+          headerShown: false,
+          gestureEnabled: false
         }}
       />
       <Stack.Screen
