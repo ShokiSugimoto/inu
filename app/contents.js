@@ -34,6 +34,7 @@ const Contents = () => {
     labelStyle: { fontSize: 14, fontWeight: '400', lineHeight: 14 },
   });
 
+
   useEffect(() => {
     const db = SQLite.openDatabase('inu.db');
     db.transaction(tx => {
@@ -61,7 +62,7 @@ const Contents = () => {
             setContentsId(contentsId);
 
             tx.executeSql(
-              'SELECT id, user_id, thumbnail, title FROM contents WHERE id = ?',
+              'SELECT id, user_id, thumbnail, title, count, good FROM contents WHERE id = ?',
               [contentsId],
               (_, { rows }) => {
                 const contentsData = rows.item(0);
@@ -103,7 +104,7 @@ const Contents = () => {
                   (_, error) => {
                     console.log('Error...', error);
                   }
-                );                
+                );
               },
               (tx, error) => {
                 console.error(error);
@@ -162,7 +163,47 @@ const Contents = () => {
 
   const navigation = useNavigation();
   const handleOpenOtherApp = () => {
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE contents SET count = count + 1 WHERE id = ?;',
+        [contentsId],
+        (_, result) => {
+          console.log('Update success!');
+        },
+        (_, error) => {
+          console.log('Update error: ', error);
+        }
+      );
+    });
     navigation.navigate('contentsLoading');
+  };
+
+  const fetchData = async () => {
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT id, user_id, thumbnail, title, count, good FROM contents WHERE id = ?',
+        [contentsId],
+        (_, { rows }) => {
+          const contentsData = rows.item(0);
+          setContentsData(rows.item(0));
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+    });
+  };
+
+  const handleScroll = async (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    // ここで必要なスクロール位置や条件を確認して、リフレッシュのトリガーを設定
+
+    // 例: スクロールが最上部に達したらリフレッシュ
+    if (offsetY <= -75) {
+      await fetchData();
+    }
   };
 
   if (!contentsData) {
@@ -301,7 +342,10 @@ const Contents = () => {
       colors={['#444444', '#222222', '#000000']}
       style={styles.container}
     >
-      <ScrollView>
+      <ScrollView
+        onScroll={handleScroll}
+        scrollEventThrottle={16} // イベントをどれくらいの頻度で発生させるかを設定
+      >
         <View style={[styles.contents]}>
           <View style={[styles.contentsImage]}>
             <Image
@@ -316,6 +360,14 @@ const Contents = () => {
             </View>
           </View>
           <Text style={[styles.contentsTitle]}>"{contentsData.title}"</Text>
+          <View style={[styles.contentsInteger]}>
+            <Text style={[styles.contentsIntegerText]}>再生数</Text>
+            <Text style={[styles.contentsIntegerText]}>{contentsData.count}</Text>
+          </View>
+          <View style={[styles.contentsInteger]}>
+            <Text style={[styles.contentsIntegerText]}>いいね数</Text>
+            <Text style={[styles.contentsIntegerText]}>{contentsData.good}</Text>
+          </View>
           <View style={[styles.contentsUserContainer]}>
             <View style={[styles.contentsUser]}>
               <Image
@@ -345,7 +397,7 @@ const Contents = () => {
               style={styles.contentsFollowButton}
             onPress={handlePress2}
           >
-              {isMylisting ? "この体験をマイリストから削除する" : "この体験をマイリストに追加する"}
+            {isMylisting ? "この体験をマイリストから削除する" : "この体験をマイリストに追加する"}
           </Button>
         </View>
         <View style={[styles.usersList]}>
@@ -423,6 +475,17 @@ const styles = StyleSheet.create({
   contentsTitle: {
     marginTop: 7.5,
     fontSize: 28,
+    color: '#FFFFFF'
+  },
+  contentsInteger: {
+    width: 180,
+    marginTop: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  contentsIntegerText: {
+    fontSize: 14,
     color: '#FFFFFF'
   },
   contentsUserContainer: {

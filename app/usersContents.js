@@ -60,7 +60,7 @@ const usersContents = () => {
             setContentsId(contentsId);
 
             tx.executeSql(
-              'SELECT id, user_id, thumbnail, title FROM contents WHERE id = ?',
+              'SELECT id, user_id, thumbnail, title, count, good FROM contents WHERE id = ?',
               [contentsId],
               (_, { rows }) => {
                 const contentsData = rows.item(0);
@@ -315,6 +315,14 @@ const usersContents = () => {
             </View>
           </View>
           <Text style={[styles.contentsTitle]}>"{contentsData.title}"</Text>
+          <View style={[styles.contentsInteger]}>
+            <Text style={[styles.contentsIntegerText]}>再生数</Text>
+            <Text style={[styles.contentsIntegerText]}>{contentsData.count}</Text>
+          </View>
+          <View style={[styles.contentsInteger]}>
+            <Text style={[styles.contentsIntegerText]}>いいね数</Text>
+            <Text style={[styles.contentsIntegerText]}>{contentsData.good}</Text>
+          </View>
           <View style={[styles.contentsUserContainer]}>
             <View style={[styles.contentsUser]}>
               <Image
@@ -422,6 +430,17 @@ const styles = StyleSheet.create({
   contentsTitle: {
     marginTop: 7.5,
     fontSize: 28,
+    color: '#FFFFFF'
+  },
+  contentsInteger: {
+    width: 180,
+    marginTop: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  contentsIntegerText: {
+    fontSize: 14,
     color: '#FFFFFF'
   },
   contentsUserContainer: {

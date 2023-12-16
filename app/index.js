@@ -29,8 +29,6 @@ const Index = () => {
 
       checkLoginStatus();
 
-      // navigation.navigate('select'); // select画面へ遷移(通常)
-
       // sqliteファイル呼び出し用
       // navigation.navigate('sqlite/create'); // テーブル作成用ファイルへ遷移
       // navigation.navigate('sqlite/insert'); // データ挿入用ファイルへ遷移

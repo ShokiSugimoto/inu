@@ -87,7 +87,7 @@ const ContentsLoading = () => {
     const handleAppStateChange = (nextAppState) => {
       if (nextAppState === "active") {
         console.log("アプリがフォアグラウンドに切り替わりました。");
-        navigation.navigate('contents');
+        navigation.navigate('getBpm');
       }
     };
 

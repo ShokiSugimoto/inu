@@ -40,9 +40,9 @@ const Sqlite = () => {
       */
 
       // contentsテーブル作成
-      /*
+      // /*
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS contents (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, thumbnail TEXT, movie TEXT, title TEXT, genre TEXT, tag_1 INTEGER, tag_2 INTEGER, tag_3 INTEGER, tag_4 INTEGER, tag_5 INTEGER, tag_6 INTEGER, tag_7 INTEGER, tag_8 INTEGER, tag_9 INTEGER, tag_10 INTEGER, nft INTEGER, count INTEGER, ranking INTEGER);',
+        'CREATE TABLE IF NOT EXISTS contents (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, thumbnail TEXT, movie TEXT, title TEXT, genre TEXT, tag_1 INTEGER, tag_2 INTEGER, tag_3 INTEGER, tag_4 INTEGER, tag_5 INTEGER, tag_6 INTEGER, tag_7 INTEGER, tag_8 INTEGER, tag_9 INTEGER, tag_10 INTEGER, nft INTEGER, count INTEGER, good INTEGER);',
         [],
         (_, result) => {
           console.log('Create success!');
@@ -51,7 +51,7 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      */
+      // */
 
       // genreテーブル作成
       /*

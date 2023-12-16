@@ -13,9 +13,9 @@ const Sqlite = () => {
     db.transaction((tx) => {
 
       // 〇〇テーブル内データ削除
-      // /*
+      /*
       tx.executeSql(
-        'DELETE FROM follow;',
+        'DELETE FROM ○○;',
         [],
         (_, result) => {
           console.log('Delete success!');
@@ -24,7 +24,7 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      // */
+      */
     });
   };
 
