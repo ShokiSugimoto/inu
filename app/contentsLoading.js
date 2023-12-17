@@ -58,16 +58,52 @@ const ContentsLoading = () => {
   let appURL = '';
   switch (contentsId) {
     case 1:
-      appURL = 'instagram://';
+      appURL = 'inuvr://';
       break;
     case 2:
-      appURL = 'twitter://';
+      appURL = 'inuvr://';
       break;
     case 3:
-      appURL = 'tiktok://';
+      appURL = 'inuvr://';
       break;
     case 4:
-      appURL = 'youtube://';
+      appURL = 'inuvr://';
+      break;
+    case 5:
+      appURL = 'inuvr://';
+      break;
+    case 6:
+      appURL = 'inuvr://';
+      break;
+    case 7:
+      appURL = 'inuvr://';
+      break;
+    case 8:
+      appURL = 'inuvr://';
+      break;
+    case 9:
+      appURL = 'inuvr://';
+      break;
+    case 10:
+      appURL = 'inuvr://';
+      break;
+    case 11:
+      appURL = 'inuvr://';
+      break;
+    case 12:
+      appURL = 'inuvr://';
+      break;
+    case 13:
+      appURL = 'inuvr://';
+      break;
+    case 14:
+      appURL = 'inuvr://';
+      break;
+    case 15:
+      appURL = 'inuvr://';
+      break;
+    case 16:
+      appURL = 'inuvr://';
       break;
     default:
       console.log(contentsId);

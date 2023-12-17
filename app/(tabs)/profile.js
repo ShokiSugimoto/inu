@@ -99,17 +99,37 @@ const Profile = () => {
           let source = require('../../image/contents/thumbnail_1.webp');
           switch (item.contents_id) {
             case 1:
-              source = require('../../image/contents/thumbnail_1.webp');
-              break;
+              return require(`../../image/contents/thumbnail_1.webp`);
             case 2:
-              source = require('../../image/contents/thumbnail_2.webp');
-              break;
+              return require(`../../image/contents/thumbnail_2.webp`);
             case 3:
-              source = require('../../image/contents/thumbnail_3.webp');
-              break;
+              return require(`../../image/contents/thumbnail_3.webp`);
             case 4:
-              source = require('../../image/contents/thumbnail_4.webp');
-              break;
+              return require(`../../image/contents/thumbnail_4.webp`);
+            case 5:
+              return require(`../../image/contents/thumbnail_5.webp`);
+            case 6:
+              return require(`../../image/contents/thumbnail_6.webp`);
+            case 7:
+              return require(`../../image/contents/thumbnail_7.webp`);
+            case 8:
+              return require(`../../image/contents/thumbnail_8.webp`);
+            case 9:
+              return require(`../../image/contents/thumbnail_9.webp`);
+            case 10:
+              return require(`../../image/contents/thumbnail_10.webp`);
+            case 11:
+              return require(`../../image/contents/thumbnail_11.webp`);
+            case 12:
+              return require(`../../image/contents/thumbnail_12.webp`);
+            case 13:
+              return require(`../../image/contents/thumbnail_13.webp`);
+            case 14:
+              return require(`../../image/contents/thumbnail_14.webp`);
+            case 15:
+              return require(`../../image/contents/thumbnail_15.webp`);
+            case 16:
+              return require(`../../image/contents/thumbnail_16.webp`);
             default:
               source = require('../../image/contents/thumbnail_1.webp');
           }

@@ -8,11 +8,14 @@ import { AntDesign } from '@expo/vector-icons';
 import * as SQLite from 'expo-sqlite';
 import { useNavigation } from '@react-navigation/native';
 
-const usersContents = () => {
+const UserContents = () => {
+
   const [items, setItems] = useState([]);
   const [contentsData, setContentsData] = useState(null);
-  const [contentsUserName, setContentsUserName] = useState(null);
   const [contentsId, setContentsId] = useState(null);
+  const [contentsUserId, setContentsUserId] = useState(null);
+  const [contentsUserName, setContentsUserName] = useState(null);
+  const [contentsSelectId, setContentsSelectId] = useState(null);
   const [loginId, setLoginId] = useState(null);
   // フォロー状態を管理する state
   const [isFollowing, setIsFollowing] = useState(false);
@@ -56,15 +59,17 @@ const usersContents = () => {
           const items = result.rows._array;
           setItems(items);
           if (items.length > 0) {
-            const contentsId = items[0].id;
-            setContentsId(contentsId);
+            const contentsSelectId = items[0].id;
+            setContentsSelectId(contentsSelectId);
 
             tx.executeSql(
               'SELECT id, user_id, thumbnail, title, count, good FROM contents WHERE id = ?',
-              [contentsId],
+              [contentsSelectId],
               (_, { rows }) => {
                 const contentsData = rows.item(0);
-                setContentsData(rows.item(0));
+                setContentsData(contentsData);
+                setContentsUserId(contentsData.id);
+                setContentsUserId(contentsData.user_id)
 
                 tx.executeSql(
                   'SELECT user_name FROM user WHERE id = ?',
@@ -81,7 +86,7 @@ const usersContents = () => {
                 // フォロー状態を確認して setIsFollowing を更新
                 tx.executeSql(
                   'SELECT * FROM follow WHERE login_id = ? AND contents_id = ?;',
-                  [loginId, contentsId],
+                  [loginId, contentsSelectId],
                   (_, followResult) => {
                     const isFollowing = followResult.rows.length > 0;
                     setIsFollowing(isFollowing);
@@ -94,7 +99,7 @@ const usersContents = () => {
                 // マイリスト状態を確認して setIsMylisting を更新
                 tx.executeSql(
                   'SELECT * FROM mylist WHERE login_id = ? AND contents_id = ?;',
-                  [loginId, contentsId],
+                  [loginId, contentsSelectId],
                   (_, mylistResult) => {
                     const isMylisting = mylistResult.rows.length > 0;
                     setIsMylisting(isMylisting);
@@ -102,7 +107,7 @@ const usersContents = () => {
                   (_, error) => {
                     console.log('Error...', error);
                   }
-                );                
+                );
               },
               (tx, error) => {
                 console.error(error);
@@ -145,7 +150,7 @@ const usersContents = () => {
         mode: "text",
         textColor: '#000000',
         buttonColor: "#FFFFFF",
-        // contentStyle: { width: 90 },
+        contentStyle: { width: 300 },
         labelStyle: { fontSize: 14, fontWeight: 'bold', lineHeight: 14 },
       });
     } else {
@@ -153,7 +158,7 @@ const usersContents = () => {
         mode: "text",
         textColor: '#FFFFFF',
         buttonColor: "transparent",
-        // contentStyle: { width: 90 },
+        contentStyle: { width: 300 },
         labelStyle: { fontSize: 14, fontWeight: '400', lineHeight: 14 },
       });
     }
@@ -161,7 +166,47 @@ const usersContents = () => {
 
   const navigation = useNavigation();
   const handleOpenOtherApp = () => {
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE contents SET count = count + 1 WHERE id = ?;',
+        [contentsSelectId],
+        (_, result) => {
+          console.log('Update success!');
+        },
+        (_, error) => {
+          console.log('Update error: ', error);
+        }
+      );
+    });
     navigation.navigate('contentsLoading');
+  };
+
+  const fetchData = async () => {
+    const db = SQLite.openDatabase('inu.db');
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT id, user_id, thumbnail, title, count, good FROM contents WHERE id = ?',
+        [contentsSelectId],
+        (_, { rows }) => {
+          const contentsData = rows.item(0);
+          setContentsData(rows.item(0));
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+    });
+  };
+
+  const handleScroll = async (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    // ここで必要なスクロール位置や条件を確認して、リフレッシュのトリガーを設定
+
+    // 例: スクロールが最上部に達したらリフレッシュ
+    if (offsetY <= -75) {
+      await fetchData();
+    }
   };
 
   if (!contentsData) {
@@ -170,7 +215,7 @@ const usersContents = () => {
 
   let contentsImageSource = '';
   // loginIdに基づいてプロファイル画像のソースを選択
-  switch (contentsData.id) {
+  switch (contentsSelectId) {
     case 1:
       contentsImageSource = require('../image/contents/thumbnail_1.webp');
       profileImageSource = require('../image/profile/profileImage_1.webp');
@@ -187,9 +232,55 @@ const usersContents = () => {
       contentsImageSource = require('../image/contents/thumbnail_4.webp');
       profileImageSource = require('../image/profile/profileImage_4.webp');
       break;
-    // 他のケースも同様に追加
+    case 5:
+      contentsImageSource = require('../image/contents/thumbnail_5.webp');
+      profileImageSource = require('../image/profile/profileImage_5.webp');
+      break;
+    case 6:
+      contentsImageSource = require('../image/contents/thumbnail_6.webp');
+      profileImageSource = require('../image/profile/profileImage_6.webp');
+      break;
+    case 7:
+      contentsImageSource = require('../image/contents/thumbnail_7.webp');
+      profileImageSource = require('../image/profile/profileImage_7.webp');
+      break;
+    case 8:
+      contentsImageSource = require('../image/contents/thumbnail_8.webp');
+      profileImageSource = require('../image/profile/profileImage_8.webp');
+      break;
+    case 9:
+      contentsImageSource = require('../image/contents/thumbnail_9.webp');
+      profileImageSource = require('../image/profile/profileImage_8.webp');
+      break;
+    case 10:
+      contentsImageSource = require('../image/contents/thumbnail_10.webp');
+      profileImageSource = require('../image/profile/profileImage_7.webp');
+      break;
+    case 11:
+      contentsImageSource = require('../image/contents/thumbnail_11.webp');
+      profileImageSource = require('../image/profile/profileImage_6.webp');
+      break;
+    case 12:
+      contentsImageSource = require('../image/contents/thumbnail_12.webp');
+      profileImageSource = require('../image/profile/profileImage_5.webp');
+      break;
+    case 13:
+      contentsImageSource = require('../image/contents/thumbnail_13.webp');
+      profileImageSource = require('../image/profile/profileImage_4.webp');
+      break;
+    case 14:
+      contentsImageSource = require('../image/contents/thumbnail_14.webp');
+      profileImageSource = require('../image/profile/profileImage_3.webp');
+      break;
+    case 15:
+      contentsImageSource = require('../image/contents/thumbnail_15.webp');
+      profileImageSource = require('../image/profile/profileImage_2.webp');
+      break;
+    case 16:
+      contentsImageSource = require('../image/contents/thumbnail_16.webp');
+      profileImageSource = require('../image/profile/profileImage_1.webp');
+      break;
     default:
-      // デフォルトの画像ソースを設定
       contentsImageSource = require('../image/contents/thumbnail_1.webp');
       profileImageSource = require('../image/profile/profileImage_1.webp');
   }
@@ -199,12 +290,12 @@ const usersContents = () => {
     db.transaction(tx => {
       tx.executeSql(
         'SELECT * FROM follow WHERE login_id = ? AND contents_id = ?;',
-        [loginId, contentsId],
+        [loginId, contentsSelectId],
         (_, result) => {
           if (result.rows.length > 0) {
             tx.executeSql(
               'DELETE FROM follow WHERE login_id = ? AND contents_id = ?;',
-              [loginId, contentsId],
+              [loginId, contentsSelectId],
               (_, deleteResult) => {
                 console.log('Delete success!');
                 setIsFollowing(false); // フォロー解除時に状態更新
@@ -216,7 +307,7 @@ const usersContents = () => {
           } else {
             tx.executeSql(
               'INSERT INTO follow(login_id, contents_id) VALUES(?, ?);',
-              [loginId, contentsId],
+              [loginId, contentsSelectId],
               (_, insertResult) => {
                 console.log('Insert success!');
                 setIsFollowing(true); // フォロー時に状態更新
@@ -239,12 +330,12 @@ const usersContents = () => {
     db.transaction(tx => {
       tx.executeSql(
         'SELECT * FROM mylist WHERE login_id = ? AND contents_id = ?;',
-        [loginId, contentsId],
+        [loginId, contentsSelectId],
         (_, result) => {
           if (result.rows.length > 0) {
             tx.executeSql(
               'DELETE FROM mylist WHERE login_id = ? AND contents_id = ?;',
-              [loginId, contentsId],
+              [loginId, contentsSelectId],
               (_, deleteResult) => {
                 console.log('Delete success!');
                 setIsMylisting(false); // マイリストから削除時に状態更新
@@ -256,7 +347,7 @@ const usersContents = () => {
           } else {
             tx.executeSql(
               'INSERT INTO mylist(login_id, contents_id) VALUES(?, ?);',
-              [loginId, contentsId],
+              [loginId, contentsSelectId],
               (_, insertResult) => {
                 console.log('Insert success!');
                 setIsMylisting(true); // マイリストに追加時に状態更新
@@ -276,7 +367,7 @@ const usersContents = () => {
 
   let usersContentsImageSource = '';
   // loginIdに基づいてプロファイル画像のソースを選択
-  switch (contentsData.id) {
+  switch (contentsUserId) {
     case 1:
       usersContentsImageSource = require('../image/contents/thumbnail_1.webp');
       break;
@@ -289,9 +380,43 @@ const usersContents = () => {
     case 4:
       usersContentsImageSource = require('../image/contents/thumbnail_4.webp');
       break;
-    // 他のケースも同様に追加
+    case 5:
+      usersContentsImageSource = require('../image/contents/thumbnail_5.webp');
+      break;
+    case 6:
+      usersContentsImageSource = require('../image/contents/thumbnail_6.webp');
+      break;
+    case 7:
+      usersContentsImageSource = require('../image/contents/thumbnail_7.webp');
+      break;
+    case 8:
+      usersContentsImageSource = require('../image/contents/thumbnail_8.webp');
+      break;
+    case 9:
+      usersContentsImageSource = require('../image/contents/thumbnail_9.webp');
+      break;
+    case 10:
+      usersContentsImageSource = require('../image/contents/thumbnail_10.webp');
+      break;
+    case 11:
+      usersContentsImageSource = require('../image/contents/thumbnail_11.webp');
+      break;
+    case 12:
+      usersContentsImageSource = require('../image/contents/thumbnail_12.webp');
+      break;
+    case 13:
+      usersContentsImageSource = require('../image/contents/thumbnail_13.webp');
+      break;
+    case 14:
+      usersContentsImageSource = require('../image/contents/thumbnail_14.webp');
+      break;
+    case 15:
+      usersContentsImageSource = require('../image/contents/thumbnail_15.webp');
+      break;
+    case 16:
+      usersContentsImageSource = require('../image/contents/thumbnail_16.webp');
+      break;
     default:
-      // デフォルトの画像ソースを設定
       usersContentsImageSource = require('../image/contents/thumbnail_1.webp');
   }
 
@@ -300,7 +425,10 @@ const usersContents = () => {
       colors={['#444444', '#222222', '#000000']}
       style={styles.container}
     >
-      <ScrollView>
+      <ScrollView
+        onScroll={handleScroll}
+        scrollEventThrottle={16} // イベントをどれくらいの頻度で発生させるかを設定
+      >
         <View style={[styles.contents]}>
           <View style={[styles.contentsImage]}>
             <Image
@@ -344,15 +472,15 @@ const usersContents = () => {
             </Button>
           </View>
           <Button
-              mode={buttonStyle2.mode}
-              textColor={buttonStyle2.textColor}
-              buttonColor={buttonStyle2.buttonColor}
-              contentStyle={buttonStyle2.contentStyle}
-              labelStyle={buttonStyle2.labelStyle}
-              style={styles.contentsFollowButton}
+            mode={buttonStyle2.mode}
+            textColor={buttonStyle2.textColor}
+            buttonColor={buttonStyle2.buttonColor}
+            contentStyle={buttonStyle2.contentStyle}
+            labelStyle={buttonStyle2.labelStyle}
+            style={styles.contentsMylistButton}
             onPress={handlePress2}
           >
-              {isMylisting ? "この体験をマイリストから削除する" : "この体験をマイリストに追加する"}
+            {isMylisting ? "この体験をマイリストから削除する" : "この体験をマイリストに追加する"}
           </Button>
         </View>
         <View style={[styles.usersList]}>
@@ -379,7 +507,7 @@ const usersContents = () => {
   );
 }
 
-export default usersContents;
+export default UserContents;
 
 const styles = StyleSheet.create({
   container: {
@@ -480,7 +608,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     borderColor: 'rgba(255, 255, 255, .5)',
-    marginTop: 15
+    marginTop: 10
   },
   usersList: {
     width: '100%',

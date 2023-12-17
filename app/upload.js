@@ -175,7 +175,7 @@ const Upload = () => {
         const genreValue = genre === 'Relaxation' ? 're' : 'ex';
 
         tx.executeSql(
-          'INSERT INTO contents (user_id, thumbnail, movie, title, genre, tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10, nft, count, ranking) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          'INSERT INTO contents (user_id, thumbnail, movie, title, genre, tag_1, tag_2, tag_3, tag_4, tag_5, tag_6, tag_7, tag_8, tag_9, tag_10, nft, count, good) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
           [
             loginId,
             null,
@@ -194,7 +194,7 @@ const Upload = () => {
             tag_10,
             0,
             0,
-            null
+            0
           ],
           (_, { insertId }) => {
             console.log('Insert success!', insertId);
@@ -214,7 +214,7 @@ const Upload = () => {
   }
 
   const genres = ['Relaxation', 'Exciting'];
-  const tags = ['読書', '音楽', '散歩', '瞑想', 'ヨガ', 'アート', '温泉', '映画', '友達', '趣味'];
+  const tags = ['自然と景観', 'ヨガと瞑想', '癒しの音楽', 'アートとクリエイティブ', 'ペットと動物', '料理と食べ物', 'アクティブな冒険', 'エンターテインメント', '科学とテクノロジー', 'スポーツとアクション'];
 
   return (
     <View style={[styles.container]}>

@@ -74,6 +74,7 @@ const GetBpm = () => {
           console.log('heartrateValue does not meet the conditions for update.');
         }
       });
+      alert('平均心拍数'+heartrateValue+'リラクサイティング成功です。');
       navigation.navigate('contents'); // 'contents'は適切な画面名に置き換えてください
     }
   }, [heartrateValue, navigation]);

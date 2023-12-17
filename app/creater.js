@@ -36,7 +36,7 @@ const Creater = ({ route }) => {
           const contentsResult = await new Promise((resolve, reject) => {
             db.transaction(tx => {
               tx.executeSql(
-                'SELECT id, user_id, thumbnail, title, nft, count, ranking FROM contents WHERE user_id = ?',
+                'SELECT id, user_id, thumbnail, title, nft, count, good FROM contents WHERE user_id = ?',
                 [loginId],
                 (_, result) => resolve(result),
                 (_, error) => reject(error)
@@ -94,6 +94,30 @@ const Creater = ({ route }) => {
         return require('../image/contents/thumbnail_3.webp');
       case 4:
         return require('../image/contents/thumbnail_4.webp');
+      case 5:
+        return require('../image/contents/thumbnail_5.webp');
+      case 6:
+        return require('../image/contents/thumbnail_6.webp');
+      case 7:
+        return require('../image/contents/thumbnail_7.webp');
+      case 8:
+        return require('../image/contents/thumbnail_8.webp');
+      case 9:
+        return require('../image/contents/thumbnail_9.webp');
+      case 10:
+        return require('../image/contents/thumbnail_10.webp');
+      case 11:
+        return require('../image/contents/thumbnail_11.webp');
+      case 12:
+        return require('../image/contents/thumbnail_12.webp');
+      case 13:
+        return require('../image/contents/thumbnail_13.webp');
+      case 14:
+        return require('../image/contents/thumbnail_14.webp');
+      case 15:
+        return require('../image/contents/thumbnail_15.webp');
+      case 16:
+        return require('../image/contents/thumbnail_16.webp');
       default:
         return require('../image/contents/thumbnail_1.webp');
     }
@@ -147,7 +171,7 @@ const Creater = ({ route }) => {
             <View style={[styles.nftContentsContentsText]}>
               <Text style={[styles.nftContentsContentsTextText]}>NFT額　　　　  ¥{content.nft}</Text>
               <Text style={[styles.nftContentsContentsTextText]}>再生回数　　　　{content.count}回</Text>
-              <Text style={[styles.nftContentsContentsTextText]}>ジャンル別人気　{content.ranking}位</Text>
+              <Text style={[styles.nftContentsContentsTextText]}>いいね数　　　　{content.good}回</Text>
             </View>
           </View>
         ))}

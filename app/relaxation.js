@@ -149,7 +149,10 @@ const Relaxation = () => {
     opacity: anim_10
   };
   useEffect(() => {
-    setCount(selectedTags.length);
+    // selectedTags が初回レンダリング時に空でない場合のみ実行
+    if (selectedTags.length > 0) {
+      setCount(selectedTags.length);
+    }
   }, [selectedTags]);
 
   const db = SQLite.openDatabase('inu.db');
@@ -181,52 +184,52 @@ const Relaxation = () => {
       </View>
       <TouchableWithoutFeedback onPress={() => handleTagPress(1)}>
         <Animated.View style={[styles.tag, styles.tag_1, anim_1Style, selectedTags.includes(1) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#読書</Text>
+          <Text style={styles.tagText}>#自然と景観</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(2)}>
         <Animated.View style={[styles.tag, styles.tag_2, anim_2Style, selectedTags.includes(2) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#音楽</Text>
+          <Text style={styles.tagText}>#ヨガと瞑想</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(3)}>
         <Animated.View style={[styles.tag, styles.tag_3, anim_3Style, selectedTags.includes(3) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#散歩</Text>
+          <Text style={styles.tagText}>#癒しの音楽</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(4)}>
         <Animated.View style={[styles.tag, styles.tag_4, anim_4Style, selectedTags.includes(4) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#瞑想</Text>
+          <Text style={styles.tagText}>#アートとクリエイティブ</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(5)}>
         <Animated.View style={[styles.tag, styles.tag_5, anim_5Style, selectedTags.includes(5) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#ヨガ</Text>
+          <Text style={styles.tagText}>#ペットと動物</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(6)}>
         <Animated.View style={[styles.tag, styles.tag_6, anim_6Style, selectedTags.includes(6) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#アート</Text>
+          <Text style={styles.tagText}>#料理と食べ物</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(7)}>
         <Animated.View style={[styles.tag, styles.tag_7, anim_7Style, selectedTags.includes(7) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#温泉</Text>
+          <Text style={styles.tagText}>#アクティブな冒険</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(8)}>
         <Animated.View style={[styles.tag, styles.tag_8, anim_8Style, selectedTags.includes(8) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#映画</Text>
+          <Text style={styles.tagText}>#エンターテインメント</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(9)}>
         <Animated.View style={[styles.tag, styles.tag_9, anim_9Style, selectedTags.includes(9) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#友達</Text>
+          <Text style={styles.tagText}>#科学とテクノロジー</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => handleTagPress(10)}>
         <Animated.View style={[styles.tag, styles.tag_10, anim_10Style, selectedTags.includes(10) && styles.selectedTag]}>
-          <Text style={styles.tagText}>#趣味</Text>
+          <Text style={styles.tagText}>#スポーツとアクション</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <View style={[styles.textContents]}>
@@ -312,7 +315,7 @@ const styles = StyleSheet.create({
     transform: [{ translateX: 75 }, { translateY: 0 }]
   },
   tag_7: {
-    transform: [{ translateX: -125 }, { translateY: 0 }]
+    transform: [{ translateX: -100 }, { translateY: 0 }]
   },
   tag_8: {
     transform: [{ translateX: 25 }, { translateY: 0 }]
@@ -321,7 +324,7 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -75 }, { translateY: 0 }]
   },
   tag_10: {
-    transform: [{ translateX: 100 }, { translateY: 0 }]
+    transform: [{ translateX: 75 }, { translateY: 0 }]
   },
   tagText: {
     fontSize: 14,

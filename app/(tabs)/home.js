@@ -215,6 +215,7 @@ const Home = () => {
         'UPDATE contentsSelect SET flg = 1 WHERE id = ?;',
         [selectedContentId],
         (_, updateResult) => {
+          console.log(selectedContentId);
         },
         (_, updateError) => {
           console.log('Error...');
@@ -270,9 +271,43 @@ const Home = () => {
     case 4:
       mainvisualImageSource = require('../../image/contents/thumbnail_4.webp');
       break;
-    // 他のケースも同様に追加
+    case 5:
+      mainvisualImageSource = require('../../image/contents/thumbnail_5.webp');
+      break;
+    case 6:
+      mainvisualImageSource = require('../../image/contents/thumbnail_6.webp');
+      break;
+    case 7:
+      mainvisualImageSource = require('../../image/contents/thumbnail_7.webp');
+      break;
+    case 8:
+      mainvisualImageSource = require('../../image/contents/thumbnail_8.webp');
+      break;
+    case 9:
+      mainvisualImageSource = require('../../image/contents/thumbnail_9.webp');
+      break;
+    case 10:
+      mainvisualImageSource = require('../../image/contents/thumbnail_10.webp');
+      break;
+    case 11:
+      mainvisualImageSource = require('../../image/contents/thumbnail_11.webp');
+      break;
+    case 12:
+      mainvisualImageSource = require('../../image/contents/thumbnail_12.webp');
+      break;
+    case 13:
+      mainvisualImageSource = require('../../image/contents/thumbnail_13.webp');
+      break;
+    case 14:
+      mainvisualImageSource = require('../../image/contents/thumbnail_14.webp');
+      break;
+    case 15:
+      mainvisualImageSource = require('../../image/contents/thumbnail_15.webp');
+      break;
+    case 16:
+      mainvisualImageSource = require('../../image/contents/thumbnail_16.webp');
+      break;  
     default:
-      // デフォルトの画像ソースを設定
       mainvisualImageSource = require('../../image/contents/thumbnail_1.webp');
   }
 
@@ -286,7 +321,30 @@ const Home = () => {
         return require(`../../image/contents/thumbnail_3.webp`);
       case 4:
         return require(`../../image/contents/thumbnail_4.webp`);
-      // 追加のケースも同様に追加
+      case 5:
+        return require(`../../image/contents/thumbnail_5.webp`);
+      case 6:
+        return require(`../../image/contents/thumbnail_6.webp`);
+      case 7:
+        return require(`../../image/contents/thumbnail_7.webp`);
+      case 8:
+        return require(`../../image/contents/thumbnail_8.webp`);
+      case 9:
+        return require(`../../image/contents/thumbnail_9.webp`);
+      case 10:
+        return require(`../../image/contents/thumbnail_10.webp`);
+      case 11:
+        return require(`../../image/contents/thumbnail_11.webp`);
+      case 12:
+        return require(`../../image/contents/thumbnail_12.webp`);
+      case 13:
+        return require(`../../image/contents/thumbnail_13.webp`);
+      case 14:
+        return require(`../../image/contents/thumbnail_14.webp`);
+      case 15:
+        return require(`../../image/contents/thumbnail_15.webp`);
+      case 16:
+        return require(`../../image/contents/thumbnail_16.webp`);
       default:
         return require(`../../image/contents/thumbnail_1.webp`);
     }
@@ -296,25 +354,25 @@ const Home = () => {
   const selectContentsTags = selectedTags.map(tag => {
   switch (tag) {
     case 'tag_1':
-      return '読書';
+      return '自然と景観';
     case 'tag_2':
-      return '音楽';
+      return 'ヨガと瞑想';
     case 'tag_3':
-      return '散歩';
+      return '癒しの音楽';
     case 'tag_4':
-      return '瞑想';
+      return 'アートとクリエイティブ';
     case 'tag_5':
-      return 'ヨガ';
+      return 'ペットと動物';
     case 'tag_6':
-      return 'アート';
+      return '料理と食べ物';
     case 'tag_7':
-      return '温泉';
+      return 'アクティブな冒険';
     case 'tag_8':
-      return '映画';
+      return 'エンターテインメント';
     case 'tag_9':
-      return '友達';
+      return '科学とテクノロジー';
     case 'tag_10':
-      return '趣味';
+      return 'スポーツとアクション';
     default:
       return '';
     }
@@ -330,7 +388,30 @@ const Home = () => {
         return require(`../../image/contents/thumbnail_3.webp`);
       case 4:
         return require(`../../image/contents/thumbnail_4.webp`);
-      // 追加のケースも同様に追加
+      case 5:
+        return require(`../../image/contents/thumbnail_5.webp`);
+      case 6:
+        return require(`../../image/contents/thumbnail_6.webp`);
+      case 7:
+        return require(`../../image/contents/thumbnail_7.webp`);
+      case 8:
+        return require(`../../image/contents/thumbnail_8.webp`);
+      case 9:
+        return require(`../../image/contents/thumbnail_9.webp`);
+      case 10:
+        return require(`../../image/contents/thumbnail_10.webp`);
+      case 11:
+        return require(`../../image/contents/thumbnail_11.webp`);
+      case 12:
+        return require(`../../image/contents/thumbnail_12.webp`);
+      case 13:
+        return require(`../../image/contents/thumbnail_13.webp`);
+      case 14:
+        return require(`../../image/contents/thumbnail_14.webp`);
+      case 15:
+        return require(`../../image/contents/thumbnail_15.webp`);
+      case 16:
+        return require(`../../image/contents/thumbnail_16.webp`);
       default:
         return require(`../../image/contents/thumbnail_1.webp`);
     }
@@ -403,7 +484,7 @@ const Home = () => {
           >
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../image/home/contentsDemo.webp')}
+                source={require('../../image/contents/thumbnail_1.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>
@@ -416,7 +497,7 @@ const Home = () => {
           >
             <Link href='/contents' style={[styles.contentsContents_2Contents]}>
               <Image
-                source={require('../../image/home/contentsDemo.webp')}
+                source={require('../../image/contents/thumbnail_2.webp')}
                 style={[styles.contentsContents_2ContentsImage]}
               />
             </Link>

@@ -14,7 +14,46 @@ const Sqlite = () => {
       // 〇〇テーブルをまるまる削除
       // /*
       tx.executeSql(
+        'DROP TABLE IF EXISTS user;',
+        [],
+        (_, result) => {
+          console.log('Drop success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      // */
+
+      // /*
+      tx.executeSql(
+        'DROP TABLE IF EXISTS login;',
+        [],
+        (_, result) => {
+          console.log('Drop success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      // */
+      
+      // /*
+      tx.executeSql(
         'DROP TABLE IF EXISTS contents;',
+        [],
+        (_, result) => {
+          console.log('Drop success!');
+        },
+        (_, error) => {
+          console.log('Error...');
+        }
+      );
+      // */
+
+      // /*
+      tx.executeSql(
+        'DROP TABLE IF EXISTS contentsSelect;',
         [],
         (_, result) => {
           console.log('Drop success!');

@@ -12,7 +12,7 @@ const Sqlite = () => {
     db.transaction((tx) => {
 
       // userテーブル作成
-      /*
+      // /*
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, name TEXT, image TEXT, pass TEXT);',
         [],
@@ -23,10 +23,10 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      */
+      // */
 
       // loginテーブル(session等ではなく、flgが1か0かでログイン、ログアウト状態の判定)作成
-      /*
+      // /*
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS login (id INTEGER PRIMARY KEY AUTOINCREMENT, flg INTEGER);',
         [],
@@ -37,7 +37,7 @@ const Sqlite = () => {
           console.log('Error...');
         }
       );
-      */
+      // */
 
       // contentsテーブル作成
       // /*
@@ -82,7 +82,7 @@ const Sqlite = () => {
       */
 
       // contentsSelectテーブル(選択したコンテンツにflg=1を付け詳細表示)作成
-      /*
+      // /*
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS contentsSelect (id INTEGER PRIMARY KEY AUTOINCREMENT, flg INTEGER);',
         [],
@@ -93,7 +93,7 @@ const Sqlite = () => {
           console.log('Error!');
         }
       );
-      */
+      // */
 
       // followテーブル作成
       /*
